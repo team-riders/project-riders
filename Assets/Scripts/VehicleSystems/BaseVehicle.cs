@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BaseVehicle : MonoBehaviour
@@ -39,6 +40,13 @@ public class BaseVehicle : MonoBehaviour
 
         [Tooltip("Additional gravity for when the kart is in the air.")]
         public float AddedGravity;
+
+        //additions
+        [Tooltip("Top speed when activating Boost")]
+        public float BoostTopSpeed;
+
+        [Tooltip("Acceleration immediately after Boost")]
+        public float BoostAccel;
     }
 
     public Rigidbody Rigidbody {  get; private set; }
@@ -60,5 +68,18 @@ public class BaseVehicle : MonoBehaviour
         CoastingDrag = 4f,
         Grip = .95f,
         AddedGravity = 1f,
+        BoostTopSpeed = 80f,
+        BoostAccel = 15f,
     };
+
+    // list is created, wheels are not until child classes
+    [Header("Vehicle Visual")]
+    public List<GameObject> m_VisualWheels;
+
+    [Header("Vehicle Physics")]
+    [Tooltip("The transform that determines the position of the kart's mass.")]
+    public Transform CenterOfMass;
+
+    [Range(0.0f, 20.0f), Tooltip("Coefficient used to reorient the kart in the air. The higher the number, the faster the kart will readjust itself along the horizontal plane.")]
+    public float AirborneReorientationCoefficient = 3.0f;
 }
