@@ -5,6 +5,7 @@ public class KeyboardInput : BaseInput
     public string TurnInputName = "Horizontal";
     public string AccelerateButtonName = "Accelerate";
     public string BrakeButtonName = "Brake";
+    public string JumpButtonName = "Jump";
 
     public override InputData GenerateInput()
     {
@@ -12,7 +13,8 @@ public class KeyboardInput : BaseInput
         {
             Accelerate = Input.GetButton(AccelerateButtonName),
             Brake = Input.GetButton(BrakeButtonName),
-            TurnInput = Input.GetAxis("Horizontal")
+            TurnInput = Input.GetAxis("Horizontal"),
+            Jump = Input.GetButton(JumpButtonName),
         };
     }
 }
