@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2390821324031213994}
   - component: {fileID: 8782191201288562594}
   m_Layer: 0
-  m_Name: Capsule
+  m_Name: CollisionCapsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -129,6 +129,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fa3d08c64cac5b4c8a23d7ca75745cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseStats:
+    TopSpeed: 50
+    Acceleration: 10
+    ReverseSpeed: 5
+    ReverseAcceleration: 5
+    AccelerationCurve: 4
+    Braking: 10
+    CoastingDrag: 4
+    Grip: 0.95
+    Steer: 5
+    AddedGravity: 1
+    BoostTopSpeed: 80
+    BoostAccel: 15
+  m_VisualWheels: []
+  CenterOfMass: {fileID: 1664446875134250771}
+  AirborneReorientationCoefficient: 3
+  DriftSparkVFX: {fileID: 0}
+  DriftSparkHorizontalOffset: 0.1
+  DriftSparkRotation: 17
+  DriftTrailPrefab: {fileID: 0}
+  DriftTrailVerticalOffset: 0
+  JumpVFX: {fileID: 0}
+  NozzleVFX: {fileID: 0}
+  Nozzles: []
+  GroundLayers:
+    serializedVersion: 2
+    m_Bits: 51
+  JumpForce: 9
 --- !u!114 &1334056349960837362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,3 +172,4 @@ MonoBehaviour:
   TurnInputName: Horizontal
   AccelerateButtonName: Accelerate
   BrakeButtonName: Brake
+  JumpButtonName: Jump
