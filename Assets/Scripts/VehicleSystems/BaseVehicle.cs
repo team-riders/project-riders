@@ -89,7 +89,7 @@ public class BaseVehicle : MonoBehaviour
     {
         TopSpeed = 50f,
         Acceleration = 10f,
-        AccelerationCurve = 4f,
+        AccelerationCurve = 0.4f,
         Braking = 10f,
         ReverseAcceleration = 5f,
         ReverseSpeed = 5f,
@@ -104,10 +104,6 @@ public class BaseVehicle : MonoBehaviour
     // list is created, wheels are not until child classes
     [Header("Vehicle Visual")]
     public List<WheelCollider> m_VisualWheels;
-    public void AddWheelToVisual(WheelCollider wheelCollider)
-    {
-        m_VisualWheels.Add(wheelCollider);
-    }
 
     [Header("Vehicle Physics")]
     [Tooltip("The transform that determines the position of the kart's mass.")]
@@ -115,6 +111,21 @@ public class BaseVehicle : MonoBehaviour
 
     [Range(0.0f, 20.0f), Tooltip("Coefficient used to reorient the kart in the air. The higher the number, the faster the kart will readjust itself along the horizontal plane.")]
     public float AirborneReorientationCoefficient = 3.0f;
+
+    //brought old drifting stuff back in to try and figure out what's not letting the vehicle move
+    [Header("Drifting")]
+    [Range(0.01f, 1.0f), Tooltip("The grip value when drifting.")]
+    public float DriftGrip = 0.4f;
+    [Range(0.0f, 10.0f), Tooltip("Additional steer when the kart is drifting.")]
+    public float DriftAdditionalSteer = 5.0f;
+    [Range(1.0f, 30.0f), Tooltip("The higher the angle, the easier it is to regain full grip.")]
+    public float MinAngleToFinishDrift = 10.0f;
+    [Range(0.01f, 0.99f), Tooltip("Mininum speed percentage to switch back to full grip.")]
+    public float MinSpeedPercentToFinishDrift = 0.5f;
+    [Range(1.0f, 20.0f), Tooltip("The higher the value, the easier it is to control the drift steering.")]
+    public float DriftControl = 10.0f;
+    [Range(0.0f, 20.0f), Tooltip("The lower the value, the longer the drift will last without trying to control it by steering.")]
+    public float DriftDampening = 10.0f;
 
     //VFX for wheels, should be able to be used anywhere
     [Header("VFX")]
@@ -183,6 +194,12 @@ public class BaseVehicle : MonoBehaviour
     //public void AddPowerup(StatPowerup statPowerup) => m_ActivePowerupList.Add(statPowerup);
     public void SetCanMove(bool move) => m_CanMove = move;
     public float GetMaxSpeed() => Mathf.Max(m_FinalStats.TopSpeed, m_FinalStats.ReverseSpeed);
+
+    //// seems like adding wheels to m_VisualWheels is through unity itself and not programmatically
+    //public void AddWheelToVisual(WheelCollider wheelCollider)
+    //{
+    //    m_VisualWheels.Add(wheelCollider);
+    //}
 
     private void ActivateDriftVFX(bool active)
     {
@@ -295,7 +312,7 @@ public class BaseVehicle : MonoBehaviour
         // apply vehicle physics
         if (m_CanMove)
         {
-            MoveVehicle(Input.Accelerate, Input.Brake, Input.TurnInput);
+            MoveVehicle(Input.Accelerate.IsPressed(), Input.Brake.IsPressed(), Input.TurnInput.ReadValue<float>());
         }
         GroundAirbourne();
 
@@ -314,7 +331,7 @@ public class BaseVehicle : MonoBehaviour
         for (int i = 0; i < m_Inputs.Length; i++)
         {
             Input = m_Inputs[i].GenerateInput();
-            WantsToDrift = Input.Brake && Vector3.Dot(Rigidbody.linearVelocity, transform.forward) > 0.0f;
+            WantsToDrift = Input.Brake.IsPressed() && Vector3.Dot(Rigidbody.linearVelocity, transform.forward) > 0.0f;
         }
     }
 
@@ -378,7 +395,7 @@ public class BaseVehicle : MonoBehaviour
         {
             // use this value to play kart sound when it is waiting the race start countdown.
             // change this
-            return Input.Accelerate ? 1.0f : 0.0f;
+            return Input.Accelerate.IsPressed() ? 1.0f : 0.0f;
         }
     }
 
@@ -423,7 +440,7 @@ public class BaseVehicle : MonoBehaviour
         bool isBraking = (localVelDirectionIsFwd && brake) || (!localVelDirectionIsFwd && accelerate);
 
         // if we are braking (moving reverse to where we are going)
-        // use the braking accleration instead
+        // use the braking acceleration instead
         float finalAccelPower = isBraking ? m_FinalStats.Braking : accelPower;
 
         float finalAcceleration = finalAccelPower * accelRamp;
@@ -488,60 +505,60 @@ public class BaseVehicle : MonoBehaviour
             // manual velocity steering coefficient
             float velocitySteering = 25f;
 
-            //// drifting, change later
-            //// If the karts lands with a forward not in the velocity direction, we start the drift
-            //if (GroundPercent >= 0.0f && m_PreviousGroundPercent < 0.1f)
-            //{
-            //    Vector3 flattenVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, m_VerticalReference).normalized;
-            //    if (Vector3.Dot(flattenVelocity, transform.forward * Mathf.Sign(accelInput)) < Mathf.Cos(MinAngleToFinishDrift * Mathf.Deg2Rad))
-            //    {
-            //        IsDrifting = true;
-            //        m_CurrentGrip = DriftGrip;
-            //        m_DriftTurningPower = 0.0f;
-            //    }
-            //}
+            // drifting, change later
+            // If the karts lands with a forward not in the velocity direction, we start the drift
+            if (GroundPercent >= 0.0f && m_PreviousGroundPercent < 0.1f)
+            {
+                Vector3 flattenVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, m_VerticalReference).normalized;
+                if (Vector3.Dot(flattenVelocity, transform.forward * Mathf.Sign(accelInput)) < Mathf.Cos(MinAngleToFinishDrift * Mathf.Deg2Rad))
+                {
+                    IsDrifting = true;
+                    m_CurrentGrip = DriftGrip;
+                    m_DriftTurningPower = 0.0f;
+                }
+            }
 
-            //// Drift Management
-            //if (!IsDrifting)
-            //{
-            //    if ((WantsToDrift || isBraking) && currentSpeed > maxSpeed * MinSpeedPercentToFinishDrift)
-            //    {
-            //        IsDrifting = true;
-            //        m_DriftTurningPower = turningPower + (Mathf.Sign(turningPower) * DriftAdditionalSteer);
-            //        m_CurrentGrip = DriftGrip;
+            // Drift Management
+            if (!IsDrifting)
+            {
+                if ((WantsToDrift || isBraking) && currentSpeed > maxSpeed * MinSpeedPercentToFinishDrift)
+                {
+                    IsDrifting = true;
+                    m_DriftTurningPower = turningPower + (Mathf.Sign(turningPower) * DriftAdditionalSteer);
+                    m_CurrentGrip = DriftGrip;
 
-            //        ActivateDriftVFX(true);
-            //    }
-            //}
+                    ActivateDriftVFX(true);
+                }
+            }
 
-            //if (IsDrifting)
-            //{
-            //    float turnInputAbs = Mathf.Abs(turnInput);
-            //    if (turnInputAbs < k_NullInput)
-            //        m_DriftTurningPower = Mathf.MoveTowards(m_DriftTurningPower, 0.0f, Mathf.Clamp01(DriftDampening * Time.fixedDeltaTime));
+            if (IsDrifting)
+            {
+                float turnInputAbs = Mathf.Abs(turnInput);
+                if (turnInputAbs < k_NullInput)
+                    m_DriftTurningPower = Mathf.MoveTowards(m_DriftTurningPower, 0.0f, Mathf.Clamp01(DriftDampening * Time.fixedDeltaTime));
 
-            //    // Update the turning power based on input
-            //    float driftMaxSteerValue = m_FinalStats.Steer + DriftAdditionalSteer;
-            //    m_DriftTurningPower = Mathf.Clamp(m_DriftTurningPower + (turnInput * Mathf.Clamp01(DriftControl * Time.fixedDeltaTime)), -driftMaxSteerValue, driftMaxSteerValue);
+                // Update the turning power based on input
+                float driftMaxSteerValue = m_FinalStats.Steer + DriftAdditionalSteer;
+                m_DriftTurningPower = Mathf.Clamp(m_DriftTurningPower + (turnInput * Mathf.Clamp01(DriftControl * Time.fixedDeltaTime)), -driftMaxSteerValue, driftMaxSteerValue);
 
-            //    bool facingVelocity = Vector3.Dot(Rigidbody.linearVelocity.normalized, transform.forward * Mathf.Sign(accelInput)) > Mathf.Cos(MinAngleToFinishDrift * Mathf.Deg2Rad);
+                bool facingVelocity = Vector3.Dot(Rigidbody.linearVelocity.normalized, transform.forward * Mathf.Sign(accelInput)) > Mathf.Cos(MinAngleToFinishDrift * Mathf.Deg2Rad);
 
-            //    bool canEndDrift = true;
-            //    if (isBraking)
-            //        canEndDrift = false;
-            //    else if (!facingVelocity)
-            //        canEndDrift = false;
-            //    else if (turnInputAbs >= k_NullInput && currentSpeed > maxSpeed * MinSpeedPercentToFinishDrift)
-            //        canEndDrift = false;
+                bool canEndDrift = true;
+                if (isBraking)
+                    canEndDrift = false;
+                else if (!facingVelocity)
+                    canEndDrift = false;
+                else if (turnInputAbs >= k_NullInput && currentSpeed > maxSpeed * MinSpeedPercentToFinishDrift)
+                    canEndDrift = false;
 
-            //    if (canEndDrift || currentSpeed < k_NullSpeed)
-            //    {
-            //        // No Input, and car aligned with speed direction => Stop the drift
-            //        IsDrifting = false;
-            //        m_CurrentGrip = m_FinalStats.Grip;
-            //    }
+                if (canEndDrift || currentSpeed < k_NullSpeed)
+                {
+                    // No Input, and car aligned with speed direction => Stop the drift
+                    IsDrifting = false;
+                    m_CurrentGrip = m_FinalStats.Grip;
+                }
 
-            //}
+            }
 
             // rotate our velocity based on current steer value
             Rigidbody.linearVelocity = Quaternion.AngleAxis(turningPower * Mathf.Sign(localVel.z) * velocitySteering * m_CurrentGrip * Time.fixedDeltaTime, transform.up) * Rigidbody.linearVelocity;
@@ -584,7 +601,7 @@ public class BaseVehicle : MonoBehaviour
 
         //jump management
         // basic jump for now, doesn't make use of JumpCharge
-        if(Input.Jump && GroundPercent == 0.0f)
+        if(Input.Jump.IsPressed() && GroundPercent == 0.0f)
         {
             Rigidbody.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
         }
