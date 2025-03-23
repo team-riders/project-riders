@@ -1,12 +1,13 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public struct InputData
 {
     // figure out what inputs we need
-    public bool Accelerate;
-    public bool Brake;
-    public float TurnInput;
-    public bool Jump;
+    public InputAction Accelerate;
+    public InputAction Brake;
+    public InputAction TurnInput;
+    public InputAction Jump;
 }
 
 public interface IInput

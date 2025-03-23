@@ -248,9 +248,19 @@ MonoBehaviour:
     AddedGravity: 1
     BoostTopSpeed: 80
     BoostAccel: 15
-  m_VisualWheels: []
+  m_VisualWheels:
+  - {fileID: 3408912397669613075}
+  - {fileID: 3560586614387510224}
+  - {fileID: 7432796916172178405}
+  - {fileID: 2103036267337290636}
   CenterOfMass: {fileID: 4130231455756529702}
   AirborneReorientationCoefficient: 3
+  DriftGrip: 0.4
+  DriftAdditionalSteer: 5
+  MinAngleToFinishDrift: 10
+  MinSpeedPercentToFinishDrift: 0.5
+  DriftControl: 10
+  DriftDampening: 10
   DriftSparkVFX: {fileID: 0}
   DriftSparkHorizontalOffset: 0.1
   DriftSparkRotation: 17

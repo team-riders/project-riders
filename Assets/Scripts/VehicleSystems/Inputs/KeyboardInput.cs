@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class KeyboardInput : BaseInput
 {
@@ -11,10 +12,10 @@ public class KeyboardInput : BaseInput
     {
         return new InputData
         {
-            Accelerate = Input.GetButton(AccelerateButtonName),
-            Brake = Input.GetButton(BrakeButtonName),
-            TurnInput = Input.GetAxis("Horizontal"),
-            Jump = Input.GetButton(JumpButtonName),
+            Accelerate = InputSystem.actions.FindAction(AccelerateButtonName),
+            Brake = InputSystem.actions.FindAction(BrakeButtonName),
+            TurnInput = InputSystem.actions.FindAction(TurnInputName),
+            Jump = InputSystem.actions.FindAction(JumpButtonName),
         };
     }
 }
