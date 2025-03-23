@@ -3,6 +3,16 @@ using UnityEngine;
 
 public class BaseVehicle : MonoBehaviour
 {
+    // powerup stuff, not used yet
+    //[System.Serializable]
+    //public class StatPowerup
+    //{
+    //    public BaseVehicle.Stats modifiers;
+    //    public string PowerUpID;
+    //    public float ElapsedTime;
+    //    public float MaxTime;
+    //}
+
     [System.Serializable]
     public struct Stats
     {
@@ -94,6 +104,10 @@ public class BaseVehicle : MonoBehaviour
     // list is created, wheels are not until child classes
     [Header("Vehicle Visual")]
     public List<WheelCollider> m_VisualWheels;
+    public void AddWheelToVisual(WheelCollider wheelCollider)
+    {
+        m_VisualWheels.Add(wheelCollider);
+    }
 
     [Header("Vehicle Physics")]
     [Tooltip("The transform that determines the position of the kart's mass.")]
@@ -160,9 +174,10 @@ public class BaseVehicle : MonoBehaviour
 
     //jumping stuff
     [Header("Jump")]
-    [Range(0.0f, 1.0f)]
-    [Tooltip("Stores charge amount for jumping on ramps; has no basis on jump height elsewhere")]
-    public float JumpCharge;
+    [Range(0.1f, 1.0f), Tooltip("Stores charge amount for jumping on ramps; helps determine jump height, directly correlates to trick speed")]
+    float JumpCharge;
+    [Tooltip("Stores jump force")]
+    public float JumpForce = 9.0f;
 
     // methods
     //public void AddPowerup(StatPowerup statPowerup) => m_ActivePowerupList.Add(statPowerup);
@@ -205,6 +220,7 @@ public class BaseVehicle : MonoBehaviour
         }
     }
 
+    //make virtual?
     void Awake()
     {
         Rigidbody = GetComponent<Rigidbody>();
@@ -244,6 +260,7 @@ public class BaseVehicle : MonoBehaviour
     //    m_DriftSparkInstances.Add((wheel, horizontalOffset, -rotation, spark));
     //}
 
+    //make virtual?
     void FixedUpdate()
     {
         GatherInputs();
@@ -382,6 +399,7 @@ public class BaseVehicle : MonoBehaviour
         }
     }
 
+    //make virtual?
     void MoveVehicle(bool accelerate, bool brake, float turnInput)
     {
         float accelInput = (accelerate ? 1.0f : 0.0f) - (brake ? 1.0f : 0.0f);
@@ -470,18 +488,18 @@ public class BaseVehicle : MonoBehaviour
             // manual velocity steering coefficient
             float velocitySteering = 25f;
 
-            // If the karts lands with a forward not in the velocity direction, we start the drift
-            if (GroundPercent >= 0.0f && m_PreviousGroundPercent < 0.1f)
-            {
-                Vector3 flattenVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, m_VerticalReference).normalized;
-                // drifting, change latger
-                //if (Vector3.Dot(flattenVelocity, transform.forward * Mathf.Sign(accelInput)) < Mathf.Cos(MinAngleToFinishDrift * Mathf.Deg2Rad))
-                //{
-                //    IsDrifting = true;
-                //    m_CurrentGrip = DriftGrip;
-                //    m_DriftTurningPower = 0.0f;
-                //}
-            }
+            //// drifting, change later
+            //// If the karts lands with a forward not in the velocity direction, we start the drift
+            //if (GroundPercent >= 0.0f && m_PreviousGroundPercent < 0.1f)
+            //{
+            //    Vector3 flattenVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, m_VerticalReference).normalized;
+            //    if (Vector3.Dot(flattenVelocity, transform.forward * Mathf.Sign(accelInput)) < Mathf.Cos(MinAngleToFinishDrift * Mathf.Deg2Rad))
+            //    {
+            //        IsDrifting = true;
+            //        m_CurrentGrip = DriftGrip;
+            //        m_DriftTurningPower = 0.0f;
+            //    }
+            //}
 
             //// Drift Management
             //if (!IsDrifting)
@@ -562,6 +580,13 @@ public class BaseVehicle : MonoBehaviour
         {
             m_LastValidPosition = transform.position;
             m_LastValidRotation.eulerAngles = new Vector3(0.0f, transform.rotation.y, 0.0f);
+        }
+
+        //jump management
+        // basic jump for now, doesn't make use of JumpCharge
+        if(Input.Jump && GroundPercent == 0.0f)
+        {
+            Rigidbody.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
         }
 
         ActivateDriftVFX(IsDrifting && GroundPercent > 0.0f);
