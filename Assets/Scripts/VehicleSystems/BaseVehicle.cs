@@ -245,6 +245,8 @@ public class BaseVehicle : MonoBehaviour
 
         m_CurrentGrip = baseStats.Grip;
 
+        m_FinalStats = baseStats;
+
         // add to child classes instead
 
         //if (DriftSparkVFX != null)
@@ -312,6 +314,7 @@ public class BaseVehicle : MonoBehaviour
         // apply vehicle physics
         if (m_CanMove)
         {
+            Debug.Log(Input.Accelerate.IsPressed());
             MoveVehicle(Input.Accelerate.IsPressed(), Input.Brake.IsPressed(), Input.TurnInput.ReadValue<float>());
         }
         GroundAirbourne();
@@ -420,17 +423,20 @@ public class BaseVehicle : MonoBehaviour
     void MoveVehicle(bool accelerate, bool brake, float turnInput)
     {
         float accelInput = (accelerate ? 1.0f : 0.0f) - (brake ? 1.0f : 0.0f);
+        Debug.Log("accelInput: " + accelInput);
 
         // manual acceleration curve coefficient scalar
         float accelerationCurveCoeff = 5;
         Vector3 localVel = transform.InverseTransformVector(Rigidbody.linearVelocity);
 
         bool accelDirectionIsFwd = accelInput >= 0;
+        Debug.Log("accelDirectionIsFwd: " + accelDirectionIsFwd);
         bool localVelDirectionIsFwd = localVel.z >= 0;
 
         // use the max speed for the direction we are going--forward or reverse.
         float maxSpeed = localVelDirectionIsFwd ? m_FinalStats.TopSpeed : m_FinalStats.ReverseSpeed;
         float accelPower = accelDirectionIsFwd ? m_FinalStats.Acceleration : m_FinalStats.ReverseAcceleration;
+        Debug.Log("accelPower: " + accelPower);
 
         float currentSpeed = Rigidbody.linearVelocity.magnitude;
         float accelRampT = currentSpeed / maxSpeed;
@@ -444,6 +450,7 @@ public class BaseVehicle : MonoBehaviour
         float finalAccelPower = isBraking ? m_FinalStats.Braking : accelPower;
 
         float finalAcceleration = finalAccelPower * accelRamp;
+        //Debug.Log(finalAcceleration);
 
         // apply inputs to forward/backward
         float turningPower = IsDrifting ? m_DriftTurningPower : turnInput * m_FinalStats.Steer;
@@ -482,7 +489,7 @@ public class BaseVehicle : MonoBehaviour
             if (m_InAir)
             {
                 m_InAir = false;
-                Instantiate(JumpVFX, transform.position, Quaternion.identity);
+                //Instantiate(JumpVFX, transform.position, Quaternion.identity);
             }
 
             // manual angular velocity coefficient
