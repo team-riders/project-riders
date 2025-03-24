@@ -245,6 +245,7 @@ public class BaseVehicle : MonoBehaviour
 
         m_CurrentGrip = baseStats.Grip;
 
+        // previously initialised in karting microgame by FixedUpdates() calling TickPowerups()
         m_FinalStats = baseStats;
 
         // add to child classes instead
