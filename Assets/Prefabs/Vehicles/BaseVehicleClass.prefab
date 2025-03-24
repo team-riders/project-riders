@@ -134,7 +134,7 @@ MonoBehaviour:
     Acceleration: 10
     ReverseSpeed: 5
     ReverseAcceleration: 5
-    AccelerationCurve: 4
+    AccelerationCurve: 1
     Braking: 10
     CoastingDrag: 4
     Grip: 0.95
@@ -145,6 +145,12 @@ MonoBehaviour:
   m_VisualWheels: []
   CenterOfMass: {fileID: 1664446875134250771}
   AirborneReorientationCoefficient: 3
+  DriftGrip: 0.4
+  DriftAdditionalSteer: 5
+  MinAngleToFinishDrift: 10
+  MinSpeedPercentToFinishDrift: 0.5
+  DriftControl: 10
+  DriftDampening: 10
   DriftSparkVFX: {fileID: 0}
   DriftSparkHorizontalOffset: 0.1
   DriftSparkRotation: 17
