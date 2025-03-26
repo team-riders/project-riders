@@ -109,9 +109,6 @@ public class BaseVehicle : MonoBehaviour
     public List<WheelCollider> m_VisualWheels;
 
     [Header("Vehicle Physics")]
-    [Tooltip("The transform that determines the position of the kart's mass.")]
-    public Transform CenterOfMass;
-
     [Range(0.0f, 20.0f), Tooltip("Coefficient used to reorient the kart in the air. The higher the number, the faster the kart will readjust itself along the horizontal plane.")]
     public float AirborneReorientationCoefficient = 3.0f;
 
@@ -248,7 +245,7 @@ public class BaseVehicle : MonoBehaviour
 
         m_CurrentGrip = baseStats.Grip;
 
-        Rigidbody.centerOfMass = transform.InverseTransformPoint(CenterOfMass.position);
+        SetCenterOfMass();
 
         // previously initialised in karting microgame by FixedUpdates() calling TickPowerups()
         //m_FinalStats = baseStats;
@@ -329,6 +326,37 @@ public class BaseVehicle : MonoBehaviour
         m_PreviousGroundPercent = GroundPercent;
 
         UpdateDriftVFXOrientation();
+    }
+
+    void SetCenterOfMass()
+    {
+        List<WheelCollider> wheelColliders = new List<WheelCollider>();
+
+        // Get all WheelColliders under BoardVehicle
+        foreach (Transform child in transform.GetComponentsInChildren<Transform>())
+        {
+            WheelCollider wc = child.GetComponent<WheelCollider>();
+            if (wc != null)
+            {
+                wheelColliders.Add(wc);
+            }
+        }
+
+        if (wheelColliders.Count == 0)
+        {
+            Debug.LogError("No WheelColliders found!");
+            return;
+        }
+
+        // Calculate the average position of all WheelColliders
+        Vector3 center = Vector3.zero;
+        foreach (WheelCollider wc in wheelColliders)
+        {
+            center += wc.transform.position;
+        }
+        center /= wheelColliders.Count;
+
+        Rigidbody.centerOfMass = transform.InverseTransformPoint(center);
     }
 
     void GatherInputs()
