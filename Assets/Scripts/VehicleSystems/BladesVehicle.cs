@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.VehicleSystems
 {
-    class BoardVehicle : BaseVehicle
+    class BladesVehicle : BaseVehicle
     {
         //// replace base stats
         //public new BaseVehicle.Stats baseStats = new BaseVehicle.Stats
@@ -26,15 +26,21 @@ namespace Assets.Scripts.VehicleSystems
         //    BoostAccel = 15f,
         //};
 
-        [Header("Skateboard Specific Settings")]
+        [Header("Blades Specific Settings")]
         // Nothing for now
 
-        [Header("Physical Wheels")]
-        [Tooltip("The physical representations of the skateboard's wheels.")]
-        public WheelCollider FrontLeftWheel;
-        public WheelCollider FrontRightWheel;
-        public WheelCollider BackLeftWheel;
-        public WheelCollider BackRightWheel;
+        [Header("Left Wheels")]
+        [Tooltip("The physical representations of the blades' wheels on the left foot.")]
+        public WheelCollider LFrontWheel;
+        public WheelCollider LMiddleFrontWheel;
+        public WheelCollider LMiddleBackWheel;
+        public WheelCollider LBackWheel;
 
+        [Header("Right Wheels")]
+        [Tooltip("The physical representations of the blades' wheels on the left foot.")]
+        public WheelCollider RFrontWheel;
+        public WheelCollider RMiddleFrontWheel;
+        public WheelCollider RMiddleBackWheel;
+        public WheelCollider RBackWheel;
     }
 }
