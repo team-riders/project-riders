@@ -3,15 +3,15 @@ using UnityEngine;
 
 public class BaseVehicle : MonoBehaviour
 {
-    // powerup stuff, not used yet
-    //[System.Serializable]
-    //public class StatPowerup
-    //{
-    //    public BaseVehicle.Stats modifiers;
-    //    public string PowerUpID;
-    //    public float ElapsedTime;
-    //    public float MaxTime;
-    //}
+    // powerup stuff, used for speed boost
+    [System.Serializable]
+    public class StatPowerup
+    {
+        public BaseVehicle.Stats modifiers;
+        public string PowerUpID;
+        public float ElapsedTime;
+        public float MaxTime;
+    }
 
     [System.Serializable]
     public struct Stats
@@ -53,22 +53,22 @@ public class BaseVehicle : MonoBehaviour
 
 
         // allow for stat adding for powerups.
-        //public static Stats operator +(Stats a, Stats b)
-        //{
-        //    return new Stats
-        //    {
-        //        Acceleration = a.Acceleration + b.Acceleration,
-        //        AccelerationCurve = a.AccelerationCurve + b.AccelerationCurve,
-        //        Braking = a.Braking + b.Braking,
-        //        CoastingDrag = a.CoastingDrag + b.CoastingDrag,
-        //        AddedGravity = a.AddedGravity + b.AddedGravity,
-        //        Grip = a.Grip + b.Grip,
-        //        ReverseAcceleration = a.ReverseAcceleration + b.ReverseAcceleration,
-        //        ReverseSpeed = a.ReverseSpeed + b.ReverseSpeed,
-        //        TopSpeed = a.TopSpeed + b.TopSpeed,
-        //        Steer = a.Steer + b.Steer,
-        //    };
-        //}
+        public static Stats operator +(Stats a, Stats b)
+        {
+            return new Stats
+            {
+                Acceleration = a.Acceleration + b.Acceleration,
+                AccelerationCurve = a.AccelerationCurve + b.AccelerationCurve,
+                Braking = a.Braking + b.Braking,
+                CoastingDrag = a.CoastingDrag + b.CoastingDrag,
+                AddedGravity = a.AddedGravity + b.AddedGravity,
+                Grip = a.Grip + b.Grip,
+                ReverseAcceleration = a.ReverseAcceleration + b.ReverseAcceleration,
+                ReverseSpeed = a.ReverseSpeed + b.ReverseSpeed,
+                TopSpeed = a.TopSpeed + b.TopSpeed,
+                Steer = a.Steer + b.Steer,
+            };
+        }
 
         //additions
         [Tooltip("Top speed when activating Boost")]
@@ -174,7 +174,7 @@ public class BaseVehicle : MonoBehaviour
 
     // can the kart move?
     bool m_CanMove = true;
-    //List<StatPowerup> m_ActivePowerupList = new List<StatPowerup>();
+    List<StatPowerup> m_ActivePowerupList = new List<StatPowerup>();
     BaseVehicle.Stats m_FinalStats;
 
     Quaternion m_LastValidRotation;
@@ -191,7 +191,7 @@ public class BaseVehicle : MonoBehaviour
     public float JumpForce = 9.0f;
 
     // methods
-    //public void AddPowerup(StatPowerup statPowerup) => m_ActivePowerupList.Add(statPowerup);
+    public void AddPowerup(StatPowerup statPowerup) => m_ActivePowerupList.Add(statPowerup);
     public void SetCanMove(bool move) => m_CanMove = move;
     public float GetMaxSpeed() => Mathf.Max(m_FinalStats.TopSpeed, m_FinalStats.ReverseSpeed);
 
@@ -246,7 +246,7 @@ public class BaseVehicle : MonoBehaviour
         m_CurrentGrip = baseStats.Grip;
 
         // previously initialised in karting microgame by FixedUpdates() calling TickPowerups()
-        m_FinalStats = baseStats;
+        //m_FinalStats = baseStats;
 
         // add to child classes instead
 
@@ -263,7 +263,7 @@ public class BaseVehicle : MonoBehaviour
         //}
     }
 
-    //add to child classes
+    ////add to child classes
     //void AddTrailToWheel(WheelCollider wheel)
     //{
     //    GameObject trailRoot = Instantiate(DriftTrailPrefab, gameObject.transform, false);
@@ -287,7 +287,7 @@ public class BaseVehicle : MonoBehaviour
 
         // maybe later
         // apply our powerups to create our finalStats
-        //TickPowerups();
+        TickPowerups();
 
         // apply our physics properties
         Rigidbody.centerOfMass = transform.InverseTransformPoint(CenterOfMass.position);
@@ -340,32 +340,32 @@ public class BaseVehicle : MonoBehaviour
     }
 
     // ignore for now, delete if we decide we don't want powerups
-    //void TickPowerups()
-    //{
-    //    // remove all elapsed powerups
-    //    m_ActivePowerupList.RemoveAll((p) => { return p.ElapsedTime > p.MaxTime; });
+    void TickPowerups()
+    {
+        // remove all elapsed powerups
+        m_ActivePowerupList.RemoveAll((p) => { return p.ElapsedTime > p.MaxTime; });
 
-    //    // zero out powerups before we add them all up
-    //    var powerups = new Stats();
+        // zero out powerups before we add them all up
+        var powerups = new Stats();
 
-    //    // add up all our powerups
-    //    for (int i = 0; i < m_ActivePowerupList.Count; i++)
-    //    {
-    //        var p = m_ActivePowerupList[i];
+        // add up all our powerups
+        for (int i = 0; i < m_ActivePowerupList.Count; i++)
+        {
+            var p = m_ActivePowerupList[i];
 
-    //        // add elapsed time
-    //        p.ElapsedTime += Time.fixedDeltaTime;
+            // add elapsed time
+            p.ElapsedTime += Time.fixedDeltaTime;
 
-    //        // add up the powerups
-    //        powerups += p.modifiers;
-    //    }
+            // add up the powerups
+            powerups += p.modifiers;
+        }
 
-    //    // add powerups to our final stats
-    //    m_FinalStats = baseStats + powerups;
+        // add powerups to our final stats
+        m_FinalStats = baseStats + powerups;
 
-    //    // clamp values in finalstats
-    //    m_FinalStats.Grip = Mathf.Clamp(m_FinalStats.Grip, 0, 1);
-    //}
+        // clamp values in finalstats
+        m_FinalStats.Grip = Mathf.Clamp(m_FinalStats.Grip, 0, 1);
+    }
 
     void GroundAirbourne()
     {
