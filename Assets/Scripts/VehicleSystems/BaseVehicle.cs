@@ -248,6 +248,8 @@ public class BaseVehicle : MonoBehaviour
 
         m_CurrentGrip = baseStats.Grip;
 
+        Rigidbody.centerOfMass = transform.InverseTransformPoint(CenterOfMass.position);
+
         // previously initialised in karting microgame by FixedUpdates() calling TickPowerups()
         //m_FinalStats = baseStats;
 
@@ -293,7 +295,6 @@ public class BaseVehicle : MonoBehaviour
         TickPowerups();
 
         // apply our physics properties
-        Rigidbody.centerOfMass = transform.InverseTransformPoint(CenterOfMass.position);
 
         int groundedCount = 0;
         foreach (WheelCollider o in m_VisualWheels)
