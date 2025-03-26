@@ -13,6 +13,9 @@ public class BaseVehicle : MonoBehaviour
         public float MaxTime;
     }
 
+    [Header("Vehicle Type")]
+    public Enums.VehicleType VehicleType;
+
     [System.Serializable]
     public struct Stats
     {
@@ -78,8 +81,8 @@ public class BaseVehicle : MonoBehaviour
         public float BoostAccel;
     }
 
-    public Rigidbody Rigidbody {  get; private set; }
-    public InputData Input {  get; private set; }
+    public Rigidbody Rigidbody { get; private set; }
+    public InputData Input { get; private set; }
     public float AirPercent { get; private set; }
     public float GroundPercent { get; private set; }
 
@@ -293,9 +296,11 @@ public class BaseVehicle : MonoBehaviour
         Rigidbody.centerOfMass = transform.InverseTransformPoint(CenterOfMass.position);
 
         int groundedCount = 0;
-        foreach (WheelCollider o in m_VisualWheels) {
-            if (o.isGrounded && o.GetGroundHit(out WheelHit hit)) { 
-                groundedCount++; 
+        foreach (WheelCollider o in m_VisualWheels)
+        {
+            if (o.isGrounded && o.GetGroundHit(out WheelHit hit))
+            {
+                groundedCount++;
             }
         }
         //if (FrontLeftWheel.isGrounded && FrontLeftWheel.GetGroundHit(out WheelHit hit))
@@ -609,7 +614,7 @@ public class BaseVehicle : MonoBehaviour
 
         //jump management
         // basic jump for now, doesn't make use of JumpCharge
-        if(Input.Jump.IsPressed() && GroundPercent == 0.0f)
+        if (Input.Jump.IsPressed() && GroundPercent == 0.0f)
         {
             Rigidbody.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
         }
