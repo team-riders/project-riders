@@ -151,7 +151,7 @@ Transform:
   m_GameObject: {fileID: 1722547682615910446}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.12799999, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -253,7 +253,7 @@ MonoBehaviour:
   - {fileID: 3560586614387510224}
   - {fileID: 7432796916172178405}
   - {fileID: 2103036267337290636}
-  CenterOfMass: {fileID: 4130231455756529702}
+  CenterOfMass: {fileID: 5717724137812349823}
   AirborneReorientationCoefficient: 3
   DriftGrip: 0.4
   DriftAdditionalSteer: 5
@@ -680,7 +680,7 @@ Transform:
   m_GameObject: {fileID: 5835988392116201089}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.12799999, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -715,7 +715,7 @@ Transform:
   m_GameObject: {fileID: 6366914543896829624}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.009, z: 0}
+  m_LocalPosition: {x: 0, y: -0.137, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
