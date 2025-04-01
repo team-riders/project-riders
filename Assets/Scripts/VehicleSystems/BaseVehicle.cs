@@ -141,10 +141,10 @@ public class BaseVehicle : MonoBehaviour
     public float DriftTrailVerticalOffset;
     [Tooltip("VFX that will spawn upon landing, after a jump.")]
     public GameObject JumpVFX;
-    [Tooltip("VFX that is spawn on the nozzles of the kart.")]
-    public GameObject NozzleVFX;
-    [Tooltip("List of the kart's nozzles.")]
-    public List<Transform> Nozzles;
+    //[Tooltip("VFX that is spawn on the nozzles of the kart.")]
+    //public GameObject NozzleVFX;
+    //[Tooltip("List of the kart's nozzles.")]
+    //public List<Transform> Nozzles;
 
     //completely different drift implementation compared to kart microgame
 
@@ -318,7 +318,7 @@ public class BaseVehicle : MonoBehaviour
         // apply vehicle physics
         if (m_CanMove)
         {
-            Debug.Log(Input.Accelerate.IsPressed());
+            //Debug.Log(Input.Accelerate.IsPressed());
             MoveVehicle(Input.Accelerate.IsPressed(), Input.Brake.IsPressed(), Input.TurnInput.ReadValue<float>());
         }
         GroundAirbourne();
@@ -625,6 +625,7 @@ public class BaseVehicle : MonoBehaviour
         validPosition = GroundPercent > 0.7f && !m_HasCollision && Vector3.Dot(m_VerticalReference, Vector3.up) > 0.9f;
 
         // Airborne / Half on ground management
+        Debug.Log("GroundPercent is:" + GroundPercent);
         if (GroundPercent < 0.7f)
         {
             Rigidbody.angularVelocity = new Vector3(0.0f, Rigidbody.angularVelocity.y * 0.98f, 0.0f);
