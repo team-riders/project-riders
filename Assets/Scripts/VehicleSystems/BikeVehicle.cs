@@ -1,0 +1,37 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using UnityEngine;
+
+namespace Assets.Scripts.VehicleSystems
+{
+    class BikeVehicle : BaseVehicle
+    {
+        //// replace base stats
+        //public new BaseVehicle.Stats baseStats = new BaseVehicle.Stats
+        //{
+        //    TopSpeed = 50f,
+        //    Acceleration = 10f,
+        //    AccelerationCurve = 4f,
+        //    Braking = 10f,
+        //    ReverseAcceleration = 5f,
+        //    ReverseSpeed = 5f,
+        //    Steer = 5f,
+        //    CoastingDrag = 4f,
+        //    Grip = .95f,
+        //    AddedGravity = 1f,
+        //    BoostTopSpeed = 80f,
+        //    BoostAccel = 15f,
+        //};
+
+        [Header("Bike Specific Settings")]
+        // Nothing for now
+
+        [Header("Physical Wheels")]
+        [Tooltip("The physical representations of the bike's wheels.")]
+        public WheelCollider FrontWheel;
+        public WheelCollider BackWheel;
+    }
+}
