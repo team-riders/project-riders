@@ -83,8 +83,11 @@ public class BaseVehicle : MonoBehaviour
 
     public Rigidbody Rigidbody { get; private set; }
     public InputData Input { get; private set; }
-    public float AirPercent { get; private set; }
-    public float GroundPercent { get; private set; }
+    //public float AirPercent { get; private set; }
+    //public float GroundPercent { get; private set; }
+    public float DistToGround { get; private set; }
+    public bool Grounded { get; private set; }
+    public Collider m_PlayerCollider { get; private set; }
 
     // figure out methods we need, refer to ArcadeKart.cs from karting microgame as startpoint
 
@@ -168,7 +171,8 @@ public class BaseVehicle : MonoBehaviour
     public bool IsDrifting { get; private set; } = false;
     float m_CurrentGrip = 1.0f;
     float m_DriftTurningPower = 0.0f;
-    float m_PreviousGroundPercent = 1.0f;
+    //float m_PreviousGroundPercent = 1.0f;
+    //bool m_PreviousGrounded = true;
     readonly List<(GameObject trailRoot, WheelCollider wheel, TrailRenderer trail)> m_DriftTrailInstances = new List<(GameObject, WheelCollider, TrailRenderer)>();
     readonly List<(WheelCollider wheel, float horizontalOffset, float rotation, ParticleSystem sparks)> m_DriftSparkInstances = new List<(WheelCollider, float, float, ParticleSystem)>();
 
@@ -246,6 +250,8 @@ public class BaseVehicle : MonoBehaviour
         m_CurrentGrip = baseStats.Grip;
 
         SetCenterOfMass();
+        m_PlayerCollider = GetComponent<Collider>();
+        DistToGround = m_PlayerCollider.bounds.extents.y;
 
         // previously initialised in karting microgame by FixedUpdates() calling TickPowerups()
         //m_FinalStats = baseStats;
@@ -287,33 +293,27 @@ public class BaseVehicle : MonoBehaviour
     {
         GatherInputs();
 
-        // maybe later
         // apply our powerups to create our finalStats
         TickPowerups();
 
         // apply our physics properties
 
-        int groundedCount = 0;
-        foreach (WheelCollider o in m_VisualWheels)
-        {
-            if (o.isGrounded && o.GetGroundHit(out WheelHit hit))
-            {
-                groundedCount++;
-            }
-        }
-        //if (FrontLeftWheel.isGrounded && FrontLeftWheel.GetGroundHit(out WheelHit hit))
-        //    groundedCount++;
-        //if (FrontRightWheel.isGrounded && FrontRightWheel.GetGroundHit(out hit))
-        //    groundedCount++;
-        //if (RearLeftWheel.isGrounded && RearLeftWheel.GetGroundHit(out hit))
-        //    groundedCount++;
-        //if (RearRightWheel.isGrounded && RearRightWheel.GetGroundHit(out hit))
-        //    groundedCount++;
+        ////old ground checks
+        //int groundedCount = 0;
+        //foreach (WheelCollider o in m_VisualWheels)
+        //{
+        //    if (o.isGrounded && o.GetGroundHit(out WheelHit hit))
+        //    {
+        //        groundedCount++;
+        //    }
+        //}
 
-        // calculate how grounded and airborne we are
-        float wheelCount = m_VisualWheels.Count;
-        GroundPercent = (float)groundedCount / wheelCount;
-        AirPercent = 1 - GroundPercent;
+        //// calculate how grounded and airborne we are
+        //float wheelCount = m_VisualWheels.Count;
+        //GroundPercent = (float)groundedCount / wheelCount;
+        //AirPercent = 1 - GroundPercent;
+
+        Grounded = isGrounded();
 
         // apply vehicle physics
         if (m_CanMove)
@@ -323,9 +323,15 @@ public class BaseVehicle : MonoBehaviour
         }
         GroundAirbourne();
 
-        m_PreviousGroundPercent = GroundPercent;
+        //m_PreviousGroundPercent = GroundPercent;
+        //m_PreviousGrounded = Grounded;
 
         UpdateDriftVFXOrientation();
+    }
+
+    bool isGrounded()
+    {
+        return Physics.Raycast(transform.position, -Vector3.up, DistToGround + 0.1f);
     }
 
     void SetCenterOfMass()
@@ -404,7 +410,8 @@ public class BaseVehicle : MonoBehaviour
     void GroundAirbourne()
     {
         // while in the air, fall faster
-        if (AirPercent >= 1)
+        //if (AirPercent)
+        if (!Grounded)
         {
             Rigidbody.linearVelocity += Physics.gravity * Time.fixedDeltaTime * m_FinalStats.AddedGravity;
         }
@@ -492,7 +499,8 @@ public class BaseVehicle : MonoBehaviour
 
         Quaternion turnAngle = Quaternion.AngleAxis(turningPower, transform.up);
         Vector3 fwd = turnAngle * transform.forward;
-        Vector3 movement = fwd * accelInput * finalAcceleration * ((m_HasCollision || GroundPercent > 0.0f) ? 1.0f : 0.0f);
+        //Vector3 movement = fwd * accelInput * finalAcceleration * ((m_HasCollision || GroundPercent > 0.0f) ? 1.0f : 0.0f);
+        Vector3 movement = fwd * accelInput * finalAcceleration * ((m_HasCollision || Grounded) ? 1.0f : 0.0f);
 
         // forward movement
         bool wasOverMaxSpeed = currentSpeed >= maxSpeed;
@@ -505,13 +513,15 @@ public class BaseVehicle : MonoBehaviour
         newVelocity.y = Rigidbody.linearVelocity.y;
 
         //  clamp max speed if we are on ground
-        if (GroundPercent > 0.0f && !wasOverMaxSpeed)
+        //if (GroundPercent > 0.0f && !wasOverMaxSpeed)
+        if (Grounded && !wasOverMaxSpeed)
         {
             newVelocity = Vector3.ClampMagnitude(newVelocity, maxSpeed);
         }
 
         // coasting is when we aren't touching accelerate
-        if (Mathf.Abs(accelInput) < k_NullInput && GroundPercent > 0.0f)
+        //if (Mathf.Abs(accelInput) < k_NullInput && GroundPercent > 0.0f)
+        if (Mathf.Abs(accelInput) < k_NullInput && Grounded)
         {
             newVelocity = Vector3.MoveTowards(newVelocity, new Vector3(0, Rigidbody.linearVelocity.y, 0), Time.fixedDeltaTime * m_FinalStats.CoastingDrag);
         }
@@ -519,7 +529,8 @@ public class BaseVehicle : MonoBehaviour
         Rigidbody.linearVelocity = newVelocity;
 
         // Drift
-        if (GroundPercent > 0.0f)
+        //if (GroundPercent > 0.0f)
+        if (Grounded)
         {
             if (m_InAir)
             {
@@ -549,7 +560,9 @@ public class BaseVehicle : MonoBehaviour
 
             // drifting, change later
             // If the karts lands with a forward not in the velocity direction, we start the drift
-            if (GroundPercent >= 0.0f && m_PreviousGroundPercent < 0.1f)
+            // might be buggy now, check and fix
+            //if (GroundPercent >= 0.0f && m_PreviousGroundPercent < 0.1f)
+            if (Grounded)
             {
                 Vector3 flattenVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, m_VerticalReference).normalized;
                 if (Vector3.Dot(flattenVelocity, transform.forward * Mathf.Sign(accelInput)) < Mathf.Cos(MinAngleToFinishDrift * Mathf.Deg2Rad))
@@ -614,7 +627,8 @@ public class BaseVehicle : MonoBehaviour
         if (Physics.Raycast(transform.position + (transform.up * 0.1f), -transform.up, out RaycastHit hit, 3.0f, 1 << 9 | 1 << 10 | 1 << 11)) // Layer: ground (9) / Environment(10) / Track (11)
         {
             Vector3 lerpVector = (m_HasCollision && m_LastCollisionNormal.y > hit.normal.y) ? m_LastCollisionNormal : hit.normal;
-            m_VerticalReference = Vector3.Slerp(m_VerticalReference, lerpVector, Mathf.Clamp01(AirborneReorientationCoefficient * Time.fixedDeltaTime * (GroundPercent > 0.0f ? 10.0f : 1.0f)));    // Blend faster if on ground
+            //m_VerticalReference = Vector3.Slerp(m_VerticalReference, lerpVector, Mathf.Clamp01(AirborneReorientationCoefficient * Time.fixedDeltaTime * (GroundPercent > 0.0f ? 10.0f : 1.0f)));    // Blend faster if on ground
+            m_VerticalReference = Vector3.Slerp(m_VerticalReference, lerpVector, Mathf.Clamp01(AirborneReorientationCoefficient * Time.fixedDeltaTime * (Grounded ? 10.0f : 1.0f)));    // Blend faster if on ground
         }
         else
         {
@@ -622,11 +636,14 @@ public class BaseVehicle : MonoBehaviour
             m_VerticalReference = Vector3.Slerp(m_VerticalReference, lerpVector, Mathf.Clamp01(AirborneReorientationCoefficient * Time.fixedDeltaTime));
         }
 
-        validPosition = GroundPercent > 0.7f && !m_HasCollision && Vector3.Dot(m_VerticalReference, Vector3.up) > 0.9f;
+        //validPosition = GroundPercent > 0.7f && !m_HasCollision && Vector3.Dot(m_VerticalReference, Vector3.up) > 0.9f;
+        validPosition = Grounded && !m_HasCollision && Vector3.Dot(m_VerticalReference, Vector3.up) > 0.9f;
 
         // Airborne / Half on ground management
-        Debug.Log("GroundPercent is:" + GroundPercent);
-        if (GroundPercent < 0.7f)
+        //Debug.Log("GroundPercent is:" + GroundPercent);
+        Debug.Log("Ground is:" + Grounded);
+        //if (GroundPercent < 0.7f)
+        if (Grounded)
         {
             Rigidbody.angularVelocity = new Vector3(0.0f, Rigidbody.angularVelocity.y * 0.98f, 0.0f);
             Vector3 finalOrientationDirection = Vector3.ProjectOnPlane(transform.forward, m_VerticalReference);
@@ -644,11 +661,13 @@ public class BaseVehicle : MonoBehaviour
 
         //jump management
         // basic jump for now, doesn't make use of JumpCharge
-        if (Input.Jump.IsPressed() && GroundPercent == 0.0f)
+        //if (Input.Jump.IsPressed() && GroundPercent == 0.0f)
+        if (Input.Jump.IsPressed() && Grounded)
         {
             Rigidbody.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
         }
 
-        ActivateDriftVFX(IsDrifting && GroundPercent > 0.0f);
+        //ActivateDriftVFX(IsDrifting && GroundPercent > 0.0f);
+        ActivateDriftVFX(IsDrifting && Grounded);
     }
 }
