@@ -249,7 +249,7 @@ public class BaseVehicle : MonoBehaviour
 
         m_CurrentGrip = baseStats.Grip;
 
-        SetCenterOfMass();
+        //SetCenterOfMass();
         PlayerCollider = GetComponent<Collider>();
         DistToGround = PlayerCollider.bounds.extents.y;
 
@@ -302,7 +302,7 @@ public class BaseVehicle : MonoBehaviour
         //int groundedCount = 0;
         //foreach (WheelCollider o in m_VisualWheels)
         //{
-        //    if (o.isGrounded && o.GetGroundHit(out WheelHit hit))
+        //    if (o.IsGrounded && o.GetGroundHit(out WheelHit hit))
         //    {
         //        groundedCount++;
         //    }
@@ -313,7 +313,7 @@ public class BaseVehicle : MonoBehaviour
         //GroundPercent = (float)groundedCount / wheelCount;
         //AirPercent = 1 - GroundPercent;
 
-        Grounded = isGrounded();
+        Grounded = IsGrounded();
 
         // apply vehicle physics
         if (m_CanMove)
@@ -329,8 +329,9 @@ public class BaseVehicle : MonoBehaviour
         UpdateDriftVFXOrientation();
     }
 
-    bool isGrounded()
+    bool IsGrounded()
     {
+        Debug.Log("PlayerCollider.bounds.center: " + PlayerCollider.bounds.center);
         return Physics.Raycast(transform.position, -Vector3.up, DistToGround + 0.1f);
     }
 
@@ -465,20 +466,20 @@ public class BaseVehicle : MonoBehaviour
     void MoveVehicle(bool accelerate, bool brake, float turnInput)
     {
         float accelInput = (accelerate ? 1.0f : 0.0f) - (brake ? 1.0f : 0.0f);
-        Debug.Log("accelInput: " + accelInput);
+        //Debug.Log("accelInput: " + accelInput);
 
         // manual acceleration curve coefficient scalar
         float accelerationCurveCoeff = 5;
         Vector3 localVel = transform.InverseTransformVector(Rigidbody.linearVelocity);
 
         bool accelDirectionIsFwd = accelInput >= 0;
-        Debug.Log("accelDirectionIsFwd: " + accelDirectionIsFwd);
+        //Debug.Log("accelDirectionIsFwd: " + accelDirectionIsFwd);
         bool localVelDirectionIsFwd = localVel.z >= 0;
 
         // use the max speed for the direction we are going--forward or reverse.
         float maxSpeed = localVelDirectionIsFwd ? m_FinalStats.TopSpeed : m_FinalStats.ReverseSpeed;
         float accelPower = accelDirectionIsFwd ? m_FinalStats.Acceleration : m_FinalStats.ReverseAcceleration;
-        Debug.Log("accelPower: " + accelPower);
+        //Debug.Log("accelPower: " + accelPower);
 
         float currentSpeed = Rigidbody.linearVelocity.magnitude;
         float accelRampT = currentSpeed / maxSpeed;
