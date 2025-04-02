@@ -87,7 +87,7 @@ public class BaseVehicle : MonoBehaviour
     //public float GroundPercent { get; private set; }
     public float DistToGround { get; private set; }
     public bool Grounded { get; private set; }
-    public Collider m_PlayerCollider { get; private set; }
+    public Collider PlayerCollider { get; private set; }
 
     // figure out methods we need, refer to ArcadeKart.cs from karting microgame as startpoint
 
@@ -250,8 +250,8 @@ public class BaseVehicle : MonoBehaviour
         m_CurrentGrip = baseStats.Grip;
 
         SetCenterOfMass();
-        m_PlayerCollider = GetComponent<Collider>();
-        DistToGround = m_PlayerCollider.bounds.extents.y;
+        PlayerCollider = GetComponent<Collider>();
+        DistToGround = PlayerCollider.bounds.extents.y;
 
         // previously initialised in karting microgame by FixedUpdates() calling TickPowerups()
         //m_FinalStats = baseStats;
@@ -662,6 +662,7 @@ public class BaseVehicle : MonoBehaviour
         //jump management
         // basic jump for now, doesn't make use of JumpCharge
         //if (Input.Jump.IsPressed() && GroundPercent == 0.0f)
+        Debug.Log("Input.Jump.IsPressed(): " + Input.Jump.IsPressed());
         if (Input.Jump.IsPressed() && Grounded)
         {
             Rigidbody.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
