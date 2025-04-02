@@ -538,6 +538,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BikeVehicle
       objectReference: {fileID: 0}
+    - target: {fileID: 6011468898395335687, guid: c29bedcc671fd2e4b908646d8cde5ed0, type: 3}
+      propertyPath: m_Constraints
+      value: 80
+      objectReference: {fileID: 0}
     - target: {fileID: 7838050322027241141, guid: c29bedcc671fd2e4b908646d8cde5ed0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 9.897444
