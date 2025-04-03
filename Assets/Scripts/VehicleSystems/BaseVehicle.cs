@@ -447,6 +447,10 @@ public class BaseVehicle : MonoBehaviour
 
         Rigidbody.linearVelocity = newVelocity;
 
+        //
+        // START MOVEMENT LOGIC
+        //
+
         // manual angular velocity coefficient
         float angularVelocitySteering = 0.4f;
         float angularVelocitySmoothSpeed = 20f;
@@ -481,6 +485,10 @@ public class BaseVehicle : MonoBehaviour
             Vector3 lerpVector = (m_HasCollision && m_LastCollisionNormal.y > 0.0f) ? m_LastCollisionNormal : Vector3.up;
             m_VerticalReference = Vector3.Slerp(m_VerticalReference, lerpVector, Mathf.Clamp01(AirborneReorientationCoefficient * Time.fixedDeltaTime));
         }
+
+        //
+        // END MOVEMENT LOGIC
+        //
 
         //jump management
         // basic jump for now, doesn't make use of JumpCharge
