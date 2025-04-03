@@ -447,46 +447,30 @@ public class BaseVehicle : MonoBehaviour
 
         Rigidbody.linearVelocity = newVelocity;
 
-        if (GroundPercent > 0.0f)
-        {
-            if (m_InAir)
-            {
-                m_InAir = false;
-                //Instantiate(JumpVFX, transform.position, Quaternion.identity);
-            }
+        // manual angular velocity coefficient
+        float angularVelocitySteering = 0.4f;
+        float angularVelocitySmoothSpeed = 20f;
 
-            // manual angular velocity coefficient
-            float angularVelocitySteering = 0.4f;
-            float angularVelocitySmoothSpeed = 20f;
+        // turning is reversed if we're going in reverse and pressing reverse
+        if (!localVelDirectionIsFwd && !accelDirectionIsFwd)
+            angularVelocitySteering *= -1.0f;
 
-            // turning is reversed if we're going in reverse and pressing reverse
-            if (!localVelDirectionIsFwd && !accelDirectionIsFwd)
-                angularVelocitySteering *= -1.0f;
+        var angularVel = Rigidbody.angularVelocity;
 
-            var angularVel = Rigidbody.angularVelocity;
+        // move the Y angular velocity towards our target
+        angularVel.y = Mathf.MoveTowards(angularVel.y, turningPower * angularVelocitySteering, Time.fixedDeltaTime * angularVelocitySmoothSpeed);
 
-            // move the Y angular velocity towards our target
-            angularVel.y = Mathf.MoveTowards(angularVel.y, turningPower * angularVelocitySteering, Time.fixedDeltaTime * angularVelocitySmoothSpeed);
+        // apply the angular velocity
+        Rigidbody.angularVelocity = angularVel;
 
-            // apply the angular velocity
-            Rigidbody.angularVelocity = angularVel;
+        // rotate rigidbody's velocity as well to generate immediate velocity redirection
+        // manual velocity steering coefficient
+        float velocitySteering = 25f;
 
-            // rotate rigidbody's velocity as well to generate immediate velocity redirection
-            // manual velocity steering coefficient
-            float velocitySteering = 25f;
 
-            // drifting, change later
-            // If the karts lands with a forward not in the velocity direction, we start the drift
+        // rotate our velocity based on current steer value
+        Rigidbody.linearVelocity = Quaternion.AngleAxis(turningPower * Mathf.Sign(localVel.z) * velocitySteering * m_CurrentGrip * Time.fixedDeltaTime, transform.up) * Rigidbody.linearVelocity;
 
-            // rotate our velocity based on current steer value
-            Rigidbody.linearVelocity = Quaternion.AngleAxis(turningPower * Mathf.Sign(localVel.z) * velocitySteering * m_CurrentGrip * Time.fixedDeltaTime, transform.up) * Rigidbody.linearVelocity;
-        }
-        else
-        {
-            m_InAir = true;
-        }
-
-        bool validPosition = false;
         if (Physics.Raycast(transform.position + (transform.up * 0.1f), -transform.up, out RaycastHit hit, 3.0f, 1 << 9 | 1 << 10 | 1 << 11)) // Layer: ground (9) / Environment(10) / Track (11)
         {
             Vector3 lerpVector = (m_HasCollision && m_LastCollisionNormal.y > hit.normal.y) ? m_LastCollisionNormal : hit.normal;
@@ -496,25 +480,6 @@ public class BaseVehicle : MonoBehaviour
         {
             Vector3 lerpVector = (m_HasCollision && m_LastCollisionNormal.y > 0.0f) ? m_LastCollisionNormal : Vector3.up;
             m_VerticalReference = Vector3.Slerp(m_VerticalReference, lerpVector, Mathf.Clamp01(AirborneReorientationCoefficient * Time.fixedDeltaTime));
-        }
-
-        validPosition = GroundPercent > 0.7f && !m_HasCollision && Vector3.Dot(m_VerticalReference, Vector3.up) > 0.9f;
-
-        // Airborne / Half on ground management
-        if (GroundPercent < 0.7f)
-        {
-            Rigidbody.angularVelocity = new Vector3(0.0f, Rigidbody.angularVelocity.y * 0.98f, 0.0f);
-            Vector3 finalOrientationDirection = Vector3.ProjectOnPlane(transform.forward, m_VerticalReference);
-            finalOrientationDirection.Normalize();
-            if (finalOrientationDirection.sqrMagnitude > 0.0f)
-            {
-                Rigidbody.MoveRotation(Quaternion.Lerp(Rigidbody.rotation, Quaternion.LookRotation(finalOrientationDirection, m_VerticalReference), Mathf.Clamp01(AirborneReorientationCoefficient * Time.fixedDeltaTime)));
-            }
-        }
-        else if (validPosition)
-        {
-            m_LastValidPosition = transform.position;
-            m_LastValidRotation.eulerAngles = new Vector3(0.0f, transform.rotation.y, 0.0f);
         }
 
         //jump management
