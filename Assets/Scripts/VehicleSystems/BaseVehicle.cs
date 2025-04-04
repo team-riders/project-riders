@@ -192,7 +192,7 @@ public class BaseVehicle : MonoBehaviour
     [Range(0.1f, 1.0f), Tooltip("Stores charge amount for jumping on ramps; helps determine jump height, directly correlates to trick speed")]
     float JumpCharge;
     [Tooltip("Stores jump force")]
-    public float JumpForce = 9.0f;
+    public float JumpForce = 3000.0f;
 
     // methods
     public void AddPowerup(StatPowerup statPowerup) => m_ActivePowerupList.Add(statPowerup);

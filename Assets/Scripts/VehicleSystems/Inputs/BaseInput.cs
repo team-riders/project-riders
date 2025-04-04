@@ -10,6 +10,13 @@ public struct InputData
     public InputAction Jump;
 }
 
+//public struct stuff
+//{
+//    isTryingToJump = true;
+//        turnIntentions = ????
+//        etc.
+//}
+
 public interface IInput
 {
     InputData GenerateInput();
