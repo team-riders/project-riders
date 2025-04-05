@@ -272,7 +272,7 @@ MonoBehaviour:
   GroundLayers:
     serializedVersion: 2
     m_Bits: 51
-  JumpForce: 9
+  JumpForce: 100
   FrontLeftWheel: {fileID: 6766500946828483076}
   FrontRightWheel: {fileID: 7994507693005347565}
   BackLeftWheel: {fileID: 1637631556285962578}

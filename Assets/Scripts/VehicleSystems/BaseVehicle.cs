@@ -185,10 +185,10 @@ public class BaseVehicle : MonoBehaviour
 
     //jumping stuff
     [Header("Jump")]
-    [Range(0.1f, 1.0f), Tooltip("Stores charge amount for jumping on ramps; helps determine jump height, directly correlates to trick speed")]
+    [Range(0.1f, 1.0f), Tooltip("Stores charge amount for jumping on ramps; helps determine ramp jump height, directly correlates to trick speed")]
     float JumpCharge;
     [Tooltip("Stores jump force")]
-    public float JumpForce = 9.0f;
+    public float JumpForce = 100.0f;
 
     // methods
     public void AddPowerup(StatPowerup statPowerup) => m_ActivePowerupList.Add(statPowerup);
@@ -643,7 +643,7 @@ public class BaseVehicle : MonoBehaviour
 
         //jump management
         // basic jump for now, doesn't make use of JumpCharge
-        if (Input.Jump.IsPressed() && GroundPercent == 0.0f)
+        if (Input.Jump.IsPressed() && GroundPercent > 0.0f)
         {
             Rigidbody.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
         }
