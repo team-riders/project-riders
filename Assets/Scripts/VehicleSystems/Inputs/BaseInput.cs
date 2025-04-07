@@ -3,11 +3,19 @@ using UnityEngine.InputSystem;
 
 public struct InputData
 {
-    // figure out what inputs we need
     public InputAction Accelerate;
     public InputAction Brake;
     public InputAction TurnInput;
     public InputAction Jump;
+    
+    public InputAction TrickButtonA;
+    public InputAction TrickButtonB;
+    public InputAction TrickButtonC;
+
+    public InputAction PauseButton;
+
+    public InputAction DriftButton;
+    public InputAction BoostRamButton;
 }
 
 public interface IInput
