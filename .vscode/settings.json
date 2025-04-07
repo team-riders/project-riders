@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "project-riders-game.sln"
+    "dotnet.defaultSolution": "project-riders.sln"
 }
