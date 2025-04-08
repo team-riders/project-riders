@@ -11,6 +11,7 @@ public struct ActorInputData
     public float TurnInput;
 
     public bool Jump;
+    public float JumpHoldDuration;
     public bool StuntA;
     public bool StuntB;
     public bool StuntC;

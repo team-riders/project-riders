@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 
-
 public class PlayerInput : BaseInput
 {
     public InputActionAsset m_playerInput;
@@ -25,7 +24,34 @@ public class PlayerInput : BaseInput
 
             if (action.type == InputActionType.Button)
             {
-                inputValues.Add(action.name, action.IsPressed() ? 1 : 0);
+                // Special handle for Jump
+                if (action.name == "Jump")
+                {
+                    if (action.WasPressedThisFrame())
+                    {
+                        inputValues["Jump"] = 0;
+                        inputValues["JumpHoldDuration"] = 0;
+                    }
+                    else if (action.WasReleasedThisFrame())
+                    {
+                        inputValues["Jump"] = 1;
+                        inputValues["JumpHoldDuration"] = currentFrameInputData.JumpHoldDuration;
+                    }
+                    else if (action.IsPressed())
+                    {
+                        inputValues["Jump"] = 0;
+                        inputValues["JumpHoldDuration"] = currentFrameInputData.JumpHoldDuration + 1;
+                    }
+                    else
+                    {
+                        inputValues["Jump"] = 0;
+                        inputValues["JumpHoldDuration"] = 0;
+                    }
+                }
+                else
+                {
+                    inputValues.Add(action.name, action.IsPressed() ? 1 : 0);
+                }
             }
             else if (action.type == InputActionType.Value)
             {
@@ -41,6 +67,7 @@ public class PlayerInput : BaseInput
             TurnInput = inputValues["Horizontal"],
 
             Jump = inputValues["Jump"] > 0,
+            JumpHoldDuration = inputValues["JumpHoldDuration"],
             StuntA = inputValues["Trick Button A"] > 0,
             StuntB = inputValues["Trick Button B"] > 0,
             StuntC = inputValues["Trick Button C"] > 0,
