@@ -643,7 +643,7 @@ public class BaseVehicle : MonoBehaviour
         }
 
         //jump management
-        // basic jump for now, doesn't make use of JumpCharge
+        // should be satisfactory until we add ramps
         if (jump && GroundPercent > 0.0f)
         {
             Rigidbody.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
