@@ -248,12 +248,6 @@ public class BaseVehicle : MonoBehaviour
 
         SetCenterOfMass();
 
-        //InputAction jumpAction = Input.Jump;
-        //jumpAction.Enable();
-
-        //jumpAction.performed += OnJumpDown;
-        //jumpAction.canceled += OnJumpRelease;
-
         // previously initialised in karting microgame by FixedUpdates() calling TickPowerups()
         //m_FinalStats = baseStats;
 
@@ -325,8 +319,8 @@ public class BaseVehicle : MonoBehaviour
         // apply vehicle physics
         if (m_CanMove)
         {
-            Debug.Log("Input.Jump.WasReleasedThisFrame: " + Input.Jump);
-            MoveVehicle(Input.Accelerate == 1, Input.Brake == 1, Input.TurnInput, Input.Jump, Input.Jump);
+            //Debug.Log("Input.Jump.WasReleasedThisFrame: " + Input.Jump);
+            MoveVehicle(Input.Accelerate == 1, Input.Brake == 1, Input.TurnInput, Input.Jump, Input.JumpHoldDuration);
         }
         GroundAirbourne();
 
@@ -462,7 +456,7 @@ public class BaseVehicle : MonoBehaviour
     }
 
     //make virtual?
-    void MoveVehicle(bool accelerate, bool brake, float turnInput, bool jumpHold, bool jumpRelease)
+    void MoveVehicle(bool accelerate, bool brake, float turnInput, bool jump, float jumpHold)
     {
         float accelInput = (accelerate ? 1.0f : 0.0f) - (brake ? 1.0f : 0.0f);
         //Debug.Log("accelInput: " + accelInput);
@@ -650,26 +644,13 @@ public class BaseVehicle : MonoBehaviour
 
         //jump management
         // basic jump for now, doesn't make use of JumpCharge
-        if (jumpHold && GroundPercent > 0.0f)
-        {
-            //Rigidbody.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
-        }
-        if (jumpRelease)
+        if (jump && GroundPercent > 0.0f)
         {
             Rigidbody.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
+            JumpCharge = Mathf.Clamp(jumpHold / 120f, 0.1f, 1.0f);
+            Debug.Log("JumpCharge: " + JumpCharge);
         }
 
         ActivateDriftVFX(IsDrifting && GroundPercent > 0.0f);
-    }
-
-    private void OnJumpDown(InputAction.CallbackContext ctx)
-    {
-        JumpCharge += 0.05f;
-    }
-
-    private void OnJumpRelease(InputAction.CallbackContext ctx)
-    {
-        Rigidbody.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
-        JumpCharge = 0.1f;
     }
 }
