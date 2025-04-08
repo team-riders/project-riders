@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class BaseVehicle : MonoBehaviour
 {
@@ -246,6 +247,12 @@ public class BaseVehicle : MonoBehaviour
         m_CurrentGrip = baseStats.Grip;
 
         SetCenterOfMass();
+
+        //InputAction jumpAction = Input.Jump;
+        //jumpAction.Enable();
+
+        //jumpAction.performed += OnJumpDown;
+        //jumpAction.canceled += OnJumpRelease;
 
         // previously initialised in karting microgame by FixedUpdates() calling TickPowerups()
         //m_FinalStats = baseStats;
@@ -643,15 +650,26 @@ public class BaseVehicle : MonoBehaviour
 
         //jump management
         // basic jump for now, doesn't make use of JumpCharge
-        //if (jumpHold && GroundPercent > 0.0f)
-        //{
-        //    Rigidbody.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
-        //}
+        if (jumpHold && GroundPercent > 0.0f)
+        {
+            //Rigidbody.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
+        }
         if (jumpRelease)
         {
             Rigidbody.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
         }
 
         ActivateDriftVFX(IsDrifting && GroundPercent > 0.0f);
+    }
+
+    private void OnJumpDown(InputAction.CallbackContext ctx)
+    {
+        JumpCharge += 0.05f;
+    }
+
+    private void OnJumpRelease(InputAction.CallbackContext ctx)
+    {
+        Rigidbody.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
+        JumpCharge = 0.1f;
     }
 }
