@@ -83,7 +83,7 @@ public class BaseVehicle : MonoBehaviour
     }
 
     public Rigidbody Rigidbody { get; private set; }
-    public InputData Input { get; private set; }
+    public ActorInputData Input { get; private set; }
     public float AirPercent { get; private set; }
     public float GroundPercent { get; private set; }
 
@@ -325,8 +325,8 @@ public class BaseVehicle : MonoBehaviour
         // apply vehicle physics
         if (m_CanMove)
         {
-            Debug.Log("Input.Jump.WasReleasedThisFrame: " + Input.Jump.WasReleasedThisFrame());
-            MoveVehicle(Input.Accelerate.IsPressed(), Input.Brake.IsPressed(), Input.TurnInput.ReadValue<float>(), Input.Jump.IsPressed(), Input.Jump.WasReleasedThisFrame());
+            Debug.Log("Input.Jump.WasReleasedThisFrame: " + Input.Jump);
+            MoveVehicle(Input.Accelerate == 1, Input.Brake == 1, Input.TurnInput, Input.Jump, Input.Jump);
         }
         GroundAirbourne();
 
@@ -369,14 +369,14 @@ public class BaseVehicle : MonoBehaviour
     void GatherInputs()
     {
         // reset input
-        Input = new InputData();
+        Input = new ActorInputData();
         WantsToDrift = false;
 
         // gather nonzero input from our sources
         for (int i = 0; i < m_Inputs.Length; i++)
         {
-            Input = m_Inputs[i].GenerateInput();
-            WantsToDrift = Input.Brake.IsPressed() && Vector3.Dot(Rigidbody.linearVelocity, transform.forward) > 0.0f;
+            Input = m_Inputs[i].GrabCurrentFrameInputs();
+            WantsToDrift = Input.Brake == 1 && Vector3.Dot(Rigidbody.linearVelocity, transform.forward) > 0.0f;
         }
     }
 
@@ -440,7 +440,7 @@ public class BaseVehicle : MonoBehaviour
         {
             // use this value to play kart sound when it is waiting the race start countdown.
             // change this
-            return Input.Accelerate.IsPressed() ? 1.0f : 0.0f;
+            return Input.Accelerate;
         }
     }
 

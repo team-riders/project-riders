@@ -1,30 +1,32 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public struct InputData
+// All the relevant input data for the "actor" in the world
+public struct ActorInputData
 {
-    public InputAction Accelerate;
-    public InputAction Brake;
-    public InputAction TurnInput;
-    public InputAction Jump;
-    
-    public InputAction TrickButtonA;
-    public InputAction TrickButtonB;
-    public InputAction TrickButtonC;
+    public float Accelerate;
+    public float Brake;
+    // Alternatively
+    // public float VerticalInput;
 
-    public InputAction PauseButton;
+    public float TurnInput;
 
-    public InputAction DriftButton;
-    public InputAction BoostRamButton;
+    public bool Jump;
+    public bool StuntA;
+    public bool StuntB;
+    public bool StuntC;
+    public bool Drift;
+    public bool BoostRam;
 }
 
 public interface IInput
 {
-    InputData GenerateInput();
+    public ActorInputData GrabCurrentFrameInputs();
 }
 
 public abstract class BaseInput : MonoBehaviour, IInput
 {
-    // override the function to generate input used to steer and control the vehicle
-    public abstract InputData GenerateInput();
+    // 3 Major components will be using this
+    // StuntSystem, VehicleSystem and Analytics.
+    // The AI Will have it's own "AIInput" class that will implement this interface.
+    public abstract ActorInputData GrabCurrentFrameInputs();
 }
