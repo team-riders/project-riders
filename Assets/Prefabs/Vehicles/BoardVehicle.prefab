@@ -256,17 +256,6 @@ MonoBehaviour:
   - {fileID: 7994507693005347565}
   - {fileID: 3112367254603467228}
   AirborneReorientationCoefficient: 3
-  DriftGrip: 0.4
-  DriftAdditionalSteer: 5
-  MinAngleToFinishDrift: 10
-  MinSpeedPercentToFinishDrift: 0.5
-  DriftControl: 10
-  DriftDampening: 10
-  DriftSparkVFX: {fileID: 0}
-  DriftSparkHorizontalOffset: 0.1
-  DriftSparkRotation: 17
-  DriftTrailPrefab: {fileID: 0}
-  DriftTrailVerticalOffset: 0
   JumpVFX: {fileID: 0}
   NozzleVFX: {fileID: 0}
   Nozzles: []
@@ -290,11 +279,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5256c658527fb8f439d3da0e44dd8834, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TurnInputName: Horizontal
-  AccelerateButtonName: Accelerate
-  BrakeButtonName: Brake
-  JumpButtonName: Jump
-  pInput: {fileID: 0}
+  m_playerInput: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  m_inputMapName: Player
 --- !u!114 &4430385445409082725
 MonoBehaviour:
   m_ObjectHideFlags: 0

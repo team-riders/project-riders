@@ -294,13 +294,13 @@ public class BaseVehicle : MonoBehaviour
     {
         // reset input
         Input = new ActorInputData();
-        WantsToDrift = false;
+        // WantsToDrift = false;
 
         // gather nonzero input from our sources
         for (int i = 0; i < m_Inputs.Length; i++)
         {
             Input = m_Inputs[i].GrabCurrentFrameInputs();
-            WantsToDrift = Input.Brake == 1 && Vector3.Dot(Rigidbody.linearVelocity, transform.forward) > 0.0f;
+            // WantsToDrift = Input.Brake == 1 && Vector3.Dot(Rigidbody.linearVelocity, transform.forward) > 0.0f;
         }
     }
 
