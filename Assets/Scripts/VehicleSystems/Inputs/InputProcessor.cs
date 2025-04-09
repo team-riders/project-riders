@@ -1,0 +1,90 @@
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using UnityEngine;
+
+// For JSON serialisation
+[System.Serializable]
+public class InputHistoryData
+{
+    public List<InputFrameRecord> inputHistory = new();
+}
+
+public class InputProcessor : MonoBehaviour
+{
+    public BaseInput inputSource;
+
+    public List<InputFrameRecord> inputHistory { get; private set; } = new();
+
+    void Update()
+    {
+        ActorInputData currentInput = inputSource.GrabCurrentFrameInputs();
+        int currentFrame = Time.frameCount;
+
+        var record = new InputFrameRecord(currentFrame, currentInput);
+
+        inputHistory.Add(record);
+
+        // DEBUG - EXPORT TO CSV AND JSON
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            SaveHistoryAsCsv();
+            SaveHistoryAsJson();
+        }
+    }
+
+    public void ClearHistory()
+    {
+        inputHistory.Clear();
+    }
+
+    public InputFrameRecord GetFrame(int frame)
+    {
+        return inputHistory.Find(record => record.Frame == frame);
+    }
+
+    // DEBUG
+    public void SaveHistoryAsCsv()
+    {
+        string path = Path.Combine(Application.dataPath, "InputHistory.csv");
+        StringBuilder csv = new StringBuilder();
+
+        csv.AppendLine("Frame,Accelerate,Brake,TurnInput,Jump,JumpHoldDuration,StuntA,StuntB,StuntC,Drift,BoostRam");
+
+        foreach (var record in inputHistory)
+        {
+            var input = record.Input;
+            csv.AppendLine($"{record.Frame}," +
+                           $"{input.Accelerate}," +
+                           $"{input.Brake}," +
+                           $"{input.TurnInput}," +
+                           $"{input.Jump}," +
+                           $"{input.JumpHoldDuration}," +
+                           $"{input.StuntA}," +
+                           $"{input.StuntB}," +
+                           $"{input.StuntC}," +
+                           $"{input.Drift}," +
+                           $"{input.BoostRam}");
+        }
+
+        File.WriteAllText(path, csv.ToString());
+        Debug.Log($"Input history saved to {path}");
+    }
+
+    // DEBUG
+    public void SaveHistoryAsJson()
+    {
+        string path = Path.Combine(Application.dataPath, "InputHistory.json");
+
+        InputHistoryData historyData = new InputHistoryData
+        {
+            inputHistory = inputHistory
+        };
+
+        string json = JsonUtility.ToJson(historyData, true);
+
+        File.WriteAllText(path, json);
+        Debug.Log($"Input history saved to {path}");
+    }
+
+}
