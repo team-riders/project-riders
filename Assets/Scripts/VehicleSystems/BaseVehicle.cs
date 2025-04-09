@@ -644,11 +644,15 @@ public class BaseVehicle : MonoBehaviour
 
         //jump management
         // should be satisfactory until we add ramps
-        if (jump && GroundPercent > 0.0f)
+        if (jumpHold > 0 && GroundPercent > 0.0f)
         {
-            Rigidbody.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
             JumpCharge = Mathf.Clamp(jumpHold / 120f, 0.1f, 1.0f);
             Debug.Log("JumpCharge: " + JumpCharge);
+        }
+        if (jump && GroundPercent > 0.0f)
+        {
+            Debug.Log("JumpForce * JumpCharge: " + JumpForce * JumpCharge);
+            Rigidbody.AddForce(Vector3.up * (JumpForce * JumpCharge), ForceMode.Impulse);
         }
 
         ActivateDriftVFX(IsDrifting && GroundPercent > 0.0f);
