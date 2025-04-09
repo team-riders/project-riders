@@ -1852,6 +1852,62 @@ PrefabInstance:
       propertyPath: speedText
       value: 
       objectReference: {fileID: 1446015641}
+    - target: {fileID: 4448864653755112223, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: test.m_Name
+      value: Test
+      objectReference: {fileID: 0}
+    - target: {fileID: 4448864653755112223, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: m_playerInput
+      value: 
+      objectReference: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+    - target: {fileID: 4448864653755112223, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: TurnInputName.m_Name
+      value: Turn Input Name
+      objectReference: {fileID: 0}
+    - target: {fileID: 4448864653755112223, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: m_playerInputMap.m_Id
+      value: 39b571c8-d189-40c4-b05d-983e8c78d7b6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4448864653755112223, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: m_playerInputReference
+      value: 
+      objectReference: {fileID: 2199579008539796818, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+    - target: {fileID: 4448864653755112223, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: m_playerInputMap.m_Name
+      value: Player Input Map
+      objectReference: {fileID: 0}
+    - target: {fileID: 4448864653755112223, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: m_playerInputMap.m_Actions.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4448864653755112223, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: m_playerInputMap.m_Bindings.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4448864653755112223, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: m_playerInputMap.m_Actions.Array.data[0].m_Id
+      value: fbf94e4a-5a2e-4ca3-959e-9de9b4549b5f
+      objectReference: {fileID: 0}
+    - target: {fileID: 4448864653755112223, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: m_playerInputMap.m_Bindings.Array.data[0].m_Id
+      value: df6326f0-634f-4e79-b253-cca07f028d22
+      objectReference: {fileID: 0}
+    - target: {fileID: 4448864653755112223, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: m_playerInputMap.m_Actions.Array.data[0].m_Name
+      value: New action
+      objectReference: {fileID: 0}
+    - target: {fileID: 4448864653755112223, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: m_playerInputMap.m_Actions.Array.data[0].m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4448864653755112223, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: m_playerInputMap.m_Bindings.Array.data[0].m_Action
+      value: New action
+      objectReference: {fileID: 0}
+    - target: {fileID: 4448864653755112223, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: m_playerInputMap.m_Actions.Array.data[0].m_ExpectedControlType
+      value: Button
+      objectReference: {fileID: 0}
     - target: {fileID: 4711103303932495809, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 38.4
@@ -1891,6 +1947,62 @@ PrefabInstance:
     - target: {fileID: 4711103303932495809, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9102658750407949755, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: m_NotificationBehavior
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9102658750407949755, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: m_ActionEvents.Array.size
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 9102658750407949755, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[12].m_ActionId
+      value: 19f85145-7008-40a8-971d-1f520058c689
+      objectReference: {fileID: 0}
+    - target: {fileID: 9102658750407949755, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[13].m_ActionId
+      value: 963c720c-e390-41a7-bee1-fad8ea28c98c
+      objectReference: {fileID: 0}
+    - target: {fileID: 9102658750407949755, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[14].m_ActionId
+      value: b024cd3d-d58d-4b5b-aa31-16d2ca190fdf
+      objectReference: {fileID: 0}
+    - target: {fileID: 9102658750407949755, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[15].m_ActionId
+      value: d39f0b81-e338-4c3f-9e4c-b03f708ec271
+      objectReference: {fileID: 0}
+    - target: {fileID: 9102658750407949755, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[16].m_ActionId
+      value: d22e5e54-5ce6-4974-a72c-cef544bdda98
+      objectReference: {fileID: 0}
+    - target: {fileID: 9102658750407949755, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[17].m_ActionId
+      value: e40feb24-2bd4-4385-b7dc-cb53918755e1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9102658750407949755, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[12].m_ActionName
+      value: 'Player/Trick Button A[/Keyboard/z]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 9102658750407949755, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[13].m_ActionName
+      value: 'Player/Trick Button B[/Keyboard/x]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 9102658750407949755, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[14].m_ActionName
+      value: 'Player/Trick Button C[/Keyboard/c]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 9102658750407949755, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[15].m_ActionName
+      value: 'Player/Pause[/Keyboard/escape]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 9102658750407949755, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[16].m_ActionName
+      value: 'Player/Drift[/Keyboard/slash]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 9102658750407949755, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[17].m_ActionName
+      value: 'Player/Boost/Ram[/Keyboard/period]'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
