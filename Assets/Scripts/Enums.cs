@@ -6,4 +6,9 @@ public static class Enums
         Blades,
         Bike
     }
+
+    public enum Racer
+    {
+        Test,
+    }
 }
