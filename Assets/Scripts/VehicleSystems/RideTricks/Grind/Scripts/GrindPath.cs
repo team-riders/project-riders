@@ -8,7 +8,10 @@ public class GrindPath : MonoBehaviour
     public bool reverse = false;
     public float speed = 7f; // m/s
 
-    public SplineContainer SplineContainer => GetComponent<SplineContainer>();
+    public Transform splineTransform; // ✅ Assign this in the Inspector!
+
+    public SplineContainer SplineContainer;
+
 
     public float GetPercentagePerSecond()
     {
