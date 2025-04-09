@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class BaseVehicle : MonoBehaviour
 {
@@ -54,6 +55,13 @@ public class BaseVehicle : MonoBehaviour
         [Tooltip("Additional gravity for when the kart is in the air.")]
         public float AddedGravity;
 
+        //additions
+        [Tooltip("Additional top speed when activating Boost")]
+        public float BoostTopSpeed;
+
+        [Tooltip("Additional acceleration immediately after Boost")]
+        public float BoostAccel;
+
 
         // allow for stat adding for powerups.
         public static Stats operator +(Stats a, Stats b)
@@ -72,17 +80,10 @@ public class BaseVehicle : MonoBehaviour
                 Steer = a.Steer + b.Steer,
             };
         }
-
-        //additions
-        [Tooltip("Top speed when activating Boost")]
-        public float BoostTopSpeed;
-
-        [Tooltip("Acceleration immediately after Boost")]
-        public float BoostAccel;
     }
 
     public Rigidbody Rigidbody { get; private set; }
-    public InputData Input { get; private set; }
+    public ActorInputData Input { get; private set; }
     public float AirPercent { get; private set; }
     public float GroundPercent { get; private set; }
 
@@ -153,10 +154,10 @@ public class BaseVehicle : MonoBehaviour
 
     //jumping stuff
     [Header("Jump")]
-    [Range(0.1f, 1.0f), Tooltip("Stores charge amount for jumping on ramps; helps determine jump height, directly correlates to trick speed")]
+    [Range(0.1f, 1.0f), Tooltip("Stores charge amount for jumping on ramps; helps determine ramp jump height, directly correlates to trick speed")]
     float JumpCharge;
     [Tooltip("Stores jump force")]
-    public float JumpForce = 9.0f;
+    public float JumpForce = 100.0f;
 
     // methods
     public void AddPowerup(StatPowerup statPowerup) => m_ActivePowerupList.Add(statPowerup);
@@ -250,8 +251,8 @@ public class BaseVehicle : MonoBehaviour
         // apply vehicle physics
         if (m_CanMove)
         {
-            Debug.Log(Input.Accelerate.IsPressed());
-            MoveVehicle(Input.Accelerate.IsPressed(), Input.Brake.IsPressed(), Input.TurnInput.ReadValue<float>());
+            //Debug.Log("Input.Jump.WasReleasedThisFrame: " + Input.Jump);
+            MoveVehicle(Input.Accelerate == 1, Input.Brake == 1, Input.TurnInput, Input.Jump, Input.JumpHoldDuration);
         }
         GroundAirbourne();
 
@@ -274,7 +275,7 @@ public class BaseVehicle : MonoBehaviour
 
         if (wheelColliders.Count == 0)
         {
-            Debug.LogError("No WheelColliders found!");
+            //Debug.LogError("No WheelColliders found!");
             return;
         }
 
@@ -292,13 +293,14 @@ public class BaseVehicle : MonoBehaviour
     void GatherInputs()
     {
         // reset input
-        Input = new InputData();
+        Input = new ActorInputData();
+        WantsToDrift = false;
 
         // gather nonzero input from our sources
         for (int i = 0; i < m_Inputs.Length; i++)
         {
-            Input = m_Inputs[i].GenerateInput();
-            // WantsToDrift = Input.Brake.IsPressed() && Vector3.Dot(Rigidbody.linearVelocity, transform.forward) > 0.0f;
+            Input = m_Inputs[i].GrabCurrentFrameInputs();
+            WantsToDrift = Input.Brake == 1 && Vector3.Dot(Rigidbody.linearVelocity, transform.forward) > 0.0f;
         }
     }
 
@@ -362,7 +364,7 @@ public class BaseVehicle : MonoBehaviour
         {
             // use this value to play kart sound when it is waiting the race start countdown.
             // change this
-            return Input.Accelerate.IsPressed() ? 1.0f : 0.0f;
+            return Input.Accelerate;
         }
     }
 
@@ -384,23 +386,23 @@ public class BaseVehicle : MonoBehaviour
     }
 
     //make virtual?
-    void MoveVehicle(bool accelerate, bool brake, float turnInput)
+    void MoveVehicle(bool accelerate, bool brake, float turnInput, bool jump, float jumpHold)
     {
         float accelInput = (accelerate ? 1.0f : 0.0f) - (brake ? 1.0f : 0.0f);
-        Debug.Log("accelInput: " + accelInput);
+        //Debug.Log("accelInput: " + accelInput);
 
         // manual acceleration curve coefficient scalar
         float accelerationCurveCoeff = 5;
         Vector3 localVel = transform.InverseTransformVector(Rigidbody.linearVelocity);
 
         bool accelDirectionIsFwd = accelInput >= 0;
-        Debug.Log("accelDirectionIsFwd: " + accelDirectionIsFwd);
+        //Debug.Log("accelDirectionIsFwd: " + accelDirectionIsFwd);
         bool localVelDirectionIsFwd = localVel.z >= 0;
 
         // use the max speed for the direction we are going--forward or reverse.
         float maxSpeed = localVelDirectionIsFwd ? m_FinalStats.TopSpeed : m_FinalStats.ReverseSpeed;
         float accelPower = accelDirectionIsFwd ? m_FinalStats.Acceleration : m_FinalStats.ReverseAcceleration;
-        Debug.Log("accelPower: " + accelPower);
+        //Debug.Log("accelPower: " + accelPower);
 
         float currentSpeed = Rigidbody.linearVelocity.magnitude;
         float accelRampT = currentSpeed / maxSpeed;
@@ -491,10 +493,12 @@ public class BaseVehicle : MonoBehaviour
         //
 
         //jump management
-        // basic jump for now, doesn't make use of JumpCharge
-        if (Input.Jump.IsPressed() && GroundPercent == 0.0f)
+        // should be satisfactory until we add ramps
+        if (jump && GroundPercent > 0.0f)
         {
             Rigidbody.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
+            JumpCharge = Mathf.Clamp(jumpHold / 120f, 0.1f, 1.0f);
+            Debug.Log("JumpCharge: " + JumpCharge);
         }
     }
 }
