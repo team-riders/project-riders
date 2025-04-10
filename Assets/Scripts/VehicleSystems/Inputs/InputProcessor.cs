@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 // For JSON serialisation
 [System.Serializable]
@@ -16,6 +17,15 @@ public class InputProcessor : MonoBehaviour
 
     public List<InputFrameRecord> inputHistory { get; private set; } = new();
 
+    private InputActionAsset playerInput;
+    private InputActionMap inputMap;
+
+    void Awake()
+    {
+        playerInput = GetComponent<UnityEngine.InputSystem.PlayerInput>().actions;
+        inputMap = playerInput.FindActionMap(DebugFlags.Instance.DebugInputMapName);
+    }
+
     void Update()
     {
         ActorInputData currentInput = inputSource.GrabCurrentFrameInputs();
@@ -26,10 +36,13 @@ public class InputProcessor : MonoBehaviour
         inputHistory.Add(record);
 
         // DEBUG - EXPORT TO CSV AND JSON
-        if (Input.GetKeyDown(KeyCode.P))
+        if (DebugFlags.Instance.allowSavingInputHistoryToFile == true)
         {
-            SaveHistoryAsCsv();
-            SaveHistoryAsJson();
+            if (inputMap.FindAction("Save Input History").triggered)
+            {
+                SaveHistoryAsCsv();
+                SaveHistoryAsJson();
+            }
         }
     }
 

@@ -16,6 +16,8 @@ public class DebugFlags : MonoBehaviour
         // Then in other scripts, you can access the state with DebugFlags.Instance.Name
     }
 
+    public string DebugInputMapName = "Debug";
+
     [Header("Debug Toggles")]
     public bool allowSavingInputHistoryToFile = false;
 
