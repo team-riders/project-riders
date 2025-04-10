@@ -67,6 +67,8 @@ GameObject:
   - component: {fileID: 3310663236615479864}
   - component: {fileID: 5749684014302735693}
   - component: {fileID: 1334056349960837362}
+  - component: {fileID: 6988373804559259369}
+  - component: {fileID: 4573706463856515921}
   m_Layer: 0
   m_Name: BaseVehicleClass
   m_TagString: Untagged
@@ -129,6 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fa3d08c64cac5b4c8a23d7ca75745cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  VehicleType: 0
   baseStats:
     TopSpeed: 50
     Acceleration: 10
@@ -143,7 +146,6 @@ MonoBehaviour:
     BoostTopSpeed: 80
     BoostAccel: 15
   m_VisualWheels: []
-  CenterOfMass: {fileID: 1664446875134250771}
   AirborneReorientationCoefficient: 3
   DriftGrip: 0.4
   DriftAdditionalSteer: 5
@@ -179,3 +181,57 @@ MonoBehaviour:
   AccelerateButtonName: Accelerate
   BrakeButtonName: Brake
   JumpButtonName: Jump
+  pInput: {fileID: 0}
+--- !u!114 &6988373804559259369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7832713867657613718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!136 &4573706463856515921
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7832713867657613718}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
