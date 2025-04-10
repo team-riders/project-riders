@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3954437321731369261}
   - component: {fileID: 4606436670612538420}
   m_Layer: 0
-  m_Name: Rides
+  m_Name: Racer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
