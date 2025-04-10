@@ -33,6 +33,16 @@ public class InputProcessor : MonoBehaviour
         }
     }
 
+    private string LogsPath
+    {
+        get
+        {
+            string logsDir = Path.Combine(Application.dataPath, "Logs");
+            if (!Directory.Exists(logsDir)) Directory.CreateDirectory(logsDir);
+            return logsDir;
+        }
+    }
+
     public void ClearHistory()
     {
         inputHistory.Clear();
@@ -46,7 +56,7 @@ public class InputProcessor : MonoBehaviour
     // DEBUG
     public void SaveHistoryAsCsv()
     {
-        string path = Path.Combine(Application.dataPath, "InputHistory.csv");
+        string path = Path.Combine(LogsPath, "InputHistory.csv");
         StringBuilder csv = new StringBuilder();
 
         csv.AppendLine("Frame,Accelerate,Brake,TurnInput,Jump,JumpHoldDuration,StuntA,StuntB,StuntC,Drift,BoostRam");
@@ -74,7 +84,7 @@ public class InputProcessor : MonoBehaviour
     // DEBUG
     public void SaveHistoryAsJson()
     {
-        string path = Path.Combine(Application.dataPath, "InputHistory.json");
+        string path = Path.Combine(LogsPath, "InputHistory.json");
 
         InputHistoryData historyData = new InputHistoryData
         {
