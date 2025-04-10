@@ -189,7 +189,7 @@ public class BaseVehicle : MonoBehaviour
     [Range(0.1f, 1.0f), Tooltip("Stores charge amount for jumping on ramps; helps determine ramp jump height, directly correlates to trick speed")]
     float JumpCharge;
     [Tooltip("Stores jump force")]
-    public float JumpForce = 100.0f;
+    public float JumpForce = 150.0f;
 
     // methods
     public void AddPowerup(StatPowerup statPowerup) => m_ActivePowerupList.Add(statPowerup);
@@ -495,6 +495,23 @@ public class BaseVehicle : MonoBehaviour
         Vector3 fwd = turnAngle * transform.forward;
         Vector3 movement = fwd * accelInput * finalAcceleration * ((m_HasCollision || GroundPercent > 0.0f) ? 1.0f : 0.0f);
 
+        //jump management
+        // should be satisfactory until we add ramps
+        if (jumpHold > 0 && GroundPercent > 0.0f)
+        {
+            JumpCharge = Mathf.Clamp(jumpHold / 120f, 0.5f, 1.0f);
+            Debug.Log("JumpCharge: " + JumpCharge);
+            if(jumpHold > 180)
+            {
+                maxSpeed *= 0.5f;
+            }
+        }
+        if (jump && GroundPercent > 0.0f)
+        {
+            Debug.Log("JumpForce * JumpCharge: " + JumpForce * JumpCharge);
+            Rigidbody.AddForce(Vector3.up * (JumpForce * JumpCharge), ForceMode.Impulse);
+        }
+
         // forward movement
         bool wasOverMaxSpeed = currentSpeed >= maxSpeed;
 
@@ -640,19 +657,6 @@ public class BaseVehicle : MonoBehaviour
         {
             m_LastValidPosition = transform.position;
             m_LastValidRotation.eulerAngles = new Vector3(0.0f, transform.rotation.y, 0.0f);
-        }
-
-        //jump management
-        // should be satisfactory until we add ramps
-        if (jumpHold > 0 && GroundPercent > 0.0f)
-        {
-            JumpCharge = Mathf.Clamp(jumpHold / 120f, 0.1f, 1.0f);
-            Debug.Log("JumpCharge: " + JumpCharge);
-        }
-        if (jump && GroundPercent > 0.0f)
-        {
-            Debug.Log("JumpForce * JumpCharge: " + JumpForce * JumpCharge);
-            Rigidbody.AddForce(Vector3.up * (JumpForce * JumpCharge), ForceMode.Impulse);
         }
 
         ActivateDriftVFX(IsDrifting && GroundPercent > 0.0f);
