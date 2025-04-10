@@ -1,24 +1,17 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 // Sole duty of this is to convert inputs into frame data to send to the stunt system
 
+[RequireComponent(typeof(PlayerInput))]
+[RequireComponent(typeof(StuntSystem))]
 public class StuntPeripheralInputHandler : MonoBehaviour
 {
     StuntSystem stuntSystem;
-    InputActionAsset inputActions;
-    bool isInRecordingMode = false;
-
-    string[] stuntKeyBindings = new string[] { "Player/Trick Button A", "Player/Trick Button B", "Player/Trick Button C" };
-    string[] directionalKeyBindings = new string[] { "Accelerate", "Brake", "Horizontal" };
-    Dictionary<string, StuntType> stuntBindings = new()
-    {
-        { "Trick Button A", StuntType.Flip },
-        { "Trick Button B", StuntType.Grind },
-        { "Trick Button C", StuntType.Spin }
-    };
+    IInput playerPeripheralInput;
+    public bool isInRecordingMode = false;
     List<FrameKeyData> recordedKeys = new();
 
     StuntType currentStunt = StuntType.None;
@@ -26,11 +19,9 @@ public class StuntPeripheralInputHandler : MonoBehaviour
 
     void Start()
     {
-        Application.targetFrameRate = 60;
-        inputActions = GetComponent<PlayerInput>().actions;
+        playerPeripheralInput = GetComponent<PlayerInput>();
         stuntSystem = GetComponent<StuntSystem>();
-
-        Initialize();
+        Application.targetFrameRate = 60;
     }
 
     public void Initialize()
@@ -42,25 +33,22 @@ public class StuntPeripheralInputHandler : MonoBehaviour
     {
         if (isInRecordingMode)
         {
-            PollEveryKey();
+            ActorInputData currentFrameData = playerPeripheralInput.GrabCurrentFrameInputs();
+            // Interpret this and record it down
 
             // If any has been pressed we can handle all cases 
-            foreach (var key in stuntKeyBindings)
+            List<string> lastPressedKeys = RecordKeyFrames(currentFrameData, out bool isNew);
+            List<string> stuntIntersect = lastPressedKeys.Intersect(Values.StuntButtonNamesShort.AllStuntButtons).ToList();
+            if (stuntIntersect.Count() > 0 && isNew)
             {
-                if (inputActions.FindAction(key).triggered && inputActions.FindAction(key).IsPressed() && currentStunt == StuntType.None)
-                {
-                    HandleStuntKeyPress(key);
-                    return;
-                }
+                HandleStuntKeyPress(stuntIntersect[0]);
             }
         }
     }
 
     void HandleStuntKeyPress(string key)
     {
-        string keyName = key.Split('/')[1];
-
-        currentStunt = stuntBindings[keyName];
+        currentStunt = Values.stuntBindings[key];
         // Build print out the actions for the last 10 actions
         List<FrameKeyData> keys = recordedKeys.Skip(Mathf.Max(0, recordedKeys.Count - 10)).ToList();
 
@@ -88,29 +76,20 @@ public class StuntPeripheralInputHandler : MonoBehaviour
         return -1; // No valid direction
     }
 
-    // Implemented for analytics anyways, but we want this implementation to be independent?
-    void PollEveryKey()
+    List<string> RecordKeyFrames(ActorInputData input, out bool isNew)
     {
-        List<string> currentFrameKeys = new();
-        foreach (var action in inputActions.FindActionMap("Player").actions)
-        {
-            if (action.triggered && !directionalKeyBindings.Contains(action.name))
-            {
-                currentFrameKeys.Add(action.name);
-            }
-        }
+        isNew = false;
+        // 1. Convert from 3 var input to 1 var 8 way input
+        // Need to reimplement this - adapter to 8 way
+        float horizontal = input.TurnInput;
+        float vertical = input.Accelerate;
+        vertical = vertical > 0 ? vertical : -1 * input.Brake;
 
-        // Need to reimplement this
-        float horizontal = inputActions.FindAction("Player/Horizontal").ReadValue<float>();
-        float vertical = inputActions.FindAction("Player/Accelerate").ReadValue<float>();
-        vertical = vertical > 0 ? vertical : -1 * inputActions.FindAction("Player/Brake").ReadValue<float>();
-        Vector2 input = new(horizontal, vertical);
+        int direction = ConvertVector2To8WayDirection(new(horizontal, vertical));
 
-        int direction = ConvertVector2To8WayDirection(input);
-        if (direction != -1)
-        {
-            currentFrameKeys.Add(direction.ToString());
-        }
+        // 2. Get all positive inputs
+        List<string> currentFrameKeys = input.KeysThatAreNonZeroExceptAnalog();
+        currentFrameKeys.Add(direction.ToString());
 
         // Grab information about the previous frame
         List<string> previousFrameKeys = recordedKeys.Count > 0 ? recordedKeys.Last().inputs : new List<string>();
@@ -124,17 +103,19 @@ public class StuntPeripheralInputHandler : MonoBehaviour
                 frameCount = pollFrameHoldCounter,
                 inputs = currentFrameKeys
             };
-
         }
         else
         {
             pollFrameHoldCounter = 1;
+            isNew = true;
             recordedKeys.Add(new FrameKeyData
             {
                 frameCount = 1,
                 inputs = currentFrameKeys
             });
         }
+
+        return currentFrameKeys;
     }
 
 
@@ -169,7 +150,7 @@ public class StuntPeripheralInputHandler : MonoBehaviour
         {
             keyInputs.Add(frameData.inputs);
         }
-        List<string> lastPressedKeys = StuntPeripheralInputHandler.GetLastPressedKeys(keyInputs);
+        List<string> lastPressedKeys = GetLastPressedKeys(keyInputs);
         Debug.Log($"Last pressed keys: {string.Join(", ", lastPressedKeys)}");
     }
 }

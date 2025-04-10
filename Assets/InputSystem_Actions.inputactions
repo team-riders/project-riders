@@ -42,7 +42,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Trick Button A",
+                    "name": "StuntA",
                     "type": "Button",
                     "id": "19f85145-7008-40a8-971d-1f520058c689",
                     "expectedControlType": "",
@@ -51,7 +51,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Trick Button B",
+                    "name": "StuntB",
                     "type": "Button",
                     "id": "963c720c-e390-41a7-bee1-fad8ea28c98c",
                     "expectedControlType": "",
@@ -60,7 +60,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Trick Button C",
+                    "name": "StuntC",
                     "type": "Button",
                     "id": "b024cd3d-d58d-4b5b-aa31-16d2ca190fdf",
                     "expectedControlType": "",
@@ -236,7 +236,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Trick Button A",
+                    "action": "StuntA",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -247,7 +247,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "Trick Button A",
+                    "action": "StuntA",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e0adab21-0580-421c-9585-82187c2b6885",
+                    "path": "<Keyboard>/u",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "StuntA",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -258,7 +269,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Trick Button B",
+                    "action": "StuntB",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -269,7 +280,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "Trick Button B",
+                    "action": "StuntB",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4e5f7103-b7ac-4aa1-8c88-5aaff835bcbc",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "StuntB",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -280,7 +302,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Trick Button C",
+                    "action": "StuntC",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -291,7 +313,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "Trick Button C",
+                    "action": "StuntC",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "38932d16-5afd-4e6f-ae53-cb9ba8de821a",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "StuntC",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

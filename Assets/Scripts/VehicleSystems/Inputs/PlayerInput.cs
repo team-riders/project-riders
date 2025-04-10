@@ -1,12 +1,18 @@
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
+using UnityEngine;
 
+[RequireComponent(typeof(UnityEngine.InputSystem.PlayerInput))]
 public class PlayerInput : BaseInput
 {
-    public InputActionAsset m_playerInput;
+    InputActionAsset m_playerInput;
     public string m_inputMapName = "Player";
     ActorInputData currentFrameInputData = new();
 
+    void Start()
+    {
+        m_playerInput = GetComponent<UnityEngine.InputSystem.PlayerInput>().actions;
+    }
     void Update()
     {
         currentFrameInputData = PollEveryRideInput();
@@ -16,36 +22,36 @@ public class PlayerInput : BaseInput
     {
         Dictionary<string, float> inputValues = new();
 
-        foreach (InputAction action in m_playerInput.FindActionMap("Player").actions)
+        foreach (InputAction action in m_playerInput.FindActionMap(m_inputMapName).actions)
         {
             // Ignore pause
-            if (action.name == "PauseButton")
+            if (action.name == Values.ButtonNamesShort.PauseButton)
                 continue;
 
             if (action.type == InputActionType.Button)
             {
                 // Special handle for Jump
-                if (action.name == "Jump")
+                if (action.name == Values.ButtonNamesShort.Jump)
                 {
                     if (action.WasPressedThisFrame())
                     {
-                        inputValues["Jump"] = 0;
-                        inputValues["JumpHoldDuration"] = 0;
+                        inputValues[Values.ButtonNamesShort.Jump] = 0;
+                        inputValues[Values.InputNameSpecial.JumpHoldDuration] = 0;
                     }
                     else if (action.WasReleasedThisFrame())
                     {
-                        inputValues["Jump"] = 1;
-                        inputValues["JumpHoldDuration"] = currentFrameInputData.JumpHoldDuration;
+                        inputValues[Values.ButtonNamesShort.Jump] = 1;
+                        inputValues[Values.InputNameSpecial.JumpHoldDuration] = currentFrameInputData.JumpHoldDuration;
                     }
                     else if (action.IsPressed())
                     {
-                        inputValues["Jump"] = 0;
-                        inputValues["JumpHoldDuration"] = currentFrameInputData.JumpHoldDuration + 1;
+                        inputValues[Values.ButtonNamesShort.Jump] = 0;
+                        inputValues[Values.InputNameSpecial.JumpHoldDuration] = currentFrameInputData.JumpHoldDuration + 1;
                     }
                     else
                     {
-                        inputValues["Jump"] = 0;
-                        inputValues["JumpHoldDuration"] = 0;
+                        inputValues[Values.ButtonNamesShort.Jump] = 0;
+                        inputValues[Values.InputNameSpecial.JumpHoldDuration] = 0;
                     }
                 }
                 else
@@ -62,18 +68,18 @@ public class PlayerInput : BaseInput
         // Convert to actor input data
         return new ActorInputData
         {
-            Accelerate = inputValues["Accelerate"],
-            Brake = inputValues["Brake"],
-            TurnInput = inputValues["Horizontal"],
+            Accelerate = inputValues[Values.ButtonNamesShort.Accelerate],
+            Brake = inputValues[Values.ButtonNamesShort.Brake],
+            TurnInput = inputValues[Values.ButtonNamesShort.TurnInput],
 
-            Jump = inputValues["Jump"] > 0,
-            JumpHoldDuration = inputValues["JumpHoldDuration"],
-            StuntA = inputValues["Trick Button A"] > 0,
-            StuntB = inputValues["Trick Button B"] > 0,
-            StuntC = inputValues["Trick Button C"] > 0,
+            Jump = inputValues[Values.ButtonNamesShort.Jump] > 0,
+            JumpHoldDuration = inputValues[Values.InputNameSpecial.JumpHoldDuration],
+            StuntA = inputValues[Values.StuntButtonNamesShort.StuntA] > 0,
+            StuntB = inputValues[Values.StuntButtonNamesShort.StuntB] > 0,
+            StuntC = inputValues[Values.StuntButtonNamesShort.StuntC] > 0,
 
-            Drift = inputValues["Drift"] > 0,
-            BoostRam = inputValues["Boost/Ram"] > 0,
+            Drift = inputValues[Values.ButtonNamesShort.Drift] > 0,
+            BoostRam = inputValues[Values.ButtonNamesShort.BoostRam] > 0,
         };
     }
 
