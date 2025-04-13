@@ -1,8 +1,9 @@
 using UnityEngine;
 using TMPro;
 
-namespace RidersCore.Unity.UI
+namespace RidersCore.UI
 {
+    // Need to rework soon to decouple AWAY from the vehicle
     public class BaseVehicleDebug : MonoBehaviour
     {
         public TextMeshProUGUI speedText;
@@ -13,6 +14,21 @@ namespace RidersCore.Unity.UI
         void Start()
         {
             rb = GetComponent<Rigidbody>();
+            // FindTarget()
+        }
+
+        void FindTarget()
+        {
+            // Find the target vehicle in the scene
+            GameObject targetVehicle = GameObject.FindGameObjectWithTag("PlayerVehicle");
+            if (targetVehicle != null)
+            {
+                rb = targetVehicle.GetComponent<Rigidbody>();
+            }
+            else
+            {
+                Debug.LogWarning("Target vehicle not found in the scene.");
+            }
         }
 
         // Update is called once per frame

@@ -3,11 +3,10 @@ using System.IO;
 using System.Text;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using RidersCore.Data;
 
-
-namespace RidersCore
+namespace RidersCore.Analytics
 {
-
     // For JSON serialisation
     [System.Serializable]
     public class InputHistoryData
@@ -18,9 +17,7 @@ namespace RidersCore
     public class InputProcessor : MonoBehaviour
     {
         public BaseInput inputSource;
-
-        public List<InputFrameRecord> inputHistory { get; private set; } = new();
-
+        public List<InputFrameRecord> InputHistory { get; private set; } = new();
         private InputActionAsset playerInput;
         private InputActionMap inputMap;
 
@@ -37,7 +34,7 @@ namespace RidersCore
 
             var record = new InputFrameRecord(currentFrame, currentInput);
 
-            inputHistory.Add(record);
+            InputHistory.Add(record);
 
             // DEBUG - EXPORT TO CSV AND JSON
             if (DebugFlags.Instance.allowSavingInputHistoryToFile == true)
@@ -62,12 +59,12 @@ namespace RidersCore
 
         public void ClearHistory()
         {
-            inputHistory.Clear();
+            InputHistory.Clear();
         }
 
         public InputFrameRecord GetFrame(int frame)
         {
-            return inputHistory.Find(record => record.Frame == frame);
+            return InputHistory.Find(record => record.Frame == frame);
         }
 
         // DEBUG
@@ -78,7 +75,7 @@ namespace RidersCore
 
             csv.AppendLine("Frame,Accelerate,Brake,TurnInput,Jump,JumpHoldDuration,StuntA,StuntB,StuntC,Drift,BoostRam");
 
-            foreach (var record in inputHistory)
+            foreach (var record in InputHistory)
             {
                 var input = record.Input;
                 csv.AppendLine($"{record.Frame}," +
@@ -105,7 +102,7 @@ namespace RidersCore
 
             InputHistoryData historyData = new InputHistoryData
             {
-                inputHistory = inputHistory
+                inputHistory = InputHistory
             };
 
             string json = JsonUtility.ToJson(historyData, true);

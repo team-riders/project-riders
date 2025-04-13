@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
+using RidersCore.Data;
 
 namespace RidersCore
 {
@@ -29,26 +30,15 @@ namespace RidersCore
                     // Special handle for Jump
                     if (action.name == "Jump")
                     {
-                        if (action.WasPressedThisFrame())
+                        inputValues["Jump"] = action.WasReleasedThisFrame() ? 1 : 0;
+                        inputValues["JumpHoldDuration"] = true switch
                         {
-                            inputValues["Jump"] = 0;
-                            inputValues["JumpHoldDuration"] = 0;
-                        }
-                        else if (action.WasReleasedThisFrame())
-                        {
-                            inputValues["Jump"] = 1;
-                            inputValues["JumpHoldDuration"] = currentFrameInputData.JumpHoldDuration;
-                        }
-                        else if (action.IsPressed())
-                        {
-                            inputValues["Jump"] = 0;
-                            inputValues["JumpHoldDuration"] = currentFrameInputData.JumpHoldDuration + 1;
-                        }
-                        else
-                        {
-                            inputValues["Jump"] = 0;
-                            inputValues["JumpHoldDuration"] = 0;
-                        }
+                            true when action.WasPressedThisFrame() => 0,
+                            true when action.WasReleasedThisFrame() => currentFrameInputData.JumpHoldDuration,
+                            true when action.IsPressed() => currentFrameInputData.JumpHoldDuration + 1,
+                            true when !action.IsPressed() => 0,
+                            _ => 0
+                        };
                     }
                     else
                     {
