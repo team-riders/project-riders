@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Unity.Profiling;
+using UnityEditor.VersionControl;
 
 public static class Values
 {
@@ -52,4 +53,22 @@ public static class Values
         { StuntButtonNamesShort.StuntB, StuntType.Grind },
         { StuntButtonNamesShort.StuntC, StuntType.Spin }
     };
+
+    public struct InputMap
+    {
+        public const string Player = "Player";
+        public const string UI = "UI";
+        public const string Menu = "Menu";
+        public const string Debug = "Debug";
+    }
+
+    public struct Paths
+    {
+        public const string Config = "Config/";
+    }
+
+    public struct FileNames
+    {
+        public const string DebugFlags = "debug_flags.json";
+    }
 }
