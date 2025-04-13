@@ -3,98 +3,146 @@ using UnityEngine.Splines;
 using Unity.Mathematics;
 
 [RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(GrindDetectorTrigger))]
 public class PlayerGrind : MonoBehaviour
 {
-    private GrindPath currentPath;
-    private float currentProgress = 0f;
-    private bool isGrinding = false;
-    private float progressPerSecond = 0f;
-    private bool reverse = false;
+    [Header("Grind Settings")]
+    public float feetOffsetY = 0.9f;
+    public float autoGrindRadius = 1.5f;
+    public float grindSpeed = 7f;
+    public float alignmentSpeed = 10f;
+
+    [Header("Debug")]
+    public bool showGizmo = true;
 
     private CharacterController controller;
+    private GrindDetectorTrigger detector;
 
-    [SerializeField]
-    private float feetOffsetY = 0.9f; // Raise the player upward so feet meet the rail
+    private GrindPath currentPath;
+    private float currentProgress;
+    private float progressRate;
+    private float cooldownTimer = 0f;
+    private bool isGrinding = false;
 
-    void Awake()
+    private void Awake()
     {
         controller = GetComponent<CharacterController>();
+        detector = GetComponent<GrindDetectorTrigger>();
     }
 
-    void Update()
+    private void Update()
     {
-        if (!isGrinding || currentPath == null) return;
+        if (cooldownTimer > 0f)
+            cooldownTimer -= Time.deltaTime;
 
-        // Handle jump-off input
-        if (Input.GetButtonDown("Jump"))
+        if (isGrinding)
         {
-            EndGrind();
-            return;
+            UpdateGrind();
+
+            if (Input.GetButtonDown("Jump"))
+            {
+                Debug.Log("[PlayerGrind] Jump pressed. Exiting grind.");
+                StopGrinding();
+            }
         }
-
-        var spline = currentPath.SplineContainer.Spline;
-        var splineTransform = currentPath.splineTransform;
-
-        float delta = progressPerSecond * Time.deltaTime * (reverse ? -1f : 1f);
-        currentProgress += delta;
-
-        if (!currentPath.loop && (currentProgress >= 1f || currentProgress <= 0f))
+        else if (!controller.isGrounded)
         {
-            EndGrind();
-            return;
+            TryAutoGrind(autoGrindRadius);
         }
-
-        currentProgress = Mathf.Repeat(currentProgress, 1f);
-
-        SplineUtility.Evaluate(spline, currentProgress, out float3 pos, out float3 tan, out float3 up);
-
-        Vector3 worldPos = splineTransform.TransformPoint((Vector3)pos) + new Vector3(0, feetOffsetY, 0);
-        Quaternion worldRot = quaternion.LookRotation(tan, up);
-
-        transform.SetPositionAndRotation(worldPos, worldRot);
-    }
-
-    public void StartGrind(GrindPath path, float startProgress = 0f)
-    {
-        currentPath = path;
-
-        if (path.splineTransform == null || path.SplineContainer == null)
-        {
-            Debug.LogError($"[PlayerGrind] ERROR: 'splineTransform' or 'SplineContainer' is not assigned in {path.gameObject.name}!");
-            return;
-        }
-
-        var spline = path.SplineContainer.Spline;
-        var splineTransform = path.splineTransform;
-
-        // Sample player’s position (no offset)
-        Vector3 localPos = splineTransform.InverseTransformPoint(transform.position);
-
-        // Get the closest progress value on the spline
-        SplineUtility.GetNearestPoint(spline, (float3)localPos, out float3 _, out currentProgress);
-        Debug.Log($"[PlayerGrind] Nearest spline progress = {currentProgress:F4} from localPos {localPos}");
-
-        progressPerSecond = currentPath.GetPercentagePerSecond();
-        reverse = currentPath.reverse;
-        isGrinding = true;
-
-        controller.enabled = false;
-
-        SplineUtility.Evaluate(spline, currentProgress, out float3 pos, out float3 tan, out float3 up);
-
-        Vector3 worldPos = splineTransform.TransformPoint((Vector3)pos) + new Vector3(0, feetOffsetY, 0);
-        Quaternion worldRot = quaternion.LookRotation(tan, up);
-
-        transform.SetPositionAndRotation(worldPos, worldRot);
-    }
-
-    public void EndGrind()
-    {
-        isGrinding = false;
-        currentPath = null;
-
-        controller.enabled = true;
     }
 
     public bool IsGrinding() => isGrinding;
+
+    public void TryAutoGrind(float radius)
+    {
+        if (cooldownTimer > 0f || isGrinding || detector == null)
+            return;
+
+        GrindPath nearest = detector.GetNearestPathWithinRadius(radius);
+        if (nearest != null)
+        {
+            float progress = GetStartProgress(nearest);
+            StartGrinding(nearest, progress);
+        }
+    }
+
+    private float GetStartProgress(GrindPath path)
+    {
+        Vector3 localPos = path.splineTransform.InverseTransformPoint(transform.position);
+        SplineUtility.GetNearestPoint(path.SplineContainer.Spline, (float3)localPos, out _, out float progress);
+        return Mathf.Clamp01(progress);
+    }
+
+    private void StartGrinding(GrindPath path, float startProgress)
+    {
+        if (path == null || path.SplineContainer?.Spline == null || path.splineTransform == null)
+        {
+            Debug.LogWarning("[PlayerGrind] Invalid grind path.");
+            return;
+        }
+
+        currentPath = path;
+        currentProgress = startProgress;
+        progressRate = Mathf.Max(path.GetPercentagePerSecond(), 0.0001f); // prevent 0-speed
+        isGrinding = true;
+
+        Debug.Log($"[PlayerGrind] Started grinding on '{path.name}' at progress {currentProgress:F4}");
+    }
+
+    private void UpdateGrind()
+    {
+        if (currentPath?.SplineContainer?.Spline == null)
+        {
+            StopGrinding();
+            return;
+        }
+
+        currentProgress += progressRate * Time.deltaTime;
+
+        if (!currentPath.loop && (currentProgress > 1f || currentProgress < 0f))
+        {
+            StopGrinding();
+            return;
+        }
+
+        currentProgress %= 1f;
+
+        var spline = currentPath.SplineContainer.Spline;
+        float3 localPos = SplineUtility.EvaluatePosition(spline, currentProgress);
+        float3 tangent = SplineUtility.EvaluateTangent(spline, currentProgress);
+
+        Vector3 worldPos = currentPath.splineTransform.TransformPoint((Vector3)localPos);
+        Vector3 forward = currentPath.splineTransform.TransformDirection((Vector3)tangent);
+        Vector3 targetPos = worldPos + Vector3.up * feetOffsetY;
+
+        if (controller.enabled)
+        {
+            controller.Move(targetPos - transform.position);
+        }
+
+        Quaternion targetRot = Quaternion.LookRotation(forward);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, Time.deltaTime * alignmentSpeed);
+    }
+
+    private void StopGrinding()
+    {
+        if (!isGrinding) return;
+
+        isGrinding = false;
+        currentPath = null;
+        currentProgress = 0f;
+        cooldownTimer = 0.3f;
+
+        Debug.Log("[PlayerGrind] Grind ended.");
+    }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected()
+    {
+        if (!showGizmo) return;
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position + Vector3.up, autoGrindRadius);
+    }
+#endif
 }
