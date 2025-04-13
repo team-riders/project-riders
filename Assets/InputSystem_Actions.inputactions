@@ -783,6 +783,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Debug",
+            "id": "360a51ba-7322-466c-83ec-7a8ece887667",
+            "actions": [
+                {
+                    "name": "Save Input History",
+                    "type": "Button",
+                    "id": "05284434-e698-4da0-a286-825bb11da0a7",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "23e390af-9110-43e8-8de6-aee06ca632fd",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Save Input History",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

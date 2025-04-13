@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 
 // All the relevant input data for the "actor" in the world
+[System.Serializable]
 public struct ActorInputData
 {
     public float Accelerate;
