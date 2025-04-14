@@ -9,6 +9,8 @@ public class RiderSelection
     public Enums.VehicleType vehicleType;
     public bool isPlayer; // We can move this out to playerIndexToRacer
 }
+
+// This DOES NOT NEED TO BE A MONOBEHAVIOUR
 public class RaceMeetController : MonoBehaviour
 {
     public List<RiderSelection> racers = new();

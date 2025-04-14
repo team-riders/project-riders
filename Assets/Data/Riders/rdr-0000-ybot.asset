@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   racerInformation:
     RiderID: 0
-    RiderName: Ybot
+    RiderName: yBot
     TeamID: 0
     defaultVehicleType: 0
     defaultRideSkin: 0

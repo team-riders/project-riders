@@ -73,11 +73,58 @@ public class RaceEventController
         RiderSelection rs = racer;
         GameObject racerPrefab = rs.rider.characterModelPrefab;
 
-        GameObject visual = GameObject.Instantiate(racerPrefab, initialSpawn, Quaternion.identity, player.transform);
         RacerComponent rc = player.GetComponent<RacerComponent>();
-
         rc.rider = racer.rider;
 
+        // Setup the visuals in the racer component instead honestly
+        GameObject visual = GameObject.Instantiate(racerPrefab, initialSpawn, Quaternion.identity, player.transform);
+
+
+
         // We need to eventually disable the player input & physics here
+    }
+
+
+    // The event scenario that should happen when the announcer says go
+    public void StartRace()
+    {
+        // There might be a delay but anyways
+        // Start the timer here
+
+        // this.Timer.StartTimer();
+        // Enable the checkpoint system
+
+        // Enable the environment details (maybe do this in "load map" so that we can have a loading screen?)
+
+        // Enable all racer inputs
+
+        // Run these two in sequence
+        // 1. Enable split the camera system
+        // 2. Enable the UI LAST
+    }
+
+    // Triggered by the checkpoint system or timer waiting for the last person to finish
+
+    public void FinishSingleRacer(RacerComponent racer)
+    {
+        // Disable the racer input
+        // Change to "passive" AI and disable some stuff.
+    }
+
+    public void FinishRace()
+    {
+
+        // Show the finish screen?
+    }
+
+    public void EndRace()
+    {
+        // Disable the checkpoint system
+        // Disable the timer
+        // Disable the camera system / go back to joined camera state
+        // Disable the UI
+
+        // Unload the map (or just disable it?)
+        // Unload all racers (or just disable them?)
     }
 }
