@@ -1,6 +1,4 @@
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
 public class pauseMenuScript : MonoBehaviour
 {
@@ -12,27 +10,8 @@ public class pauseMenuScript : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (isPaused)
-            {
-                resumeGameFunction();
-            }
-            else
-            {
-                pauseGameFunction();
-            }
+            PauseHandler.TogglePause();
+            Debug.Log(PauseHandler.IsPaused);
         }
-    }
-    public void pauseGameFunction()
-    {
-        pauseGame.SetActive(true);
-        Time.timeScale = 0f;    
-        isPaused = true;
-    }
-
-    public void resumeGameFunction()
-    {
-        pauseGame.SetActive(false);
-        Time.timeScale = 1f;
-        isPaused = false;
     }
 }
