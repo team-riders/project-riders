@@ -1,22 +1,27 @@
 using UnityEngine;
 using UnityEngine.Splines;
 
+
 [RequireComponent(typeof(SplineContainer))]
 public class GrindPath : MonoBehaviour
 {
     [Header("Grind Settings")]
     public bool loop = false;
     public bool reverse = false;
-    public float speed = 7f;
 
     [Header("References")]
     public Transform splineTransform;
     public SplineContainer SplineContainer;
 
+    public void Awake()
+    {
+        SplineContainer = GetComponent<SplineContainer>();
+    }
+
     /// <summary>
     /// Returns the progress rate (percentage per second) based on spline length and grind speed.
     /// </summary>
-    public float GetPercentagePerSecond()
+    public float GetPercentagePerSecond(float speed)
     {
         if (SplineContainer == null || SplineContainer.Spline == null)
         {
@@ -38,6 +43,7 @@ public class GrindPath : MonoBehaviour
 
 #if UNITY_EDITOR
     [Header("Debug Gizmo")]
+    // TODO: Move this to debug flags SO
     public bool showGizmo = true;
 
     private void OnDrawGizmos()

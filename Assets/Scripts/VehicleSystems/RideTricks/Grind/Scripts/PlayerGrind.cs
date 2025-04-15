@@ -2,20 +2,23 @@ using UnityEngine;
 using UnityEngine.Splines;
 using Unity.Mathematics;
 
-[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(BaseVehicle))]
 [RequireComponent(typeof(GrindDetectorTrigger))]
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(PlayerInput))]
 public class PlayerGrind : MonoBehaviour
 {
     [Header("Grind Settings")]
     public float feetOffsetY = 0.9f;
     public float autoGrindRadius = 1.5f;
-    public float grindSpeed = 7f;
-    public float alignmentSpeed = 10f;
+    public float rotationSpeed = 10f;
+    public float minimumDownwardSpeed = 0.5f;
 
     [Header("Debug")]
     public bool showGizmo = true;
-
-    private CharacterController controller;
+    private BaseVehicle baseVehicle;
+    private Rigidbody rb;
+    private PlayerInput playerInput;
     private GrindDetectorTrigger detector;
 
     private GrindPath currentPath;
@@ -26,7 +29,9 @@ public class PlayerGrind : MonoBehaviour
 
     private void Awake()
     {
-        controller = GetComponent<CharacterController>();
+        baseVehicle = GetComponent<BaseVehicle>();
+        rb = GetComponent<Rigidbody>();
+        playerInput = GetComponent<PlayerInput>();
         detector = GetComponent<GrindDetectorTrigger>();
     }
 
@@ -39,13 +44,13 @@ public class PlayerGrind : MonoBehaviour
         {
             UpdateGrind();
 
-            if (Input.GetButtonDown("Jump"))
+            if (playerInput.GrabCurrentFrameInputs().Jump)
             {
                 Debug.Log("[PlayerGrind] Jump pressed. Exiting grind.");
                 StopGrinding();
             }
         }
-        else if (!controller.isGrounded)
+        else if (baseVehicle.AirPercent > 0 && rb.linearVelocity.y < minimumDownwardSpeed)
         {
             TryAutoGrind(autoGrindRadius);
         }
@@ -83,7 +88,7 @@ public class PlayerGrind : MonoBehaviour
 
         currentPath = path;
         currentProgress = startProgress;
-        progressRate = Mathf.Max(path.GetPercentagePerSecond(), 0.0001f); // prevent 0-speed
+        progressRate = Mathf.Max(path.GetPercentagePerSecond(rb.linearVelocity.magnitude), 0.0001f); // prevent 0-speed
         isGrinding = true;
 
         Debug.Log($"[PlayerGrind] Started grinding on '{path.name}' at progress {currentProgress:F4}");
@@ -115,13 +120,13 @@ public class PlayerGrind : MonoBehaviour
         Vector3 forward = currentPath.splineTransform.TransformDirection((Vector3)tangent);
         Vector3 targetPos = worldPos + Vector3.up * feetOffsetY;
 
-        if (controller.enabled)
+        if (true)
         {
-            controller.Move(targetPos - transform.position);
+            transform.position = targetPos;
         }
 
         Quaternion targetRot = Quaternion.LookRotation(forward);
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, Time.deltaTime * alignmentSpeed);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, Time.deltaTime * rotationSpeed);
     }
 
     private void StopGrinding()
@@ -132,6 +137,9 @@ public class PlayerGrind : MonoBehaviour
         currentPath = null;
         currentProgress = 0f;
         cooldownTimer = 0.3f;
+
+        // On a stop grind, we need to "kick" the player off
+        // Apply a forced jump input? This should probably be done in the state machine to decouple
 
         Debug.Log("[PlayerGrind] Grind ended.");
     }
