@@ -283,11 +283,14 @@ public class BaseVehicle : MonoBehaviour
     //    m_DriftSparkInstances.Add((wheel, horizontalOffset, -rotation, spark));
     //}
 
-    //make virtual?
-    void Update()
+    private void Update()
     {
         GatherInputs();
+    }
 
+    //make virtual?
+    void FixedUpdate()
+    {
         // maybe later
         // apply our powerups to create our finalStats
         TickPowerups();
@@ -315,6 +318,8 @@ public class BaseVehicle : MonoBehaviour
         float wheelCount = m_VisualWheels.Count;
         GroundPercent = (float)groundedCount / wheelCount;
         AirPercent = 1 - GroundPercent;
+
+        Debug.Log("GroundPercent: " + GroundPercent);
 
         // apply vehicle physics
         if (m_CanMove)
