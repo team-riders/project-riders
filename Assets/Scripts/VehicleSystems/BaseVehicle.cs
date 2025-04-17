@@ -284,7 +284,7 @@ public class BaseVehicle : MonoBehaviour
     //}
 
     //make virtual?
-    void FixedUpdate()
+    void Update()
     {
         GatherInputs();
 
