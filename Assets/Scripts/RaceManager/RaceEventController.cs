@@ -19,6 +19,8 @@ public class RaceEventController
     public Vector3 initialSpawn = new(0, 0, 0);
     public Vector3 incrementalSpawn = new(5, 0, 0);
 
+    public List<GameObject> pooledGameObjects = new();
+
     int spawnIndex = 0;
 
 
@@ -52,23 +54,27 @@ public class RaceEventController
         // Find the spawn points in the map
         // Spawn the racers in the map
 
+        // TODO: Use pooling for the racer instead of instantiating them every time
+
+
         foreach (int i in playerIndices)
         {
             SpawnRacer(racers[i]);
             spawnIndex++;
         }
 
-        foreach (RiderSelection racer in racers)
+        for (int i = 0; i < racers.Count; i++)
         {
-            // Spawn the AI here
-            if (racer.isPlayer) continue; // Skip if it's a player
+            if (playerIndices.Contains(i)) continue; // Skip if it's a player
+            SpawnRacer(racers[i]);
+            spawnIndex++;
         }
     }
 
     public void SpawnRacer(RiderSelection racer)
     {
         GameObject playerAsset = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/RacerPrefab.prefab");
-        GameObject player = GameObject.Instantiate(playerAsset, Vector3.zero, Quaternion.identity);
+        GameObject player = GameObject.Instantiate(playerAsset, initialSpawn + incrementalSpawn * spawnIndex, Quaternion.identity);
 
         RiderSelection rs = racer;
         GameObject racerPrefab = rs.rider.characterModelPrefab;
@@ -77,8 +83,7 @@ public class RaceEventController
         rc.rider = racer.rider;
 
         // Setup the visuals in the racer component instead honestly
-        GameObject visual = GameObject.Instantiate(racerPrefab, initialSpawn, Quaternion.identity, player.transform);
-
+        GameObject visual = GameObject.Instantiate(racerPrefab, player.transform);
 
 
         // We need to eventually disable the player input & physics here
