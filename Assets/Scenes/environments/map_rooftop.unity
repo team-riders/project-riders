@@ -8057,9 +8057,17 @@ PrefabInstance:
       value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 7622961024952553118, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: baseStats.TopSpeed
+      value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 7622961024952553118, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
       propertyPath: GroundLayers.m_Bits
       value: 115
       objectReference: {fileID: 0}
+    - target: {fileID: 9102658750407949755, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 2090136843}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
