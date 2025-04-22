@@ -262,6 +262,8 @@ public class BaseVehicle : MonoBehaviour
         GroundAirbourne();
 
         m_PreviousGroundPercent = GroundPercent;
+
+        SetRotation();
     }
 
     void SetCenterOfMass()
@@ -521,4 +523,22 @@ public class BaseVehicle : MonoBehaviour
         // END MOVEMENT LOGIC
         //
     }
+
+    // When going up a ramp, player visibly rotates upwards
+    void SetRotation()
+    {
+        if (GroundPercent > 0.7)
+        {
+            Ray ray = new Ray(transform.position + Vector3.up * 0.5f, Vector3.down);
+            if (Physics.Raycast(ray, out RaycastHit hit, 2f))
+            {
+                // Align "up" with the surface normal
+                Quaternion slopeRotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
+
+                // Smooth transition to the slope rotation
+                transform.rotation = Quaternion.Slerp(transform.rotation, slopeRotation, Time.fixedDeltaTime * 10f);
+            }
+        }
+    }
+
 }
