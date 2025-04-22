@@ -167,6 +167,8 @@ public class BaseVehicle : MonoBehaviour
     // CHANGE LATER
     public bool WantsToDrift { get; private set; } = false;
     public bool IsDrifting { get; private set; } = false;
+    bool WantsToJump { get; set; } = false;
+    float WantsToJumpHold { get; set; } = 0.0f;
     float m_CurrentGrip = 1.0f;
     float m_DriftTurningPower = 0.0f;
     float m_PreviousGroundPercent = 1.0f;
@@ -344,7 +346,7 @@ public class BaseVehicle : MonoBehaviour
         if (m_CanMove)
         {
             //Debug.Log("Input.Jump.WasReleasedThisFrame: " + Input.Jump);
-            MoveVehicle(Input.Accelerate == 1, Input.Brake == 1, Input.TurnInput, Input.Jump, Input.JumpHoldDuration);
+            MoveVehicle(Input.Accelerate == 1, Input.Brake == 1, Input.TurnInput, WantsToJump, WantsToJumpHold);
         }
         GroundAirbourne();
 
@@ -397,6 +399,11 @@ public class BaseVehicle : MonoBehaviour
         {
             Input = m_Inputs[i].GrabCurrentFrameInputs();
             WantsToDrift = Input.Brake == 1 && Vector3.Dot(Rigidbody.linearVelocity, transform.forward) > 0.0f;
+            if (Input.Jump)
+            {
+                WantsToJump = true;
+                WantsToJumpHold = Input.JumpHoldDuration;
+            }
         }
     }
 
@@ -498,6 +505,8 @@ public class BaseVehicle : MonoBehaviour
         {
             Debug.Log("JumpForce * JumpCharge: " + JumpForce * JumpCharge);
             Rigidbody.AddForce(Vector3.up * (JumpForce * JumpCharge), ForceMode.Impulse);
+            WantsToJump = false;
+            WantsToJumpHold = 0.0f;
         }
         return maxSpeed;
     }
