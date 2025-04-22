@@ -191,6 +191,15 @@ public class BaseVehicle : MonoBehaviour
     [Tooltip("Stores jump force")]
     public float JumpForce = 150.0f;
 
+    #region State Machine Variables
+
+    public MovementStateMachine StateMachine { get; set; }
+    public MovementGroundState GroundState { get; set; }
+    public MovementAirState AirState { get; set; }
+    public MovementGrindState GrindState { get; set; }
+
+    #endregion
+
     // methods
     public void AddPowerup(StatPowerup statPowerup) => m_ActivePowerupList.Add(statPowerup);
     public void SetCanMove(bool move) => m_CanMove = move;
@@ -238,8 +247,17 @@ public class BaseVehicle : MonoBehaviour
         }
     }
 
+    private void Awake()
+    {
+        StateMachine = new MovementStateMachine();
+
+        GroundState = new MovementGroundState(this, StateMachine);
+        AirState = new MovementAirState(this, StateMachine);
+        GrindState = new MovementGrindState(this, StateMachine);
+    }
+
     //make virtual?
-    void Awake()
+    void Start()
     {
         Rigidbody = GetComponent<Rigidbody>();
         m_Inputs = GetComponents<IInput>();
@@ -248,8 +266,7 @@ public class BaseVehicle : MonoBehaviour
 
         SetCenterOfMass();
 
-        // previously initialised in karting microgame by FixedUpdates() calling TickPowerups()
-        //m_FinalStats = baseStats;
+        StateMachine.Initialise(GroundState);
 
         // add to child classes instead
 
@@ -286,6 +303,8 @@ public class BaseVehicle : MonoBehaviour
     private void Update()
     {
         GatherInputs();
+
+        StateMachine.CurrentMovementState.FrameUpdate();
     }
 
     //make virtual?
@@ -332,6 +351,8 @@ public class BaseVehicle : MonoBehaviour
         m_PreviousGroundPercent = GroundPercent;
 
         UpdateDriftVFXOrientation();
+
+        StateMachine.CurrentMovementState.PhysicsUpdate();
     }
 
     void SetCenterOfMass()
