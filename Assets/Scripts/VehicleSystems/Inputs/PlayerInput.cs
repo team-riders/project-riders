@@ -58,8 +58,6 @@ public class PlayerInput : BaseInput
             {
                 inputValues.Add(action.name, action.ReadValue<float>());
             }
-
-            Debug.Log("Jump value: " + inputValues["Jump"]);
         }
 
         // Convert to actor input data

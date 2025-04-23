@@ -24,5 +24,11 @@ public class MovementAirState : MovementState
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
+        vehicle.GroundAirbourne();
+        
+        if (!vehicle.m_InAir)
+        {
+            vehicle.StateMachine.ChangeState(vehicle.GroundState);
+        }
     }
 }
