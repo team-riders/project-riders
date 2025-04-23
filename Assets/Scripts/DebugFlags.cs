@@ -16,7 +16,7 @@ public class DebugFlags : MonoBehaviour
         // Then in other scripts, you can access the state with DebugFlags.Instance.Name
     }
 
-    public string DebugInputMapName = "Debug";
+    public string DebugInputMapName = Values.InputMap.Debug;
 
     [Header("Debug Toggles")]
     public bool allowSavingInputHistoryToFile = false;
@@ -25,9 +25,9 @@ public class DebugFlags : MonoBehaviour
     {
         get
         {
-            string configDir = Path.Combine(Application.dataPath, "Config");
+            string configDir = Path.Combine(Application.dataPath, Values.Paths.Config);
             if (!Directory.Exists(configDir)) Directory.CreateDirectory(configDir);
-            return Path.Combine(configDir, "debug_flags.json");
+            return Path.Combine(configDir, Values.FileNames.DebugFlags);
         }
     }
 
