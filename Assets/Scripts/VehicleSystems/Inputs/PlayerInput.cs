@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine;
 
@@ -63,6 +64,8 @@ public class PlayerInput : BaseInput
             {
                 inputValues.Add(action.name, action.ReadValue<float>());
             }
+
+            Debug.Log("Jump value: " + inputValues["Jump"]);
         }
 
         // Convert to actor input data
