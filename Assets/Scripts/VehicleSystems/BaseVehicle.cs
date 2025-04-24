@@ -167,8 +167,8 @@ public class BaseVehicle : MonoBehaviour
     // CHANGE LATER
     public bool WantsToDrift { get; private set; } = false;
     public bool IsDrifting { get; private set; } = false;
-    bool WantsToJump { get; set; } = false;
-    float WantsToJumpHold { get; set; } = 0.0f;
+    public bool WantsToJump { get; set; } = false;
+    public float WantsToJumpHold { get; set; } = 0.0f;
     float m_CurrentGrip = 1.0f;
     float m_DriftTurningPower = 0.0f;
     float m_PreviousGroundPercent = 1.0f;
@@ -176,7 +176,7 @@ public class BaseVehicle : MonoBehaviour
     readonly List<(WheelCollider wheel, float horizontalOffset, float rotation, ParticleSystem sparks)> m_DriftSparkInstances = new List<(WheelCollider, float, float, ParticleSystem)>();
 
     // can the kart move?
-    bool m_CanMove = true;
+    public bool m_CanMove = true;
     List<StatPowerup> m_ActivePowerupList = new List<StatPowerup>();
     BaseVehicle.Stats m_FinalStats;
 
@@ -184,7 +184,7 @@ public class BaseVehicle : MonoBehaviour
     Vector3 m_LastValidPosition;
     Vector3 m_LastCollisionNormal;
     bool m_HasCollision;
-    bool m_InAir = false;
+    public bool m_InAir = false;
 
     //jumping stuff
     [Header("Jump")]
@@ -192,6 +192,15 @@ public class BaseVehicle : MonoBehaviour
     float JumpCharge;
     [Tooltip("Stores jump force")]
     public float JumpForce = 150.0f;
+
+    #region State Machine Variables
+
+    public MovementStateMachine StateMachine { get; set; }
+    public MovementGroundState GroundState { get; set; }
+    public MovementAirState AirState { get; set; }
+    public MovementGrindState GrindState { get; set; }
+
+    #endregion
 
     // methods
     public void AddPowerup(StatPowerup statPowerup) => m_ActivePowerupList.Add(statPowerup);
@@ -240,8 +249,17 @@ public class BaseVehicle : MonoBehaviour
         }
     }
 
+    private void Awake()
+    {
+        StateMachine = new MovementStateMachine();
+
+        GroundState = new MovementGroundState(this, StateMachine);
+        AirState = new MovementAirState(this, StateMachine);
+        GrindState = new MovementGrindState(this, StateMachine);
+    }
+
     //make virtual?
-    void Awake()
+    void Start()
     {
         Rigidbody = GetComponent<Rigidbody>();
         m_Inputs = GetComponents<IInput>();
@@ -250,8 +268,7 @@ public class BaseVehicle : MonoBehaviour
 
         SetCenterOfMass();
 
-        // previously initialised in karting microgame by FixedUpdates() calling TickPowerups()
-        //m_FinalStats = baseStats;
+        StateMachine.Initialise(GroundState);
 
         // add to child classes instead
 
@@ -288,6 +305,8 @@ public class BaseVehicle : MonoBehaviour
     private void Update()
     {
         GatherInputs();
+
+        StateMachine.CurrentMovementState.FrameUpdate();
     }
 
     //make virtual?
@@ -321,19 +340,33 @@ public class BaseVehicle : MonoBehaviour
         GroundPercent = (float)groundedCount / wheelCount;
         AirPercent = 1 - GroundPercent;
 
-        Debug.Log("GroundPercent: " + GroundPercent);
-
         // apply vehicle physics
-        if (m_CanMove)
-        {
-            //Debug.Log("Input.Jump.WasReleasedThisFrame: " + Input.Jump);
-            MoveVehicle(Input.Accelerate == 1, Input.Brake == 1, Input.TurnInput, WantsToJump, WantsToJumpHold);
-        }
-        GroundAirbourne();
+        //if (m_CanMove)
+        //{
+        //    //Debug.Log("Input.Jump.WasReleasedThisFrame: " + Input.Jump);
+        //    MoveVehicle(Input.Accelerate == 1, Input.Brake == 1, Input.TurnInput, WantsToJump, WantsToJumpHold);
+        //}
+        //GroundAirbourne();
+
+        StateMachine.CurrentMovementState.PhysicsUpdate();
+
+        CheckGround();
 
         m_PreviousGroundPercent = GroundPercent;
 
         UpdateDriftVFXOrientation();
+    }
+
+    void CheckGround()
+    {
+        if (GroundPercent > 0.0f)
+        {
+            m_InAir = false;
+        }
+        else
+        {
+            m_InAir = true;
+        }
     }
 
     void SetCenterOfMass()
@@ -414,7 +447,7 @@ public class BaseVehicle : MonoBehaviour
         m_FinalStats.Grip = Mathf.Clamp(m_FinalStats.Grip, 0, 1);
     }
 
-    void GroundAirbourne()
+    public void GroundAirbourne()
     {
         // while in the air, fall faster
         if (AirPercent >= 1)
@@ -491,7 +524,7 @@ public class BaseVehicle : MonoBehaviour
     }
 
     //make virtual?
-    void MoveVehicle(bool accelerate, bool brake, float turnInput, bool jump, float jumpHold)
+    public void MoveVehicle(bool accelerate, bool brake, float turnInput, bool jump, float jumpHold)
     {
         float accelInput = (accelerate ? 1.0f : 0.0f) - (brake ? 1.0f : 0.0f);
         //Debug.Log("accelInput: " + accelInput);
