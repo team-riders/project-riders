@@ -4,8 +4,7 @@
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "RidersCore",
-        "RidersCore.Unity"
+        "RidersRuntime"
     ],
     "includePlatforms": [
         "Editor"
