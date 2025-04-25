@@ -42,7 +42,7 @@ public class StateMachineTest
 
 
     [Test]
-    public void T1_StateStaysTheSame()
+    public void T1_StateMachine_ShouldStayTheSame()
     {
         stateMachine.Update();
         Assert.AreEqual("TestState", stateMachine.CurrentState.Name);
@@ -51,7 +51,7 @@ public class StateMachineTest
     }
 
     [Test]
-    public void T2_StateChangesOnce()
+    public void T2_Condition1_ShouldTransitiontoState2()
     {
         condition1 = true;
         stateMachine.Update();
@@ -59,7 +59,7 @@ public class StateMachineTest
     }
 
     [Test]
-    public void T3_StateChancesMidWay()
+    public void T3_StateChancesMidWay_ShouldTransitionToState2Then3()
     {
         condition1 = true;
         stateMachine.Update();
@@ -70,7 +70,7 @@ public class StateMachineTest
     }
 
     [Test]
-    public void T4_TransitionBackToState1()
+    public void T4_StateChanges_ShouldTransitionToState1ThenToState2()
     {
         condition1 = true;
         stateMachine.Update();

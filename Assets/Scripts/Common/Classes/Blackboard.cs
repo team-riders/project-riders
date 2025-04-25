@@ -4,7 +4,7 @@ public class Blackboard
 {
     private Dictionary<string, object> _data = new Dictionary<string, object>();
 
-    public void Write<T>(string key, T value)
+    public void SetValue<T>(string key, T value)
     {
         if (_data.ContainsKey(key))
         {
@@ -17,7 +17,7 @@ public class Blackboard
     }
 
     // Read a value from the blackboard
-    public T Read<T>(string key)
+    public T GetValue<T>(string key)
     {
         if (_data.TryGetValue(key, out var value) && value is T typedValue)
         {
