@@ -2,6 +2,16 @@ using UnityEngine;
 
 namespace RidersRuntime.Data
 {
+    // powerup stuff, used for speed boost
+    [System.Serializable]
+    public class StatPowerup
+    {
+        public VehicleStats modifiers;
+        public string PowerUpID;
+        public float ElapsedTime;
+        public float MaxTime;
+    }
+
     [System.Serializable]
     public struct VehicleStats
     {

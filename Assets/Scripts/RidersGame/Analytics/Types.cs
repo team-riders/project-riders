@@ -1,5 +1,6 @@
 using RidersRuntime.Input;
 using System;
+using System.Collections.Generic;
 
 namespace RidersRuntime.Analytics
 {
@@ -14,5 +15,12 @@ namespace RidersRuntime.Analytics
             Frame = frame;
             Input = input;
         }
+    }
+
+    // For JSON serialisation
+    [System.Serializable]
+    public class InputHistoryData
+    {
+        public List<InputFrameRecord> inputHistory = new();
     }
 }

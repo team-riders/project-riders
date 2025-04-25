@@ -8,13 +8,6 @@ using UnityEngine.InputSystem;
 
 namespace RidersRuntime.Analytics
 {
-    // For JSON serialisation
-    [System.Serializable]
-    public class InputHistoryData
-    {
-        public List<InputFrameRecord> inputHistory = new();
-    }
-
     public class InputProcessor : MonoBehaviour
     {
         public BaseInput inputSource;

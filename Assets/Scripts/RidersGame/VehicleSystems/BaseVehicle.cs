@@ -7,16 +7,6 @@ namespace RidersRuntime.VehicleSystem
 {
     public class BaseVehicle : MonoBehaviour
     {
-        // powerup stuff, used for speed boost
-        [System.Serializable]
-        public class StatPowerup
-        {
-            public VehicleStats modifiers;
-            public string PowerUpID;
-            public float ElapsedTime;
-            public float MaxTime;
-        }
-
         [Header("Vehicle Type")]
         public VehicleType VehicleType;
 
