@@ -25,6 +25,11 @@ public class MovementAirState : MovementState
     {
         base.PhysicsUpdate();
         vehicle.GroundAirbourne();
+
+        if (vehicle.m_CanMove)
+        {
+            vehicle.MoveVehicle(vehicle.Input.Accelerate == 1, vehicle.Input.Brake == 1, vehicle.Input.TurnInput, vehicle.WantsToJump, vehicle.WantsToJumpHold);
+        }
         
         if (!vehicle.m_InAir)
         {
