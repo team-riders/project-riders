@@ -4,13 +4,10 @@ using System.Collections.Generic;
 using TMPro;
 using System;
 
-public class stopwatchScript : MonoBehaviour
+public class countdownScript : MonoBehaviour
 {
     public GameObject CountdownCanvas;
-    [SerializeField] TextMeshProUGUI timerText;
     [SerializeField] TextMeshProUGUI countdownText;
-    float elapsedTime;
-    bool isRunning = false;
     GameObject Start;
     float countdownTime = 5;
 
@@ -35,33 +32,5 @@ public class stopwatchScript : MonoBehaviour
             }
             startTimer();
         }
-        if (isRunning) 
-        {
-            timerFunction();
-        }
-        displayTimer();
-    }
-
-    public void startTimer()
-    {
-        isRunning = true;
-    }
-
-    public void timerFunction()
-    {
-        elapsedTime += Time.deltaTime;
-    }
-
-    public void displayTimer()
-    {
-        int minutes = Mathf.FloorToInt(elapsedTime / 60);
-        int seconds = Mathf.FloorToInt(elapsedTime % 60);
-        int milliseconds = Mathf.FloorToInt(elapsedTime * 1000) % 1000;
-        timerText.text = string.Format("{0:00}:{1:00}.{2:000}", minutes, seconds, milliseconds);
-    }
-
-    public void stopTimer()
-    {
-        isRunning = false;
     }
 }
