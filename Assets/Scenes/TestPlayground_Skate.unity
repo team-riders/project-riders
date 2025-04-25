@@ -2022,6 +2022,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7622961024952553118, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: JumpForce
+      value: 150
+      objectReference: {fileID: 0}
     - target: {fileID: 9102658750407949755, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
       propertyPath: m_NotificationBehavior
       value: 0

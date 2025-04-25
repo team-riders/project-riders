@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace RidersCore
+namespace RidersCore.VehicleSystem
 {
     class BladesVehicle : BaseVehicle
     {

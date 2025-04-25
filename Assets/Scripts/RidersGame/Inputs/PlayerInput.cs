@@ -1,15 +1,21 @@
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using RidersCore.Data;
+using UnityEngine;
 
-namespace RidersCore
+namespace RidersCore.Input
 {
+    [RequireComponent(typeof(UnityEngine.InputSystem.PlayerInput))]
     public class PlayerInput : BaseInput
     {
-        public InputActionAsset m_playerInput;
+        InputActionAsset m_playerInput;
         public string m_inputMapName = "Player";
         ActorInputData currentFrameInputData = new();
 
+        void Start()
+        {
+            m_playerInput = GetComponent<UnityEngine.InputSystem.PlayerInput>().actions;
+        }
         void Update()
         {
             currentFrameInputData = PollEveryRideInput();
@@ -19,26 +25,37 @@ namespace RidersCore
         {
             Dictionary<string, float> inputValues = new();
 
-            foreach (InputAction action in m_playerInput.FindActionMap("Player").actions)
+            foreach (InputAction action in m_playerInput.FindActionMap(m_inputMapName).actions)
             {
                 // Ignore pause
-                if (action.name == "PauseButton")
+                if (action.name == ButtonNamesShort.PauseButton)
                     continue;
 
                 if (action.type == InputActionType.Button)
                 {
                     // Special handle for Jump
-                    if (action.name == "Jump")
+                    if (action.name == ButtonNamesShort.Jump)
                     {
-                        inputValues["Jump"] = action.WasReleasedThisFrame() ? 1 : 0;
-                        inputValues["JumpHoldDuration"] = true switch
+                        if (action.WasPressedThisFrame())
                         {
-                            true when action.WasPressedThisFrame() => 0,
-                            true when action.WasReleasedThisFrame() => currentFrameInputData.JumpHoldDuration,
-                            true when action.IsPressed() => currentFrameInputData.JumpHoldDuration + 1,
-                            true when !action.IsPressed() => 0,
-                            _ => 0
-                        };
+                            inputValues[ButtonNamesShort.Jump] = 0;
+                            inputValues[InputNameSpecial.JumpHoldDuration] = 0;
+                        }
+                        else if (action.WasReleasedThisFrame())
+                        {
+                            inputValues[ButtonNamesShort.Jump] = 1;
+                            inputValues[InputNameSpecial.JumpHoldDuration] = currentFrameInputData.JumpHoldDuration;
+                        }
+                        else if (action.IsPressed())
+                        {
+                            inputValues[ButtonNamesShort.Jump] = 0;
+                            inputValues[InputNameSpecial.JumpHoldDuration] = currentFrameInputData.JumpHoldDuration + 1;
+                        }
+                        else
+                        {
+                            inputValues[ButtonNamesShort.Jump] = 0;
+                            inputValues[InputNameSpecial.JumpHoldDuration] = 0;
+                        }
                     }
                     else
                     {
@@ -54,21 +71,22 @@ namespace RidersCore
             // Convert to actor input data
             return new ActorInputData
             {
-                Accelerate = inputValues["Accelerate"],
-                Brake = inputValues["Brake"],
-                TurnInput = inputValues["Horizontal"],
+                Accelerate = inputValues[ButtonNamesShort.Accelerate],
+                Brake = inputValues[ButtonNamesShort.Brake],
+                TurnInput = inputValues[ButtonNamesShort.TurnInput],
 
-                Jump = inputValues["Jump"] > 0,
-                JumpHoldDuration = inputValues["JumpHoldDuration"],
-                StuntA = inputValues["Trick Button A"] > 0,
-                StuntB = inputValues["Trick Button B"] > 0,
-                StuntC = inputValues["Trick Button C"] > 0,
+                Jump = inputValues[ButtonNamesShort.Jump] > 0,
+                JumpHoldDuration = inputValues[InputNameSpecial.JumpHoldDuration],
+                StuntA = inputValues[StuntButtonNamesShort.StuntA] > 0,
+                StuntB = inputValues[StuntButtonNamesShort.StuntB] > 0,
+                StuntC = inputValues[StuntButtonNamesShort.StuntC] > 0,
 
-                Drift = inputValues["Drift"] > 0,
-                BoostRam = inputValues["Boost/Ram"] > 0,
+                Drift = inputValues[ButtonNamesShort.Drift] > 0,
+                BoostRam = inputValues[ButtonNamesShort.BoostRam] > 0,
             };
         }
 
         public override ActorInputData GrabCurrentFrameInputs() => currentFrameInputData;
     }
+
 }

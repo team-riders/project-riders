@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Splines;
 using Unity.Mathematics;
 
-namespace RidersCore
+namespace RidersCore.VehicleSystem
 {
     public class GrindBehaviour : MonoBehaviour
     {

@@ -1,7 +1,7 @@
 using UnityEngine;
 using RidersCore.Data;
 
-namespace RidersCore
+namespace RidersCore.Input
 {
     public interface IInput
     {
@@ -15,4 +15,5 @@ namespace RidersCore
         // The AI Will have it's own "AIInput" class that will implement this interface.
         public abstract ActorInputData GrabCurrentFrameInputs();
     }
+
 }

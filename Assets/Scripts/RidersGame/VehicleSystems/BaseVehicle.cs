@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using RidersCore.Data;
+using RidersCore.Input;
 
-namespace RidersCore
+namespace RidersCore.VehicleSystem
 {
     public class BaseVehicle : MonoBehaviour
     {
@@ -10,7 +11,7 @@ namespace RidersCore
         [System.Serializable]
         public class StatPowerup
         {
-            public VehicleStats modifiers;
+            public BaseVehicle.Stats modifiers;
             public string PowerUpID;
             public float ElapsedTime;
             public float MaxTime;
@@ -19,6 +20,71 @@ namespace RidersCore
         [Header("Vehicle Type")]
         public VehicleType VehicleType;
 
+        [System.Serializable]
+        public struct Stats
+        {
+            // figure out what stats we need
+            // currently just copy+pasting from microgame
+            [Header("Movement Settings")]
+            [Min(0.001f), Tooltip("Top speed attainable when moving forward.")]
+            public float TopSpeed;
+
+            [Tooltip("How quickly the kart reaches top speed.")]
+            public float Acceleration;
+
+            [Min(0.001f), Tooltip("Top speed attainable when moving backward.")]
+            public float ReverseSpeed;
+
+            [Tooltip("How quickly the kart reaches top speed, when moving backward.")]
+            public float ReverseAcceleration;
+
+            [Tooltip("How quickly the kart starts accelerating from 0. A higher number means it accelerates faster sooner.")]
+            [Range(0.2f, 1)]
+            public float AccelerationCurve;
+
+            [Tooltip("How quickly the kart slows down when the brake is applied.")]
+            public float Braking;
+
+            [Tooltip("How quickly the kart will reach a full stop when no inputs are made.")]
+            public float CoastingDrag;
+
+            [Range(0.0f, 1.0f)]
+            [Tooltip("The amount of side-to-side friction.")]
+            public float Grip;
+
+            [Tooltip("How tightly the kart can turn left or right.")]
+            public float Steer;
+
+            [Tooltip("Additional gravity for when the kart is in the air.")]
+            public float AddedGravity;
+
+            //additions
+            [Tooltip("Additional top speed when activating Boost")]
+            public float BoostTopSpeed;
+
+            [Tooltip("Additional acceleration immediately after Boost")]
+            public float BoostAccel;
+
+
+            // allow for stat adding for powerups.
+            public static Stats operator +(Stats a, Stats b)
+            {
+                return new Stats
+                {
+                    Acceleration = a.Acceleration + b.Acceleration,
+                    AccelerationCurve = a.AccelerationCurve + b.AccelerationCurve,
+                    Braking = a.Braking + b.Braking,
+                    CoastingDrag = a.CoastingDrag + b.CoastingDrag,
+                    AddedGravity = a.AddedGravity + b.AddedGravity,
+                    Grip = a.Grip + b.Grip,
+                    ReverseAcceleration = a.ReverseAcceleration + b.ReverseAcceleration,
+                    ReverseSpeed = a.ReverseSpeed + b.ReverseSpeed,
+                    TopSpeed = a.TopSpeed + b.TopSpeed,
+                    Steer = a.Steer + b.Steer,
+                };
+            }
+        }
+
         public Rigidbody Rigidbody { get; private set; }
         public ActorInputData Input { get; private set; }
         public float AirPercent { get; private set; }
@@ -26,7 +92,7 @@ namespace RidersCore
 
         // figure out methods we need, refer to ArcadeKart.cs from karting microgame as startpoint
 
-        public VehicleStats baseStats = new VehicleStats
+        public BaseVehicle.Stats baseStats = new BaseVehicle.Stats
         {
             TopSpeed = 50f,
             Acceleration = 10f,
@@ -104,6 +170,8 @@ namespace RidersCore
         // CHANGE LATER
         public bool WantsToDrift { get; private set; } = false;
         public bool IsDrifting { get; private set; } = false;
+        public bool WantsToJump { get; set; } = false;
+        public float WantsToJumpHold { get; set; } = 0.0f;
         float m_CurrentGrip = 1.0f;
         float m_DriftTurningPower = 0.0f;
         float m_PreviousGroundPercent = 1.0f;
@@ -111,22 +179,31 @@ namespace RidersCore
         readonly List<(WheelCollider wheel, float horizontalOffset, float rotation, ParticleSystem sparks)> m_DriftSparkInstances = new List<(WheelCollider, float, float, ParticleSystem)>();
 
         // can the kart move?
-        bool m_CanMove = true;
+        public bool m_CanMove = true;
         List<StatPowerup> m_ActivePowerupList = new List<StatPowerup>();
-        VehicleStats m_FinalStats;
+        BaseVehicle.Stats m_FinalStats;
 
         Quaternion m_LastValidRotation;
         Vector3 m_LastValidPosition;
         Vector3 m_LastCollisionNormal;
         bool m_HasCollision;
-        bool m_InAir = false;
+        public bool m_InAir = false;
 
         //jumping stuff
         [Header("Jump")]
         [Range(0.1f, 1.0f), Tooltip("Stores charge amount for jumping on ramps; helps determine ramp jump height, directly correlates to trick speed")]
         float JumpCharge;
         [Tooltip("Stores jump force")]
-        public float JumpForce = 100.0f;
+        public float JumpForce = 150.0f;
+
+        #region State Machine Variables
+
+        public MovementStateMachine StateMachine { get; set; }
+        public MovementGroundState GroundState { get; set; }
+        public MovementAirState AirState { get; set; }
+        public MovementGrindState GrindState { get; set; }
+
+        #endregion
 
         // methods
         public void AddPowerup(StatPowerup statPowerup) => m_ActivePowerupList.Add(statPowerup);
@@ -175,8 +252,17 @@ namespace RidersCore
             }
         }
 
+        private void Awake()
+        {
+            StateMachine = new MovementStateMachine();
+
+            GroundState = new MovementGroundState(this, StateMachine);
+            AirState = new MovementAirState(this, StateMachine);
+            GrindState = new MovementGrindState(this, StateMachine);
+        }
+
         //make virtual?
-        void Awake()
+        void Start()
         {
             Rigidbody = GetComponent<Rigidbody>();
             m_Inputs = GetComponents<IInput>();
@@ -185,8 +271,7 @@ namespace RidersCore
 
             SetCenterOfMass();
 
-            // previously initialised in karting microgame by FixedUpdates() calling TickPowerups()
-            //m_FinalStats = baseStats;
+            StateMachine.Initialise(GroundState);
 
             // add to child classes instead
 
@@ -220,11 +305,16 @@ namespace RidersCore
         //    m_DriftSparkInstances.Add((wheel, horizontalOffset, -rotation, spark));
         //}
 
-        //make virtual?
-        void FixedUpdate()
+        private void Update()
         {
             GatherInputs();
 
+            StateMachine.CurrentMovementState.FrameUpdate();
+        }
+
+        //make virtual?
+        void FixedUpdate()
+        {
             // maybe later
             // apply our powerups to create our finalStats
             TickPowerups();
@@ -254,16 +344,32 @@ namespace RidersCore
             AirPercent = 1 - GroundPercent;
 
             // apply vehicle physics
-            if (m_CanMove)
-            {
-                //Debug.Log("Input.Jump.WasReleasedThisFrame: " + Input.Jump);
-                MoveVehicle(Input.Accelerate == 1, Input.Brake == 1, Input.TurnInput, Input.Jump, Input.JumpHoldDuration);
-            }
-            GroundAirbourne();
+            //if (m_CanMove)
+            //{
+            //    //Debug.Log("Input.Jump.WasReleasedThisFrame: " + Input.Jump);
+            //    MoveVehicle(Input.Accelerate == 1, Input.Brake == 1, Input.TurnInput, WantsToJump, WantsToJumpHold);
+            //}
+            //GroundAirbourne();
+
+            StateMachine.CurrentMovementState.PhysicsUpdate();
+
+            CheckGround();
 
             m_PreviousGroundPercent = GroundPercent;
 
             UpdateDriftVFXOrientation();
+        }
+
+        void CheckGround()
+        {
+            if (GroundPercent > 0.0f)
+            {
+                m_InAir = false;
+            }
+            else
+            {
+                m_InAir = true;
+            }
         }
 
         void SetCenterOfMass()
@@ -308,6 +414,11 @@ namespace RidersCore
             {
                 Input = m_Inputs[i].GrabCurrentFrameInputs();
                 WantsToDrift = Input.Brake == 1 && Vector3.Dot(Rigidbody.linearVelocity, transform.forward) > 0.0f;
+                if (Input.Jump)
+                {
+                    WantsToJump = true;
+                    WantsToJumpHold = Input.JumpHoldDuration;
+                }
             }
         }
 
@@ -318,7 +429,7 @@ namespace RidersCore
             m_ActivePowerupList.RemoveAll((p) => { return p.ElapsedTime > p.MaxTime; });
 
             // zero out powerups before we add them all up
-            var powerups = new VehicleStats();
+            var powerups = new Stats();
 
             // add up all our powerups
             for (int i = 0; i < m_ActivePowerupList.Count; i++)
@@ -339,7 +450,7 @@ namespace RidersCore
             m_FinalStats.Grip = Mathf.Clamp(m_FinalStats.Grip, 0, 1);
         }
 
-        void GroundAirbourne()
+        public void GroundAirbourne()
         {
             // while in the air, fall faster
             if (AirPercent >= 1)
@@ -392,8 +503,31 @@ namespace RidersCore
             }
         }
 
+        //jump management
+        // should be satisfactory until we add ramps
+        float Jump(float jumpHold, bool jump, float maxSpeed)
+        {
+            if (jumpHold > 0 && GroundPercent > 0.0f)
+            {
+                JumpCharge = Mathf.Clamp(jumpHold / 120f, 0.5f, 1.0f);
+                Debug.Log("JumpCharge: " + JumpCharge);
+                if (jumpHold > 180)
+                {
+                    maxSpeed *= 0.5f;
+                }
+            }
+            if (jump && GroundPercent > 0.0f)
+            {
+                Debug.Log("JumpForce * JumpCharge: " + JumpForce * JumpCharge);
+                Rigidbody.AddForce(Vector3.up * (JumpForce * JumpCharge), ForceMode.Impulse);
+                WantsToJump = false;
+                WantsToJumpHold = 0.0f;
+            }
+            return maxSpeed;
+        }
+
         //make virtual?
-        void MoveVehicle(bool accelerate, bool brake, float turnInput, bool jump, float jumpHold)
+        public void MoveVehicle(bool accelerate, bool brake, float turnInput, bool jump, float jumpHold)
         {
             float accelInput = (accelerate ? 1.0f : 0.0f) - (brake ? 1.0f : 0.0f);
             //Debug.Log("accelInput: " + accelInput);
@@ -431,6 +565,9 @@ namespace RidersCore
             Quaternion turnAngle = Quaternion.AngleAxis(turningPower, transform.up);
             Vector3 fwd = turnAngle * transform.forward;
             Vector3 movement = fwd * accelInput * finalAcceleration * ((m_HasCollision || GroundPercent > 0.0f) ? 1.0f : 0.0f);
+
+            //jump
+            maxSpeed = Jump(jumpHold, jump, maxSpeed);
 
             // forward movement
             bool wasOverMaxSpeed = currentSpeed >= maxSpeed;
@@ -579,16 +716,8 @@ namespace RidersCore
                 m_LastValidRotation.eulerAngles = new Vector3(0.0f, transform.rotation.y, 0.0f);
             }
 
-            //jump management
-            // should be satisfactory until we add ramps
-            if (jump && GroundPercent > 0.0f)
-            {
-                Rigidbody.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
-                JumpCharge = Mathf.Clamp(jumpHold / 120f, 0.1f, 1.0f);
-                Debug.Log("JumpCharge: " + JumpCharge);
-            }
-
             ActivateDriftVFX(IsDrifting && GroundPercent > 0.0f);
         }
     }
+
 }

@@ -4,6 +4,8 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using RidersCore.Data;
+using RidersCore.Input;
+using RidersCore.DebugTools;
 
 namespace RidersCore.Analytics
 {

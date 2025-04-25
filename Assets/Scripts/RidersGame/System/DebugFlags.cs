@@ -1,8 +1,9 @@
 using System.IO;
 using System.Reflection;
 using UnityEngine;
+using RidersCore.Data;
 
-namespace RidersCore
+namespace RidersCore.DebugTools
 {
     public class DebugFlags : MonoBehaviour
     {
@@ -18,7 +19,7 @@ namespace RidersCore
             // Then in other scripts, you can access the state with DebugFlags.Instance.Name
         }
 
-        public string DebugInputMapName = "Debug";
+        public string DebugInputMapName = InputMap.Debug;
 
         [Header("Debug Toggles")]
         public bool allowSavingInputHistoryToFile = false;
@@ -27,9 +28,9 @@ namespace RidersCore
         {
             get
             {
-                string configDir = Path.Combine(Application.dataPath, "Config");
+                string configDir = Path.Combine(Application.dataPath, Paths.Config);
                 if (!Directory.Exists(configDir)) Directory.CreateDirectory(configDir);
-                return Path.Combine(configDir, "debug_flags.json");
+                return Path.Combine(configDir, FileNames.DebugFlags);
             }
         }
 
@@ -107,4 +108,5 @@ namespace RidersCore
             Debug.Log($"[DebugFlags] Loaded toggles from: {ConfigPath}");
         }
     }
+
 }
