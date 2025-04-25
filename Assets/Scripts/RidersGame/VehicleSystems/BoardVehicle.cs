@@ -5,7 +5,7 @@ namespace RidersRuntime.VehicleSystem
     class BoardVehicle : BaseVehicle
     {
         //// replace base stats
-        //public new BaseVehicle.Stats baseStats = new BaseVehicle.Stats
+        //public new VehicleStats baseStats = new VehicleStats
         //{
         //    TopSpeed = 50f,
         //    Acceleration = 10f,

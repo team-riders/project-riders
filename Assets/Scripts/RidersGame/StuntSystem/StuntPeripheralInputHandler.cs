@@ -1,9 +1,8 @@
+using RidersRuntime.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using RidersRuntime.Data;
-using RidersRuntime.Input;
 // Sole duty of this is to convert inputs into frame data to send to the stunt system
 namespace RidersRuntime.StuntSystem
 {

@@ -1,19 +1,17 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using RidersRuntime.Data;
 
 namespace RidersRuntime.StuntSystem
 {
     public class StuntSystem : MonoBehaviour
     {
-        VehicleType currentVehicleType;
+        // VehicleType currentVehicleType;
 
         StuntDatabase stuntDatabase;
 
         void Start()
         {
-            currentVehicleType = VehicleType.Skateboard;
+            // currentVehicleType = VehicleType.Skateboard;
             PopulateStunts();
         }
 

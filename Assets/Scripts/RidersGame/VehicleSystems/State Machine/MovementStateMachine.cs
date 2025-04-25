@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace RidersRuntime.VehicleSystem
 {
     public class MovementStateMachine

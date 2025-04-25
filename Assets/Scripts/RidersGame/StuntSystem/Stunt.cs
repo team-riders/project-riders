@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using StuntKeys = RidersRuntime.Data.StuntButtonNamesShort;
+using StuntKeys = RidersRuntime.Input.StuntButtonNamesShort;
 
 namespace RidersRuntime.StuntSystem
 {

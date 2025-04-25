@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-using UnityEngine;
 using RidersRuntime.Data;
 using RidersRuntime.Input;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace RidersRuntime.VehicleSystem
 {
@@ -11,7 +11,7 @@ namespace RidersRuntime.VehicleSystem
         [System.Serializable]
         public class StatPowerup
         {
-            public BaseVehicle.Stats modifiers;
+            public VehicleStats modifiers;
             public string PowerUpID;
             public float ElapsedTime;
             public float MaxTime;
@@ -20,71 +20,6 @@ namespace RidersRuntime.VehicleSystem
         [Header("Vehicle Type")]
         public VehicleType VehicleType;
 
-        [System.Serializable]
-        public struct Stats
-        {
-            // figure out what stats we need
-            // currently just copy+pasting from microgame
-            [Header("Movement Settings")]
-            [Min(0.001f), Tooltip("Top speed attainable when moving forward.")]
-            public float TopSpeed;
-
-            [Tooltip("How quickly the kart reaches top speed.")]
-            public float Acceleration;
-
-            [Min(0.001f), Tooltip("Top speed attainable when moving backward.")]
-            public float ReverseSpeed;
-
-            [Tooltip("How quickly the kart reaches top speed, when moving backward.")]
-            public float ReverseAcceleration;
-
-            [Tooltip("How quickly the kart starts accelerating from 0. A higher number means it accelerates faster sooner.")]
-            [Range(0.2f, 1)]
-            public float AccelerationCurve;
-
-            [Tooltip("How quickly the kart slows down when the brake is applied.")]
-            public float Braking;
-
-            [Tooltip("How quickly the kart will reach a full stop when no inputs are made.")]
-            public float CoastingDrag;
-
-            [Range(0.0f, 1.0f)]
-            [Tooltip("The amount of side-to-side friction.")]
-            public float Grip;
-
-            [Tooltip("How tightly the kart can turn left or right.")]
-            public float Steer;
-
-            [Tooltip("Additional gravity for when the kart is in the air.")]
-            public float AddedGravity;
-
-            //additions
-            [Tooltip("Additional top speed when activating Boost")]
-            public float BoostTopSpeed;
-
-            [Tooltip("Additional acceleration immediately after Boost")]
-            public float BoostAccel;
-
-
-            // allow for stat adding for powerups.
-            public static Stats operator +(Stats a, Stats b)
-            {
-                return new Stats
-                {
-                    Acceleration = a.Acceleration + b.Acceleration,
-                    AccelerationCurve = a.AccelerationCurve + b.AccelerationCurve,
-                    Braking = a.Braking + b.Braking,
-                    CoastingDrag = a.CoastingDrag + b.CoastingDrag,
-                    AddedGravity = a.AddedGravity + b.AddedGravity,
-                    Grip = a.Grip + b.Grip,
-                    ReverseAcceleration = a.ReverseAcceleration + b.ReverseAcceleration,
-                    ReverseSpeed = a.ReverseSpeed + b.ReverseSpeed,
-                    TopSpeed = a.TopSpeed + b.TopSpeed,
-                    Steer = a.Steer + b.Steer,
-                };
-            }
-        }
-
         public Rigidbody Rigidbody { get; private set; }
         public ActorInputData Input { get; private set; }
         public float AirPercent { get; private set; }
@@ -92,7 +27,7 @@ namespace RidersRuntime.VehicleSystem
 
         // figure out methods we need, refer to ArcadeKart.cs from karting microgame as startpoint
 
-        public BaseVehicle.Stats baseStats = new BaseVehicle.Stats
+        public VehicleStats baseStats = new()
         {
             TopSpeed = 50f,
             Acceleration = 10f,
@@ -181,7 +116,7 @@ namespace RidersRuntime.VehicleSystem
         // can the kart move?
         public bool m_CanMove = true;
         List<StatPowerup> m_ActivePowerupList = new List<StatPowerup>();
-        BaseVehicle.Stats m_FinalStats;
+        VehicleStats m_FinalStats;
 
         Quaternion m_LastValidRotation;
         Vector3 m_LastValidPosition;
@@ -429,7 +364,7 @@ namespace RidersRuntime.VehicleSystem
             m_ActivePowerupList.RemoveAll((p) => { return p.ElapsedTime > p.MaxTime; });
 
             // zero out powerups before we add them all up
-            var powerups = new Stats();
+            var powerups = new VehicleStats();
 
             // add up all our powerups
             for (int i = 0; i < m_ActivePowerupList.Count; i++)

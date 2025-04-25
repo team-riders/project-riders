@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using UnityEngine.InputSystem;
-using RidersRuntime.Data;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace RidersRuntime.Input
 {

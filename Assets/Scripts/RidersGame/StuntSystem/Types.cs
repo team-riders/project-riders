@@ -1,5 +1,5 @@
+using RidersRuntime.Input;
 using System.Collections.Generic;
-using RidersRuntime.Data;
 
 namespace RidersRuntime.StuntSystem
 {

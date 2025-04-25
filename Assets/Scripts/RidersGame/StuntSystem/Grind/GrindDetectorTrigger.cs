@@ -1,7 +1,7 @@
+using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
-using Unity.Mathematics;
-using System.Collections.Generic;
 
 namespace RidersRuntime.VehicleSystem
 {

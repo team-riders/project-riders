@@ -1,5 +1,4 @@
 using UnityEngine;
-using RidersRuntime.Data;
 
 namespace RidersRuntime.Input
 {

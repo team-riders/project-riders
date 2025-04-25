@@ -7,23 +7,27 @@ using System;
 namespace RidersRuntime.Data
 {
     [Serializable]
-    public struct InputFrameRecord
-    {
-        public int Frame;
-        public ActorInputData Input;
-
-        public InputFrameRecord(int frame, ActorInputData input)
-        {
-            Frame = frame;
-            Input = input;
-        }
-    }
-
-    [Serializable]
     public struct RacerInformation
     {
         public int VehicleSelected;
         public int CharacterSelected;
         public bool IsPlayer;
+    }
+
+    public enum VehicleType
+    {
+        Skateboard,
+        Blades,
+        Bike
+    }
+
+    public struct Paths
+    {
+        public const string Config = "Config/";
+    }
+
+    public struct FileNames
+    {
+        public const string DebugFlags = "debug_flags.json";
     }
 }
