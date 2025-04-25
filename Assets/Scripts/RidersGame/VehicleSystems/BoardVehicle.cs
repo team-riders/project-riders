@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace RidersCore.VehicleSystem
+namespace RidersRuntime.VehicleSystem
 {
     class BoardVehicle : BaseVehicle
     {

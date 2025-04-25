@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 
-namespace RidersCore.UI
+namespace RidersRuntime.UI
 {
     // Need to rework soon to decouple AWAY from the vehicle
     public class BaseVehicleDebug : MonoBehaviour

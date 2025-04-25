@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace RidersCore.Data
+namespace RidersRuntime.Data
 {
     [System.Serializable]
     public struct VehicleStats

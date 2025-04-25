@@ -3,7 +3,7 @@ using UnityEngine.Splines;
 using Unity.Mathematics;
 using System.Collections.Generic;
 
-namespace RidersCore.VehicleSystem
+namespace RidersRuntime.VehicleSystem
 {
     [RequireComponent(typeof(PlayerGrind))]
     public class GrindDetectorTrigger : MonoBehaviour

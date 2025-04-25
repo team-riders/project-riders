@@ -4,7 +4,7 @@ using System;
   * Try to keep UnityEngine references out of here. 
 */
 
-namespace RidersCore.Data
+namespace RidersRuntime.Data
 {
     [Serializable]
     public struct InputFrameRecord

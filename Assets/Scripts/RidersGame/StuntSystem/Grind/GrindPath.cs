@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Splines;
 
-namespace RidersCore.VehicleSystem
+namespace RidersRuntime.VehicleSystem
 {
 
     [RequireComponent(typeof(SplineContainer))]

@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using RidersCore.Data;
-using RidersCore.Input;
+using RidersRuntime.Data;
+using RidersRuntime.Input;
 // Sole duty of this is to convert inputs into frame data to send to the stunt system
-namespace RidersCore.StuntSystem
+namespace RidersRuntime.StuntSystem
 {
     [RequireComponent(typeof(PlayerInput))]
     [RequireComponent(typeof(StuntSystem))]

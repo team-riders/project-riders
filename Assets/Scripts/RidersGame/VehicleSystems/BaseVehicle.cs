@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
-using RidersCore.Data;
-using RidersCore.Input;
+using RidersRuntime.Data;
+using RidersRuntime.Input;
 
-namespace RidersCore.VehicleSystem
+namespace RidersRuntime.VehicleSystem
 {
     public class BaseVehicle : MonoBehaviour
     {

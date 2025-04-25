@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using RidersCore.Data;
+using RidersRuntime.Data;
 
-namespace RidersCore.StuntSystem
+namespace RidersRuntime.StuntSystem
 {
     public class StuntSystem : MonoBehaviour
     {

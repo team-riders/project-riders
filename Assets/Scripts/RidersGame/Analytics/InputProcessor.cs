@@ -3,11 +3,11 @@ using System.IO;
 using System.Text;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using RidersCore.Data;
-using RidersCore.Input;
-using RidersCore.DebugTools;
+using RidersRuntime.Data;
+using RidersRuntime.Input;
+using RidersRuntime.DebugTools;
 
-namespace RidersCore.Analytics
+namespace RidersRuntime.Analytics
 {
     // For JSON serialisation
     [System.Serializable]

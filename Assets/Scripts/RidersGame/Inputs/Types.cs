@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RidersCore.Data
+namespace RidersRuntime.Data
 {
     [System.Serializable]
     public struct ActorInputData

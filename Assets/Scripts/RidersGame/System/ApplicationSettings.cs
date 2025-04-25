@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace RidersCore
+namespace RidersRuntime
 {
     public class ApplicationSettings : MonoBehaviour
     {

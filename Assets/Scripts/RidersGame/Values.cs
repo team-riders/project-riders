@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using RidersCore.Data;
+using RidersRuntime.Data;
 
-namespace RidersCore.StuntSystem
+namespace RidersRuntime.StuntSystem
 {
     public static class Values
     {

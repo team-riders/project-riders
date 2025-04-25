@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using StuntKeys = RidersCore.Data.StuntButtonNamesShort;
+using StuntKeys = RidersRuntime.Data.StuntButtonNamesShort;
 
-namespace RidersCore.StuntSystem
+namespace RidersRuntime.StuntSystem
 {
 
     public struct FrameKeyData

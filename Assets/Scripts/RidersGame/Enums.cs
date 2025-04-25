@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace RidersCore.Data
+namespace RidersRuntime.Data
 {
     public enum VehicleType
     {

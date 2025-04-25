@@ -1,7 +1,7 @@
 using UnityEngine;
-using RidersCore.Data;
+using RidersRuntime.Data;
 
-namespace RidersCore.Input
+namespace RidersRuntime.Input
 {
     public interface IInput
     {

@@ -2,9 +2,9 @@ using UnityEngine;
 using UnityEngine.Splines;
 using Unity.Mathematics;
 
-using RidersCore.Input;
+using RidersRuntime.Input;
 
-namespace RidersCore.VehicleSystem
+namespace RidersRuntime.VehicleSystem
 {
     [RequireComponent(typeof(BaseVehicle))]
     [RequireComponent(typeof(GrindDetectorTrigger))]

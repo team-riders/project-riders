@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
-using RidersCore.Data;
+using RidersRuntime.Data;
 using UnityEngine;
 
-namespace RidersCore.Input
+namespace RidersRuntime.Input
 {
     [RequireComponent(typeof(UnityEngine.InputSystem.PlayerInput))]
     public class PlayerInput : BaseInput

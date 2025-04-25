@@ -1,9 +1,9 @@
 using System.IO;
 using System.Reflection;
 using UnityEngine;
-using RidersCore.Data;
+using RidersRuntime.Data;
 
-namespace RidersCore.DebugTools
+namespace RidersRuntime.DebugTools
 {
     public class DebugFlags : MonoBehaviour
     {

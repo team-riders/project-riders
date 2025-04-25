@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace RidersCore.DebugTools
+namespace RidersRuntime.DebugTools
 {
 
     [DisallowMultipleComponent]
