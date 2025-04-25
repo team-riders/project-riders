@@ -6,4 +6,11 @@ public static class Enums
         Blades,
         Bike
     }
+
+    public enum StuntButtons
+    {
+        StuntA,
+        StuntB,
+        StuntC
+    }
 }
