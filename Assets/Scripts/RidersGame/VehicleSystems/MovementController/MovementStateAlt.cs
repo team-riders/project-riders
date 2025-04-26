@@ -28,14 +28,21 @@ namespace RidersRuntime.VehicleSystem
             _refBlackboard.SetValue("GroundPercent", 1.0f);
             _refBlackboard.SetValue("HasCollision", false);
 
-            _refBlackboard.SetValue("IntentVelocity", Vector3.zero);
-            _refBlackboard.SetValue("IntentRotation", Vector3.zero);
+            // _refBlackboard.SetValue("IntentVelocity", Vector3.zero);
+            // _refBlackboard.SetValue("IntentRotation", Vector3.zero);
 
             // Death happens here
             _featureQueue.Process(_refBlackboard);
 
-            intent_velocity = _refBlackboard.GetValue<Vector3>("IntentVelocity");
-            intent_rotation = _refBlackboard.GetValue<Vector3>("IntentRotation");
+            // Everybody will have access to RB anyways and it serves as an intention because 
+            // it doesn't get executed until FixedUpdate is complete.
+
+            // intent_velocity = _refBlackboard.GetValue<Vector3>("IntentVelocity");
+            // intent_rotation = _refBlackboard.GetValue<Vector3>("IntentRotation");
+
+            // Does nothing don't worry about it
+            intent_velocity = Vector3.zero;
+            intent_rotation = Vector3.zero;
         }
 
         public virtual void Setup(VehicleStats stats, Rigidbody rb)

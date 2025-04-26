@@ -10,22 +10,22 @@ namespace RidersRuntime.VehicleSystem
     /// </summary>
     public class AccelerationFeature : IDataPipelineStep<Blackboard>
     {
+        const float accelerationCurveCoeff = 5;
+
         public Blackboard ProcessData(Blackboard blackboard)
         {
             ActorInputData input = blackboard.GetValue<ActorInputData>("InputData");
-            Rigidbody rb = blackboard.GetValue<Rigidbody>("Rigidbody");
+            Rigidbody rigidbody = blackboard.GetValue<Rigidbody>("Rigidbody");
             VehicleStats stats = blackboard.GetValue<VehicleStats>("VehicleStats");
             float Accelerate = input.Accelerate;
             float Brake = input.Brake;
-            Transform currentTransform = rb.transform;
 
-            Vector3 linearVelocity = rb.linearVelocity;
-
+            Transform currentTransform = rigidbody.transform;
+            Vector3 linearVelocity = rigidbody.linearVelocity;
             float accelInput = Accelerate - Brake;
             //Debug.Log("accelInput: " + accelInput);
 
             // manual acceleration curve coefficient scalar
-            float accelerationCurveCoeff = 5;
             Vector3 localVel = currentTransform.InverseTransformVector(linearVelocity);
 
             bool accelDirectionIsFwd = accelInput >= 0;

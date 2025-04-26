@@ -13,7 +13,7 @@ namespace RidersRuntime.VehicleSystem
                 new SteerTurnFeature(),
                 new JumpFeature(),
                 new StopAccelerationPastMaxSpeed(),
-                new ApplyVelocityFeature(),
+                new ScaleToFixedDeltaTime(),
                 new ClampToMaxSpeedOnGroundFeature(),
                 new CoastingFeature(),
                 // // new DriftFeature()
@@ -44,7 +44,7 @@ namespace RidersRuntime.VehicleSystem
         }
     }
 
-    public class ApplyVelocityFeature : IDataPipelineStep<Blackboard>
+    public class ScaleToFixedDeltaTime : IDataPipelineStep<Blackboard>
     {
         public Blackboard ProcessData(Blackboard blackboard)
         {
@@ -54,7 +54,7 @@ namespace RidersRuntime.VehicleSystem
             Vector3 newVelocity = rb.linearVelocity + movement * Time.fixedDeltaTime;
             newVelocity.y = rb.linearVelocity.y;
 
-            blackboard.SetValue("IntentVelocity", newVelocity);
+            rb.linearVelocity = newVelocity;
 
             return blackboard;
         }
@@ -65,18 +65,15 @@ namespace RidersRuntime.VehicleSystem
         public Blackboard ProcessData(Blackboard blackboard)
         {
             Rigidbody rb = blackboard.GetValue<Rigidbody>("Rigidbody");
-            Vector3 newVelocity = blackboard.GetValue<Vector3>("IntentVelocity");
             float maxSpeed = blackboard.GetValue<float>("MaxSpeed");
             float GroundPercent = blackboard.GetValue<float>("GroundPercent");
-
             bool wasOverMaxSpeed = blackboard.GetValue<bool>("WasOverMaxSpeed");
+
             //  clamp max speed if we are on ground
             if (GroundPercent > 0.0f && !wasOverMaxSpeed)
             {
-                newVelocity = Vector3.ClampMagnitude(newVelocity, maxSpeed);
+                rb.linearVelocity = Vector3.ClampMagnitude(rb.linearVelocity, maxSpeed);
             }
-
-            blackboard.SetValue("IntentVelocity", newVelocity);
 
             return blackboard;
         }
@@ -90,17 +87,15 @@ namespace RidersRuntime.VehicleSystem
             ActorInputData input = blackboard.GetValue<ActorInputData>("InputData");
             VehicleStats stats = blackboard.GetValue<VehicleStats>("VehicleStats");
             Rigidbody rb = blackboard.GetValue<Rigidbody>("Rigidbody");
-            Vector3 newVelocity = blackboard.GetValue<Vector3>("IntentVelocity");
             float GroundPercent = blackboard.GetValue<float>("GroundPercent");
 
             float accelInput = input.Accelerate - input.Brake;
 
             if (Mathf.Abs(accelInput) < k_NullInput && GroundPercent > 0.0f)
             {
-                newVelocity = Vector3.MoveTowards(newVelocity, new Vector3(0, rb.linearVelocity.y, 0), Time.fixedDeltaTime * stats.CoastingDrag);
+                float coastingDelta = stats.CoastingDrag * Time.fixedDeltaTime;
+                rb.linearVelocity = Vector3.MoveTowards(rb.linearVelocity, new Vector3(0, rb.linearVelocity.y, 0), coastingDelta);
             }
-
-            blackboard.SetValue("IntentVelocity", newVelocity);
 
             return blackboard;
         }

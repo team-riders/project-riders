@@ -13,25 +13,24 @@ namespace RidersRuntime.VehicleSystem
         public Blackboard ProcessData(Blackboard blackboard)
         {
             ActorInputData input = blackboard.GetValue<ActorInputData>("InputData");
-            Rigidbody rb = blackboard.GetValue<Rigidbody>("Rigidbody");
+            Rigidbody rigidbody = blackboard.GetValue<Rigidbody>("Rigidbody");
             VehicleStats stats = blackboard.GetValue<VehicleStats>("VehicleStats");
-            float finalAcceleration = blackboard.GetValue<float>("FinalAcceleration");
-
-            float turnInput = input.TurnInput;
-            float accelInput = input.Accelerate - input.Brake;
-
-            Transform currentTransform = rb.transform;
-
-            // ? has collision & ground percent can be updated every frame and polled
             bool m_HasCollision = blackboard.GetValue<bool>("HasCollision");
             float GroundPercent = blackboard.GetValue<float>("GroundPercent");
 
+            float finalAcceleration = blackboard.GetValue<float>("FinalAcceleration");
+
+            Transform currentTransform = rigidbody.transform;
+
+            float turnInput = input.TurnInput;
+            float accelInput = input.Accelerate - input.Brake;
 
             float turningPower = turnInput * stats.Steer;
 
             Quaternion turnAngle = Quaternion.AngleAxis(turningPower, currentTransform.up);
             Vector3 fwd = turnAngle * currentTransform.forward;
-            Vector3 movement = ((m_HasCollision || GroundPercent > 0.0f) ? 1.0f : 0.0f) * accelInput * finalAcceleration * fwd;
+            float collisionOrInAir = (m_HasCollision || GroundPercent > 0.0f) ? 1.0f : 0.0f;
+            Vector3 movement = collisionOrInAir * accelInput * finalAcceleration * fwd;
 
             blackboard.SetValue("MovementVector", movement);
             blackboard.SetValue("TurningPower", turningPower);

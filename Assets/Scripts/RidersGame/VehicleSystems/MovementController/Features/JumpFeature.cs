@@ -6,36 +6,42 @@ namespace RidersRuntime.VehicleSystem
 
     public class JumpFeature : IDataPipelineStep<Blackboard>
     {
+        const float JumpForce = 300f;
+        const int JumpBoostHoldFrameThreshold = 180;
+        const float JumpSpeedBoost = 0.5f;
+        const float JumpBoostHoldMaxDuration = 120f;
+        const float JumpChargeMinScale = 0.5f;
+        const float JumpChargeMaxScale = 1.0f;
+
+
         public Blackboard ProcessData(Blackboard blackboard)
         {
             ActorInputData input = blackboard.GetValue<ActorInputData>("InputData");
+            Rigidbody rigidbody = blackboard.GetValue<Rigidbody>("Rigidbody");
+
             float GroundPercent = blackboard.GetValue<float>("GroundPercent");
-            bool WantsToJump = input.Jump;
-            float WantsToHold = input.JumpHoldDuration;
             float maxSpeed = blackboard.GetValue<float>("MaxSpeed");
 
-            // Config
-            float JumpForce = 0;
+            bool WantsToJump = input.Jump;
+            float WantsToHold = input.JumpHoldDuration;
 
-            // Local
+            // We don't deal with any of this crap if we are not on the ground
+            if (GroundPercent <= 0.0f) return blackboard;
+
             float JumpCharge = 0;
 
-
-            if (WantsToHold > 0 && GroundPercent > 0.0f)
+            if (WantsToHold > 0)
             {
-                JumpCharge = Mathf.Clamp(WantsToHold / 120f, 0.5f, 1.0f);
-                Debug.Log("JumpCharge: " + JumpCharge);
-                if (WantsToHold > 180)
+                JumpCharge = Mathf.Clamp(WantsToHold / JumpBoostHoldMaxDuration, JumpChargeMinScale, JumpChargeMaxScale);
+                if (WantsToHold > JumpBoostHoldFrameThreshold)
                 {
-                    maxSpeed *= 0.5f;
+                    maxSpeed *= JumpSpeedBoost;
                 }
             }
-            if (WantsToJump && GroundPercent > 0.0f)
+
+            if (WantsToJump)
             {
-                Debug.Log("JumpForce * JumpCharge: " + JumpForce * JumpCharge);
-                // Rigidbody.AddForce(Vector3.up * (JumpForce * JumpCharge), ForceMode.Impulse);
-
-
+                rigidbody.AddForce(Vector3.up * (JumpForce * JumpCharge), ForceMode.Impulse);
                 blackboard.SetValue("WantsToJump", false);
                 blackboard.SetValue("WantsToHold", 0);
                 blackboard.SetValue("MaxSpeed", maxSpeed);

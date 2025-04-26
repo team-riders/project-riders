@@ -292,11 +292,38 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 7622961024952553118, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: baseStats.TopSpeed
+      value: 7
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7622961024952553118, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2072811018097086297, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 648648521}
   m_SourcePrefab: {fileID: 100100000, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+--- !u!1 &648648520 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2072811018097086297, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+  m_PrefabInstance: {fileID: 618872813}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &648648521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 648648520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fb8aba73ba2f864a9f5e831a5265e13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_VehicleStats: {fileID: 11400000, guid: ce4dee1b77ac3e94b96e9e5dd33149a5, type: 2}
+  isOn: 1
 --- !u!1 &731073346
 GameObject:
   m_ObjectHideFlags: 0

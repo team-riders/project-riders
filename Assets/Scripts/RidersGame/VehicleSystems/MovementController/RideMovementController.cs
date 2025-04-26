@@ -18,6 +18,10 @@ namespace RidersRuntime.VehicleSystem
         public VehicleStatsSO m_VehicleStats;
         public bool isOn = false;
 
+        bool m_HasCollision = false;
+        Vector3 m_LastCollisionNormal = Vector3.zero;
+
+
         Rigidbody m_rb;
         MovementStateMachineAlt m_stateMachine;
         ActorInputData inputIntention;
@@ -36,8 +40,8 @@ namespace RidersRuntime.VehicleSystem
         void DoMovementAndRotation(Vector3 intent_velocity, Vector3 intent_rotation)
         {
             // We have this here if there are certain caps that we need to fix that apply globally
-            m_rb.linearVelocity = intent_velocity;
-            m_rb.angularVelocity = intent_rotation;
+            // m_rb.linearVelocity = intent_velocity;
+            // m_rb.angularVelocity = intent_rotation;
         }
 
         void Update()
@@ -54,6 +58,8 @@ namespace RidersRuntime.VehicleSystem
         void FixedUpdate()
         {
             if (!isOn) return;
+
+
             m_stateMachine.PhysicsUpdate();
         }
 
@@ -82,32 +88,29 @@ namespace RidersRuntime.VehicleSystem
             };
         }
 
-        public Action ConsumeIntention(string key)
-        {
-            switch (key)
-            {
-                case "Jump":
-                    inputIntention.Jump = false;
-                    break;
-                case "StuntA":
-                    inputIntention.StuntA = false;
-                    break;
-                case "StuntB":
-                    inputIntention.StuntB = false;
-                    break;
-                case "StuntC":
-                    inputIntention.StuntC = false;
-                    break;
-                default:
-                    Debug.LogWarning($"Unknown intention key: {key}");
-                    break;
-            }
-            return null;
-        }
 
         public void TurnOn() => isOn = true;
         public void TurnOff() => isOn = false;
         public bool IsOn() => isOn;
 
+
+        #region Collision Detection -----------------------------------
+        void OnCollisionEnter(Collision collision) => m_HasCollision = true;
+        void OnCollisionExit(Collision collision) => m_HasCollision = false;
+
+        void OnCollisionStay(Collision collision)
+        {
+            m_HasCollision = true;
+            m_LastCollisionNormal = Vector3.zero;
+            float dot = -1.0f;
+
+            foreach (var contact in collision.contacts)
+            {
+                if (Vector3.Dot(contact.normal, Vector3.up) > dot)
+                    m_LastCollisionNormal = contact.normal;
+            }
+        }
+        #endregion
     }
+
 }
