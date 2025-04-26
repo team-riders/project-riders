@@ -8004,14 +8004,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: BoardVehicle
       objectReference: {fileID: 0}
-    - target: {fileID: 4430385445409082725, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4448864653755112223, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
-      propertyPath: m_playerInput
-      value: 
-      objectReference: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
     - target: {fileID: 4711103303932495809, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1298.5829
@@ -8051,14 +8043,6 @@ PrefabInstance:
     - target: {fileID: 4711103303932495809, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7622961024952553118, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
-      propertyPath: JumpForce
-      value: 300
-      objectReference: {fileID: 0}
-    - target: {fileID: 7622961024952553118, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
-      propertyPath: GroundLayers.m_Bits
-      value: 115
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
