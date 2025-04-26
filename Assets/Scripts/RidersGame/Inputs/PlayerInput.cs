@@ -4,7 +4,6 @@ using UnityEngine.InputSystem;
 
 namespace RidersRuntime.Input
 {
-    [RequireComponent(typeof(UnityEngine.InputSystem.PlayerInput))]
     public class PlayerInput : BaseInput
     {
         InputActionAsset m_playerInput;
@@ -13,7 +12,18 @@ namespace RidersRuntime.Input
 
         void Start()
         {
-            m_playerInput = GetComponent<UnityEngine.InputSystem.PlayerInput>().actions;
+            // TODO: If it's not present here, we should check the parent as well. 
+            // The board may not necessarily have the Player Input component
+            UnityEngine.InputSystem.PlayerInput playerInput = GetComponent<UnityEngine.InputSystem.PlayerInput>();
+            playerInput = playerInput != null ? playerInput : GetComponentInParent<UnityEngine.InputSystem.PlayerInput>();
+
+            if (playerInput == null)
+            {
+                Debug.LogError("PlayerInput component not found in the GameObject or its parents.");
+                return;
+            }
+
+            m_playerInput = playerInput.actions;
         }
         void Update()
         {
