@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using RidersRuntime.Input;
@@ -8,59 +7,64 @@ namespace RidersRuntime.VehicleSystem
 {
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(BaseInput))]
-    public class RideMovementController : MonoBehaviour
+    public partial class RideMovementController : MonoBehaviour
     {
-        public List<MovementStateAlt> m_states = new()
-        {
-            new GroundMovementState()
-            // Add other states here
-        };
         public VehicleStatsSO m_VehicleStats;
-        public bool isOn = false;
+        public bool canMove = false;
 
-        bool m_HasCollision = false;
-        Vector3 m_LastCollisionNormal = Vector3.zero;
-
-
-        Rigidbody m_rb;
+        Rigidbody m_rigidbody;
         MovementStateMachineAlt m_stateMachine;
         ActorInputData inputIntention;
         IInput m_ActorInputComponent;
+        PowerupController powerupController;
+
+        void DefineStates()
+        {
+            // Ground Movement State
+            GroundMovementState groundMovementState = new();
+            AirborneMovementState airborneMovementState = new();
+
+            List<MovementStateAlt> states = new() { groundMovementState, airborneMovementState };
+
+            m_stateMachine = new MovementStateMachineAlt(states, () => { }, () => SendBlackboard());
+
+            m_stateMachine.AddTransition(groundMovementState, airborneMovementState, () => GroundPercent <= 0f);
+            m_stateMachine.AddTransition(airborneMovementState, groundMovementState, () => GroundPercent > 0f);
+
+            foreach (MovementStateAlt state in states) state.Setup();
+
+            m_stateMachine.ForceTransition(groundMovementState);
+        }
 
         void Start()
         {
-            m_rb = GetComponent<Rigidbody>();
+            m_rigidbody = GetComponent<Rigidbody>();
             m_ActorInputComponent = GetComponent<IInput>();
 
-            foreach (MovementStateAlt state in m_states) state.Setup(m_VehicleStats._vehicleStats, m_rb);
+            powerupController = new(m_VehicleStats._vehicleStats);
 
-            m_stateMachine = new MovementStateMachineAlt(m_states, DoMovementAndRotation);
-        }
-
-        void DoMovementAndRotation(Vector3 intent_velocity, Vector3 intent_rotation)
-        {
-            // We have this here if there are certain caps that we need to fix that apply globally
-            // m_rb.linearVelocity = intent_velocity;
-            // m_rb.angularVelocity = intent_rotation;
+            DefineStates();
         }
 
         void Update()
         {
-            if (!isOn) return;
+            if (!canMove) return;
             ProcessAndBufferIntent();
-            m_stateMachine.CacheInputIntention(inputIntention);
 
-            // Logic processing happens here
-            // TODO: Figure out whether we have the capabilities to change state in the input step
             m_stateMachine.Update();
+            Debug.Log(m_stateMachine.CurrentState.Name);
         }
 
         void FixedUpdate()
         {
-            if (!isOn) return;
-
-
+            if (!canMove) return;
+            PreCalcChecks();
             m_stateMachine.PhysicsUpdate();
+        }
+
+        void PreCalcChecks()
+        {
+            GetGroundedPercent();
         }
 
         void ProcessAndBufferIntent()
@@ -77,7 +81,7 @@ namespace RidersRuntime.VehicleSystem
                 // i.e. Jump will only turn false if 
                 //     1. We are not trying to jump
                 //     2. The "jump" we set up has been consumed (changed to false)
-                Jump = inputIntention.Jump || new_inputs.Jump,
+                Jump = (inputIntention.Jump || new_inputs.Jump) && GroundPercent >= 0.5f,
                 JumpHoldDuration = new_inputs.JumpHoldDuration,
                 StuntA = new_inputs.StuntA,
                 StuntB = new_inputs.StuntB,
@@ -88,29 +92,9 @@ namespace RidersRuntime.VehicleSystem
             };
         }
 
-
-        public void TurnOn() => isOn = true;
-        public void TurnOff() => isOn = false;
-        public bool IsOn() => isOn;
-
-
-        #region Collision Detection -----------------------------------
-        void OnCollisionEnter(Collision collision) => m_HasCollision = true;
-        void OnCollisionExit(Collision collision) => m_HasCollision = false;
-
-        void OnCollisionStay(Collision collision)
-        {
-            m_HasCollision = true;
-            m_LastCollisionNormal = Vector3.zero;
-            float dot = -1.0f;
-
-            foreach (var contact in collision.contacts)
-            {
-                if (Vector3.Dot(contact.normal, Vector3.up) > dot)
-                    m_LastCollisionNormal = contact.normal;
-            }
-        }
-        #endregion
+        public void TurnOn() => canMove = true;
+        public void TurnOff() => canMove = false;
+        public bool IsOn() => canMove;
     }
 
 }

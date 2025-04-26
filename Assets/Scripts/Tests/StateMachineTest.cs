@@ -15,18 +15,20 @@ public class StateMachineTest
         State state2 = new("TestState2");
         State state3 = new("TestState3");
 
-        state.AddTransition(state2, () => condition1);
-        state.AddTransition(state3, () => condition2);
-
-        state2.AddTransition(state, () => condition3);
-        state2.AddTransition(state3, () => condition3, 2);
-        state2.AddTransition(state3, () => condition1);
-
-        state3.AddTransition(state, () => condition2);
-        state3.AddTransition(state2, () => condition2, 2);
-        state3.AddTransition(state2, () => condition1);
-
         stateMachine = new(new() { state, state2, state3 });
+
+        stateMachine.AddTransition(state, state2, () => condition1);
+        stateMachine.AddTransition(state, state3, () => condition2);
+
+        stateMachine.AddTransition(state2, state, () => condition3);
+        stateMachine.AddTransition(state2, state3, () => condition3, 2);
+        stateMachine.AddTransition(state2, state3, () => condition1);
+
+        stateMachine.AddTransition(state3, state, () => condition2);
+        stateMachine.AddTransition(state3, state2, () => condition2, 2);
+        stateMachine.AddTransition(state3, state2, () => condition1);
+
+
     }
 
     [SetUp]

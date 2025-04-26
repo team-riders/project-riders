@@ -24,6 +24,7 @@ public class Blackboard
             return typedValue;
         }
         throw new KeyNotFoundException($"Key '{key}' not found or type mismatch.");
+        return default; // If we want to we can do this instead, but makes it harder to debug
     }
 
     // Check if a key exists
@@ -42,5 +43,13 @@ public class Blackboard
     public void Clear()
     {
         _data.Clear();
+    }
+
+    public void AppendOrOverwrite(Blackboard otherBlackboard)
+    {
+        foreach (var kvp in otherBlackboard._data)
+        {
+            SetValue(kvp.Key, kvp.Value);
+        }
     }
 }

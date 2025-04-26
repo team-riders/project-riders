@@ -17,7 +17,8 @@ namespace RidersRuntime.VehicleSystem
                 new ClampToMaxSpeedOnGroundFeature(),
                 new CoastingFeature(),
                 // // new DriftFeature()
-                new RotateToForwardsFeature()
+                new RotateToForwardsFeature(),
+                new KeepUprightFeature()
             });
         }
     }

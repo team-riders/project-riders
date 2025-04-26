@@ -1,29 +1,24 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
-using RidersRuntime.Input;
 using RidersRuntime.VehicleSystem;
 
 public class MovementStateMachineAlt : StateMachine<MovementStateAlt>
 {
-    private Action<Vector3, Vector3> DoExecute;
-    public MovementStateMachineAlt(List<MovementStateAlt> states, Action<Vector3, Vector3> DoMovementAndRotation) : base(states)
+    private Action DoExecute;
+
+    private Func<Blackboard> _getExternalData;
+    public MovementStateMachineAlt(List<MovementStateAlt> states, Action DoExecute, Func<Blackboard> getExternalData) : base(states)
     {
-        DoExecute = DoMovementAndRotation;
+        this.DoExecute = DoExecute;
+        _getExternalData = getExternalData;
     }
-    ActorInputData inputIntention;
 
     public void PhysicsUpdate()
     {
         if (CurrentState == null) return;
 
-        CurrentState.ComputeIntention(inputIntention, out Vector3 intent_velocity, out Vector3 intent_rotation);
+        CurrentState.ComputeIntention(_getExternalData?.Invoke());
 
-        DoExecute(intent_velocity, intent_rotation);
-    }
-
-    public void CacheInputIntention(ActorInputData intent)
-    {
-        inputIntention = intent;
+        DoExecute?.Invoke();
     }
 }

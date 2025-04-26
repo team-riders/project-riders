@@ -13,7 +13,6 @@ namespace RidersRuntime.VehicleSystem
         const float JumpChargeMinScale = 0.5f;
         const float JumpChargeMaxScale = 1.0f;
 
-
         public Blackboard ProcessData(Blackboard blackboard)
         {
             ActorInputData input = blackboard.GetValue<ActorInputData>("InputData");
@@ -42,8 +41,6 @@ namespace RidersRuntime.VehicleSystem
             if (WantsToJump)
             {
                 rigidbody.AddForce(Vector3.up * (JumpForce * JumpCharge), ForceMode.Impulse);
-                blackboard.SetValue("WantsToJump", false);
-                blackboard.SetValue("WantsToHold", 0);
                 blackboard.SetValue("MaxSpeed", maxSpeed);
             }
 

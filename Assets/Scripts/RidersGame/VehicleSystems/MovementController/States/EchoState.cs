@@ -14,11 +14,9 @@ namespace RidersRuntime.VehicleSystem
             Debug.Log("EchoState OnUpdate called.");
         }
 
-        public override void ComputeIntention(ActorInputData input, out Vector3 intent_velocity, out Vector3 intent_rotation)
+        public override void ComputeIntention(Blackboard blackboard)
         {
             Debug.Log("EchoState ComputeIntention called.");
-            intent_velocity = Vector3.zero;
-            intent_rotation = Vector3.zero;
         }
     }
 }
