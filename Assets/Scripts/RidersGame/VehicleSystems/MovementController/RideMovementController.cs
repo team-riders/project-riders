@@ -23,15 +23,23 @@ namespace RidersRuntime.VehicleSystem
             // Ground Movement State
             GroundMovementState groundMovementState = new();
             AirborneMovementState airborneMovementState = new();
+            GrindingMovementState grindingMovementState = new();
 
-            List<MovementStateAlt> states = new() { groundMovementState, airborneMovementState };
+            List<MovementStateAlt> states = new() { groundMovementState, airborneMovementState, grindingMovementState };
 
             m_stateMachine = new MovementStateMachineAlt(states, () => { }, () => SendBlackboard());
 
             m_stateMachine.AddTransition(groundMovementState, airborneMovementState, () => GroundPercent <= 0f);
             m_stateMachine.AddTransition(airborneMovementState, groundMovementState, () => GroundPercent > 0f);
+            m_stateMachine.AddTransition(airborneMovementState, grindingMovementState,
+                () => m_GrindPathTarget != null && m_rigidbody.linearVelocity.y < grindingMovementState.minimumDownwardSpeed
+            );
 
-            foreach (MovementStateAlt state in states) state.Setup();
+            m_stateMachine.AddTransition(grindingMovementState, airborneMovementState,
+                () => !grindingMovementState.IsGrinding
+            );
+
+            foreach (MovementStateAlt state in states) state.Setup(gameObject);
 
             m_stateMachine.ForceTransition(groundMovementState);
         }
@@ -50,9 +58,10 @@ namespace RidersRuntime.VehicleSystem
         {
             if (!canMove) return;
             ProcessAndBufferIntent();
+            // Some states will depend on this
+            PreCalcChecks();
 
             m_stateMachine.Update();
-            Debug.Log(m_stateMachine.CurrentState.Name);
         }
 
         void FixedUpdate()
@@ -65,6 +74,9 @@ namespace RidersRuntime.VehicleSystem
         void PreCalcChecks()
         {
             GetGroundedPercent();
+            ExecuteExternalPrechecks?.Invoke();
+            // Update the board
+
         }
 
         void ProcessAndBufferIntent()

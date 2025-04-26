@@ -1,7 +1,11 @@
+using UnityEngine;
+
 namespace RidersRuntime.VehicleSystem
 {
     public abstract class MovementStateAlt : State
     {
+        GameObject _parent;
+        protected GameObject Parent => _parent;
         protected Blackboard _refBlackboard;
         protected DataPipleline<IDataPipelineStep<Blackboard>, Blackboard> _featureQueue = new();
         public MovementStateAlt(string name) : base(name)
@@ -22,8 +26,9 @@ namespace RidersRuntime.VehicleSystem
             _featureQueue.Process(_refBlackboard);
         }
 
-        public virtual void Setup()
+        public virtual void Setup(GameObject parent)
         {
+            _parent = parent;
             _refBlackboard.Clear();
         }
     }

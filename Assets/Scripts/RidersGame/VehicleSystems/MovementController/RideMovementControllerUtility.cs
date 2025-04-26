@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using RidersRuntime.Data;
 using UnityEngine;
@@ -11,6 +12,10 @@ namespace RidersRuntime.VehicleSystem
         bool m_HasCollision = false;
         Vector3 m_LastCollisionNormal = Vector3.zero;
         public List<WheelCollider> m_PhysicsWheels;
+
+        Action ExecuteExternalPrechecks;
+
+        GrindPath m_GrindPathTarget;
 
         public float GetMaxSpeed()
         {
@@ -117,7 +122,19 @@ namespace RidersRuntime.VehicleSystem
             blackboard.SetValue("GroundPercent", GroundPercent);
             blackboard.SetValue("HasCollision", m_HasCollision);
             blackboard.SetValue("LastCollisionNormal", m_LastCollisionNormal);
+            blackboard.SetValue("CurrentPath", m_GrindPathTarget);
             return blackboard;
+        }
+
+        public void SetGrindPath(GrindPath path)
+        {
+            m_GrindPathTarget = path;
+        }
+
+        public void AddExternalPrecheck(Action action)
+        {
+            if (action == null) return;
+            ExecuteExternalPrechecks += action;
         }
     }
 }

@@ -87,14 +87,15 @@ public class StateMachine<T> where T : State
 
         // Exit condition
         List<T> validTransitions = GetValidTransitions();
-        if (validTransitions.Count > 0)
-        {
-            Transition(validTransitions[0]);
-        }
-        else if (CurrentState.JustEntered)
+
+        if (CurrentState.JustEntered)
         {
             CurrentState.JustEntered = false;
             CurrentState.OnEnter();
+        }
+        else if (validTransitions.Count > 0)
+        {
+            Transition(validTransitions[0]);
         }
         else
         {

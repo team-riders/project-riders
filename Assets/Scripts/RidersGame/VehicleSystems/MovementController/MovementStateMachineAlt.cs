@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using RidersRuntime.VehicleSystem;
+using UnityEngine;
 
 public class MovementStateMachineAlt : StateMachine<MovementStateAlt>
 {
@@ -18,6 +19,7 @@ public class MovementStateMachineAlt : StateMachine<MovementStateAlt>
         if (CurrentState == null) return;
 
         CurrentState.ComputeIntention(_getExternalData?.Invoke());
+        Debug.Log($"Current State: {CurrentState.Name}");
 
         DoExecute?.Invoke();
     }

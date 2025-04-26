@@ -42,7 +42,13 @@ namespace RidersRuntime.VehicleSystem
             {
                 rigidbody.AddForce(Vector3.up * (JumpForce * JumpCharge), ForceMode.Impulse);
                 blackboard.SetValue("MaxSpeed", maxSpeed);
+                if (blackboard.ContainsKey("GrindPath"))
+                {
+                    blackboard.Remove("GrindPath");
+                }
             }
+
+
 
             return blackboard;
         }
