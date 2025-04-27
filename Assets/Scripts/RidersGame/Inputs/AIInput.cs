@@ -1,16 +1,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using RidersRuntime.VehicleSystem;
 
+namespace RidersRuntime.Input
+{
 public class AIInput : BaseInput
 {
-
+    [SerializeField] private NodePath path;
+    [SerializeField] private float nodeReachThreshold = 3f;
+    [SerializeField] private float nodeCloseThreshold = 5f;
     private BaseVehicle baseVehicle;
     private Vector3 targetPosition;
-    [SerializeField] private NodePath path;
+   
     private int currentNodeIndex = 0;
-    private float nodeReachThreshold = 3f;
-    private float distanceToTarget;
+    public float distanceToTarget;
+    public Transform targetNode;
     void Awake()
     {
         baseVehicle = GetComponent<BaseVehicle>();
@@ -21,7 +26,7 @@ public class AIInput : BaseInput
     {
         if (path == null || path.nodes.Length == 0) return;
 
-        Transform targetNode = path.nodes[currentNodeIndex];
+        targetNode = path.nodes[currentNodeIndex];
         SetTargetPosition(targetNode.position);
         if (Vector3.Distance(baseVehicle.transform.position, targetNode.position) < nodeReachThreshold)
         {
@@ -45,8 +50,8 @@ public class AIInput : BaseInput
         float angleToTarget = Vector3.SignedAngle(forward, diffToTarget, Vector3.up);
 
         float turnInput = Mathf.Clamp(angleToTarget / 45f, -1f, 1f);
-        float accelerate = distanceToTarget > 5f ? 1f : 0f;
-        float brake = distanceToTarget < 3f ? 1f : 0f;
+        float accelerate = distanceToTarget > nodeCloseThreshold ? 1f : 0f;
+        float brake = distanceToTarget < nodeReachThreshold ? 1f : 0f;
         
         return new ActorInputData
         {
@@ -67,8 +72,16 @@ public class AIInput : BaseInput
 
     private bool JumpInput()
     {
-        Node currentNode = path.nodes[currentNodeIndex].GetComponent<Node>();
-        if (currentNode != null && currentNode.isJumpNode && distanceToTarget < 2.5f)
+        Node currentNode;
+        if (currentNodeIndex == 0)
+        {
+        currentNode = path.nodes[currentNodeIndex].GetComponent<Node>();
+        }
+        else 
+        {
+            currentNode = path.nodes[currentNodeIndex - 1].GetComponent<Node>();
+        }
+        if (currentNode != null && currentNode.isJumpNode && distanceToTarget < nodeReachThreshold)
         {
             return true;
         }
@@ -79,4 +92,5 @@ public class AIInput : BaseInput
     }
 
     public override ActorInputData GrabCurrentFrameInputs() => inputData;
+}
 }

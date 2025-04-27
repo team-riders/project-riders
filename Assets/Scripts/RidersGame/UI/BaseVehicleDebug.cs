@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using RidersRuntime.Input;
 
 namespace RidersRuntime.UI
 {
@@ -10,6 +11,7 @@ namespace RidersRuntime.UI
         public TextMeshProUGUI angleText;
 
         Rigidbody rb;
+        AIInput aiRB;
 
         void Start()
         {
