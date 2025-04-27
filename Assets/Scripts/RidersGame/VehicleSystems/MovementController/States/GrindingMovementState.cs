@@ -1,30 +1,34 @@
-using UnityEngine.Splines;
 using UnityEngine;
-using Unity.Mathematics;
 using RidersGame.VehicleSystem;
 
 namespace RidersRuntime.VehicleSystem
 {
     public class GrindingMovementState : MovementStateAlt
     {
-        public float feetOffsetY = 0.9f;
-        public float autoGrindRadius = 1.5f;
-        public float rotationSpeed = 10f;
         public float minimumDownwardSpeed = 0.5f;
-        private float currentProgress;
-
-        [Header("Debug")]
-        public bool showGizmo = true;
-        private GrindDetectorTrigger detector;
-
-        private float progressRate;
-        private float cooldownTimer = 0f;
         private bool isGrinding = false;
 
         private GrindPath currentPath;
 
         public bool IsGrinding => isGrinding && currentPath != null;
-        SplineContainer _path;
+
+        public const float GrindCooldownDuration = 0.5f;
+
+        private float _grindCooldownTimer = 0f;
+
+        public bool CanGrind => _grindCooldownTimer <= 0f;
+
+        public void DoCooldown()
+        {
+            if (_grindCooldownTimer > 0)
+            {
+                _grindCooldownTimer -= Time.fixedDeltaTime;
+            }
+            else if (_grindCooldownTimer < 0)
+            {
+                _grindCooldownTimer = 0;
+            }
+        }
 
         public GrindingMovementState() : base("Grinding Movement State")
         {
@@ -43,6 +47,14 @@ namespace RidersRuntime.VehicleSystem
             base.ComputeIntention(externalBlackboard);
 
             isGrinding = _refBlackboard.GetValue<bool>("IsGrinding");
+            currentPath = _refBlackboard.GetValue<GrindPath>("CurrentPath");
+
+            if (!isGrinding || currentPath == null)
+            {
+                _refBlackboard.SetValue("GrindEntered", false);
+                _refBlackboard.Remove("CurrentPath");
+                return;
+            }
         }
 
         public override void OnEnter()
@@ -56,6 +68,8 @@ namespace RidersRuntime.VehicleSystem
         {
             _refBlackboard.SetValue("GrindEntered", false);
             _refBlackboard.Remove("CurrentPath");
+
+            _grindCooldownTimer = GrindCooldownDuration;
         }
     }
 }

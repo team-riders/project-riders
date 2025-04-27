@@ -32,7 +32,7 @@ namespace RidersRuntime.VehicleSystem
             m_stateMachine.AddTransition(groundMovementState, airborneMovementState, () => GroundPercent <= 0f);
             m_stateMachine.AddTransition(airborneMovementState, groundMovementState, () => GroundPercent > 0f);
             m_stateMachine.AddTransition(airborneMovementState, grindingMovementState,
-                () => m_GrindPathTarget != null && m_rigidbody.linearVelocity.y < grindingMovementState.minimumDownwardSpeed
+                () => m_GrindPathTarget != null && m_rigidbody.linearVelocity.y < grindingMovementState.minimumDownwardSpeed && grindingMovementState.CanGrind
             );
 
             m_stateMachine.AddTransition(grindingMovementState, airborneMovementState,
@@ -40,6 +40,8 @@ namespace RidersRuntime.VehicleSystem
             );
 
             foreach (MovementStateAlt state in states) state.Setup(gameObject);
+
+            AddExternalPrecheck(grindingMovementState.DoCooldown);
 
             m_stateMachine.ForceTransition(groundMovementState);
         }
@@ -60,14 +62,13 @@ namespace RidersRuntime.VehicleSystem
             ProcessAndBufferIntent();
             // Some states will depend on this
             PreCalcChecks();
-
-            m_stateMachine.Update();
         }
 
         void FixedUpdate()
         {
             if (!canMove) return;
             PreCalcChecks();
+            m_stateMachine.Update();
             m_stateMachine.PhysicsUpdate();
         }
 
