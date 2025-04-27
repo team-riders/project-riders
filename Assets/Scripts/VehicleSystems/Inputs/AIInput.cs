@@ -7,16 +7,28 @@ public class AIInput : BaseInput
 
     private BaseVehicle baseVehicle;
     private Vector3 targetPosition;
-    [SerializeField] private Transform targetPositionTransform;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] private NodePath path;
+    private int currentNodeIndex = 0;
+    private float nodeReachThreshold = 3f;
+    private float distanceToTarget;
     void Awake()
     {
         baseVehicle = GetComponent<BaseVehicle>();
     }
     
+    ActorInputData inputData = new();
     void Update()
     {
-        SetTargetPosition(targetPositionTransform.position);
+        if (path == null || path.nodes.Length == 0) return;
+
+        Transform targetNode = path.nodes[currentNodeIndex];
+        SetTargetPosition(targetNode.position);
+        if (Vector3.Distance(baseVehicle.transform.position, targetNode.position) < nodeReachThreshold)
+        {
+            currentNodeIndex = (currentNodeIndex + 1) % path.nodes.Length; // loop path
+            
+        }
+        inputData = FollowNodes();
     }
 
     public void SetTargetPosition(Vector3 targetPosition)
@@ -26,97 +38,45 @@ public class AIInput : BaseInput
 
     ActorInputData FollowNodes()
     {
-        
+        Vector3 diffToTarget = targetPosition - baseVehicle.transform.position;
+        Vector3 forward = baseVehicle.transform.forward;
+
+        distanceToTarget = diffToTarget.magnitude;
+        float angleToTarget = Vector3.SignedAngle(forward, diffToTarget, Vector3.up);
+
+        float turnInput = Mathf.Clamp(angleToTarget / 45f, -1f, 1f);
+        float accelerate = distanceToTarget > 5f ? 1f : 0f;
+        float brake = distanceToTarget < 3f ? 1f : 0f;
         
         return new ActorInputData
         {
-            // Accelerate = ,
-            // Brake = ,
-            // TurnInput = ,
+            Accelerate = accelerate,
+            Brake = brake,
+            TurnInput = turnInput,
 
-            // Jump = ,
-            // JumpHoldDuration = ,
-            // StuntA = ,
-            // StuntB = ,
-            // StuntC = ,
+            Jump = JumpInput(),
+            JumpHoldDuration = 1f,
+            StuntA = false,
+            StuntB = false,
+            StuntC = false,
 
-            // Drift = ,
-            // BoostRam = ,
+            Drift = false,
+            BoostRam = false,
         };
     }
-    public InputActionAsset m_playerInput;
-    public string m_inputMapName = "Player";
-    ActorInputData currentFrameInputData = new();
 
-    // void Update()
-    // {
-    //     currentFrameInputData = PollEveryRideInput();
-    // }
-
-    ActorInputData PollEveryRideInput()
+    private bool JumpInput()
     {
-        Dictionary<string, float> inputValues = new();
-
-        foreach (InputAction action in m_playerInput.FindActionMap("Player").actions)
+        Node currentNode = path.nodes[currentNodeIndex].GetComponent<Node>();
+        if (currentNode != null && currentNode.isJumpNode && distanceToTarget < 2.5f)
         {
-            // Ignore pause
-            if (action.name == "PauseButton")
-                continue;
-
-            if (action.type == InputActionType.Button)
-            {
-                // Special handle for Jump
-                if (action.name == "Jump")
-                {
-                    if (action.WasPressedThisFrame())
-                    {
-                        inputValues["Jump"] = 0;
-                        inputValues["JumpHoldDuration"] = 0;
-                    }
-                    else if (action.WasReleasedThisFrame())
-                    {
-                        inputValues["Jump"] = 1;
-                        inputValues["JumpHoldDuration"] = currentFrameInputData.JumpHoldDuration;
-                    }
-                    else if (action.IsPressed())
-                    {
-                        inputValues["Jump"] = 0;
-                        inputValues["JumpHoldDuration"] = currentFrameInputData.JumpHoldDuration + 1;
-                    }
-                    else
-                    {
-                        inputValues["Jump"] = 0;
-                        inputValues["JumpHoldDuration"] = 0;
-                    }
-                }
-                else
-                {
-                    inputValues.Add(action.name, action.IsPressed() ? 1 : 0);
-                }
-            }
-            else if (action.type == InputActionType.Value)
-            {
-                inputValues.Add(action.name, action.ReadValue<float>());
-            }
+            return true;
         }
-
-        // Convert to actor input data
-        return new ActorInputData
+        else 
         {
-            Accelerate = inputValues["Accelerate"],
-            Brake = inputValues["Brake"],
-            TurnInput = inputValues["Horizontal"],
-
-            Jump = inputValues["Jump"] > 0,
-            JumpHoldDuration = inputValues["JumpHoldDuration"],
-            StuntA = inputValues["Trick Button A"] > 0,
-            StuntB = inputValues["Trick Button B"] > 0,
-            StuntC = inputValues["Trick Button C"] > 0,
-
-            Drift = inputValues["Drift"] > 0,
-            BoostRam = inputValues["Boost/Ram"] > 0,
-        };
+            return false;
+        }
     }
 
-    public override ActorInputData GrabCurrentFrameInputs() => currentFrameInputData;
+    public override ActorInputData GrabCurrentFrameInputs() => inputData;
 }

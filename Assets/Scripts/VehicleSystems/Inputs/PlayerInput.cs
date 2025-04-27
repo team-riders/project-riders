@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine.InputSystem;
 
 public class PlayerInput : BaseInput
@@ -58,8 +59,7 @@ public class PlayerInput : BaseInput
                 inputValues.Add(action.name, action.ReadValue<float>());
             }
         }
-
-        // Convert to actor input data
+        
         return new ActorInputData
         {
             Accelerate = inputValues["Accelerate"],

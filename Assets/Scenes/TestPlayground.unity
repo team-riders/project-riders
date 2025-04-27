@@ -534,6 +534,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 849693883480188513, guid: c29bedcc671fd2e4b908646d8cde5ed0, type: 3}
+      propertyPath: m_playerInput
+      value: 
+      objectReference: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
     - target: {fileID: 2312156548742823514, guid: c29bedcc671fd2e4b908646d8cde5ed0, type: 3}
       propertyPath: m_Name
       value: BikeVehicle
@@ -937,6 +941,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6280224303504895763, guid: c3542badfc9e24f4a8d17a99d4912848, type: 3}
+      propertyPath: m_playerInput
+      value: 
+      objectReference: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
     - target: {fileID: 7830420937574562497, guid: c3542badfc9e24f4a8d17a99d4912848, type: 3}
       propertyPath: m_Name
       value: BladeVehicle
