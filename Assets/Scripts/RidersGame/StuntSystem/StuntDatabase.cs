@@ -7,7 +7,6 @@ namespace RidersRuntime.StuntSystem
     public class StuntDatabase
     {
         public List<Stunt> stunts = new List<Stunt>();
-        public int frameDelayMax = 15;
 
         public void PopulateStunts()
         {
@@ -27,42 +26,34 @@ namespace RidersRuntime.StuntSystem
             // Add more stunts as needed
         }
 
-        public Stunt QueryStuntByFrames(StuntType stuntType, List<FrameKeyData> data)
+        public Stunt QueryStuntByTime(StuntType stuntType, List<TimedInput> inputs)
         {
-            // dogshit o(n!))
-            // Copy the whole list over that match the stunt type
-            List<Stunt> currentValidStunt = stunts.FindAll(stunt => stunt.type == stuntType);
-            List<string> keys = GetLastPressedKeys(data.Select(frame => frame.inputs).ToList());
+            List<Stunt> validStunts = stunts.FindAll(s => s.type == stuntType);
 
-            foreach (var stunt in stunts)
+            foreach (var stunt in validStunts)
             {
-                int comboIndex = 0;
-                for (int i = 0; i < data.Count; i++)
+                int comboIdx = 0;
+                float startTime = -1f;
+
+                foreach (var input in inputs)
                 {
-                    // Check if the current frame contains the next combo key
-                    if (comboIndex < stunt.comboKeys.Length && data[i].inputs.Contains(stunt.comboKeys[comboIndex]))
+                    if (input.key == stunt.comboKeys[comboIdx])
                     {
-                        comboIndex++;
-                    }
+                        if (comboIdx == 0) startTime = input.time;
+                        comboIdx++;
 
-                    if (comboIndex == stunt.comboKeys.Length)
-                    {
-                        // From here we then check the frame count
-                        // Check if the frame count is within the allowed range
-                        int frameCount = 0;
-                        int startingFrame = i - stunt.comboKeys.Length + 1;
-                        for (int j = startingFrame; j < data.Count; j++)
+                        if (comboIdx == stunt.comboKeys.Length)
                         {
-                            frameCount += data[j].frameCount;
+                            if (input.time - startTime <= Values.timeWindowMax)
+                                return stunt;
+                            else
+                                break;
                         }
-
-                        if (frameCount <= frameDelayMax) return stunt;
-                        else comboIndex = 0;
                     }
                 }
             }
 
-            return Stunt.None; // No matching stunt combo found
+            return Stunt.None;
         }
 
         public List<string> GetLastPressedKeys(List<List<string>> keys)
