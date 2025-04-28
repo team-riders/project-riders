@@ -23,8 +23,14 @@ public class pauseMenuScript : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            PauseHandler.TogglePause();
-            Debug.Log(PauseHandler.IsPaused);
+            TogglePause();
         }
+    }
+
+    public void TogglePause()
+    {
+        isPaused = !isPaused;
+        pauseGame.SetActive(isPaused);
+        Time.timeScale = isPaused ? 0 : 1;
     }
 }

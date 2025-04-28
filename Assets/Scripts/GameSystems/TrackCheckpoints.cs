@@ -6,8 +6,12 @@ public class TrackCheckpoints : MonoBehaviour
 {
     public event EventHandler OnPlayerCorrectCheckpoint;
     public event EventHandler OnPlayerIncorrectCheckpoint;
+    public event EventHandler OnLapCompleted;
     private List<CheckpointSingle> checkpointSingleList;
     private int nextCheckpointSingleIndex;
+    private float lapStartTime;
+    private float currentLapTime;
+    private bool isLapInProgress = false;
 
     private void Awake() {
         Transform checkpointsTransform = transform.Find("Checkpoints");
@@ -23,14 +27,34 @@ public class TrackCheckpoints : MonoBehaviour
         nextCheckpointSingleIndex = 0;
     }
 
+    public void StartNewLap()
+    {
+        lapStartTime = Time.time;
+        isLapInProgress = true;
+        nextCheckpointSingleIndex = 0;
+    }
+
     public void PlayerThroughCheckpoint(CheckpointSingle checkpointSingle) {
         if (checkpointSingleList.IndexOf(checkpointSingle) == nextCheckpointSingleIndex){
+            // Get lap time
+            currentLapTime = Time.time - lapStartTime;
+
+            // Add to checkpoint count
             nextCheckpointSingleIndex = (nextCheckpointSingleIndex + 1) % checkpointSingleList.Count;
             OnPlayerCorrectCheckpoint?.Invoke(this, EventArgs.Empty);
-            // Add UI Element to show correct checkpoint hit
+
+            // Start new lap if all checkpoints hit
+            if (nextCheckpointSingleIndex == 0) {
+                OnLapCompleted?.Invoke(this, EventArgs.Empty);
+                StartNewLap();
+            }
         } else {
+            // Wrong way UI 
             OnPlayerIncorrectCheckpoint?.Invoke(this, EventArgs.Empty);
-            // Skipped Checkpoint (Add UI Element)
+    
         }
+    }
+    public float GetCurrentLapTime() {
+        return currentLapTime;
     }
 }
