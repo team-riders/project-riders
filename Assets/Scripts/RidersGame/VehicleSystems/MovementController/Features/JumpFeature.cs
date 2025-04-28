@@ -1,5 +1,5 @@
-using System;
 using RidersRuntime.Input;
+using System;
 using UnityEngine;
 
 namespace RidersRuntime.VehicleSystem
