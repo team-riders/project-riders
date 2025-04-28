@@ -1,10 +1,11 @@
+using System;
 using RidersRuntime.Input;
 using UnityEngine;
 
 namespace RidersRuntime.VehicleSystem
 {
 
-    public class JumpFeature : IDataPipelineStep<Blackboard>
+    public class JumpFeature : ConditionalDataPipelineStep<Blackboard>
     {
         const float JumpForce = 300f;
         const int JumpBoostHoldFrameThreshold = 180;
@@ -13,7 +14,7 @@ namespace RidersRuntime.VehicleSystem
         const float JumpChargeMinScale = 0.5f;
         const float JumpChargeMaxScale = 1.0f;
 
-        public Blackboard ProcessData(Blackboard blackboard)
+        public override Blackboard OnStep(Blackboard blackboard)
         {
             ActorInputData input = blackboard.GetValue<ActorInputData>("InputData");
             Rigidbody rigidbody = blackboard.GetValue<Rigidbody>("Rigidbody");
@@ -48,9 +49,11 @@ namespace RidersRuntime.VehicleSystem
                 }
             }
 
-
-
             return blackboard;
+        }
+
+        public JumpFeature(Func<bool> condition = null) : base(condition)
+        {
         }
     }
 }

@@ -1,14 +1,13 @@
-using UnityEditor.Callbacks;
 using UnityEngine;
 
 namespace RidersRuntime.VehicleSystem
 {
-    public class KeepUprightFeature : IDataPipelineStep<Blackboard>
+    public class KeepUprightFeature : DataPipelineStep<Blackboard>
     {
         Vector3 m_VerticalReference = Vector3.up; // Reference vector for upright orientation
         private const float AirborneReorientationCoefficient = 3f; // Coefficient for airborne reorientation speed
 
-        public Blackboard ProcessData(Blackboard blackboard)
+        public override Blackboard OnStep(Blackboard blackboard)
         {
             bool m_HasCollision = blackboard.GetValue<bool>("HasCollision");
             Vector3 m_LastCollisionNormal = blackboard.GetValue<Vector3>("LastCollisionNormal");

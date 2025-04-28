@@ -1,13 +1,12 @@
 using RidersRuntime.Data;
-using RidersRuntime.Input;
 using UnityEngine;
 
 namespace RidersRuntime.VehicleSystem
 {
 
-    public class FallFasterInAirFeature : IDataPipelineStep<Blackboard>
+    public class FallFasterInAirFeature : DataPipelineStep<Blackboard>
     {
-        public Blackboard ProcessData(Blackboard data)
+        public override Blackboard OnStep(Blackboard data)
         {
             float GroundPercent = data.GetValue<float>("GroundPercent");
             Rigidbody rigidbody = data.GetValue<Rigidbody>("Rigidbody");

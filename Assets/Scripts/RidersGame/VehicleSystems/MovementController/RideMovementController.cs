@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using RidersRuntime.Input;
 using RidersRuntime.Data;
+using System;
 
 namespace RidersRuntime.VehicleSystem
 {
@@ -10,29 +11,32 @@ namespace RidersRuntime.VehicleSystem
     public partial class RideMovementController : MonoBehaviour
     {
         public VehicleStatsSO m_VehicleStats;
-        public bool canMove = false;
-
+        public bool canMove = true;
         Rigidbody m_rigidbody;
-        MovementStateMachineAlt m_stateMachine;
+        StateMachine<MovementStateAlt> m_stateMachine;
         ActorInputData inputIntention;
         IInput m_ActorInputComponent;
         PowerupController powerupController;
 
+        // Eventually serialize this to show internal function properties
+        GrindingMovementState grindingMovementState = new();
+        GroundMovementState groundMovementState = new();
+        AirborneMovementState airborneMovementState = new();
+
+        public void TurnOn() => canMove = true;
+        public void TurnOff() => canMove = false;
+        public bool IsOn() => canMove;
+
         void DefineStates()
         {
-            // Ground Movement State
-            GroundMovementState groundMovementState = new();
-            AirborneMovementState airborneMovementState = new();
-            GrindingMovementState grindingMovementState = new();
-
             List<MovementStateAlt> states = new() { groundMovementState, airborneMovementState, grindingMovementState };
 
-            m_stateMachine = new MovementStateMachineAlt(states, () => { }, () => SendBlackboard());
+            m_stateMachine = new(states);
 
             m_stateMachine.AddTransition(groundMovementState, airborneMovementState, () => GroundPercent <= 0f);
             m_stateMachine.AddTransition(airborneMovementState, groundMovementState, () => GroundPercent > 0f);
             m_stateMachine.AddTransition(airborneMovementState, grindingMovementState,
-                () => m_GrindPathTarget != null && m_rigidbody.linearVelocity.y < grindingMovementState.minimumDownwardSpeed && grindingMovementState.CanGrind
+                TransitionCanGrind
             );
 
             m_stateMachine.AddTransition(grindingMovementState, airborneMovementState,
@@ -45,6 +49,13 @@ namespace RidersRuntime.VehicleSystem
 
             m_stateMachine.ForceTransition(groundMovementState);
         }
+        bool TransitionCanGrind()
+        {
+
+            return m_GrindPathTarget != null
+            && m_rigidbody.linearVelocity.y < grindingMovementState.minimumDownwardSpeed
+            && grindingMovementState.CanEnterGrind();
+        }
 
         void Start()
         {
@@ -52,6 +63,7 @@ namespace RidersRuntime.VehicleSystem
             m_ActorInputComponent = GetComponent<IInput>();
 
             powerupController = new(m_VehicleStats._vehicleStats);
+            SetCenterOfMass();
 
             DefineStates();
         }
@@ -69,15 +81,20 @@ namespace RidersRuntime.VehicleSystem
             if (!canMove) return;
             PreCalcChecks();
             m_stateMachine.Update();
-            m_stateMachine.PhysicsUpdate();
+            // Logic update happens here with the state machine
+            // In reality nothing actually happens here for now, we are just doing the transitions.
+
+            MovementStateAlt state = m_stateMachine.CurrentState;
+            Debug.Log($"Current State: {state.Name}");
+            // Pass any information we need to the states here.
+            state.ComputePhysicsIntentions(SendBlackboard());
         }
 
         void PreCalcChecks()
         {
             GetGroundedPercent();
+            // Update any information we need to provide to the states
             ExecuteExternalPrechecks?.Invoke();
-            // Update the board
-
         }
 
         void ProcessAndBufferIntent()
@@ -94,7 +111,8 @@ namespace RidersRuntime.VehicleSystem
                 // i.e. Jump will only turn false if 
                 //     1. We are not trying to jump
                 //     2. The "jump" we set up has been consumed (changed to false)
-                Jump = (inputIntention.Jump || new_inputs.Jump) && GroundPercent >= 0.5f,
+                // ! JUMP IS BROKEN, NEEDS TO BE FIXED
+                Jump = inputIntention.Jump || new_inputs.Jump,
                 JumpHoldDuration = new_inputs.JumpHoldDuration,
                 StuntA = new_inputs.StuntA,
                 StuntB = new_inputs.StuntB,
@@ -105,9 +123,10 @@ namespace RidersRuntime.VehicleSystem
             };
         }
 
-        public void TurnOn() => canMove = true;
-        public void TurnOff() => canMove = false;
-        public bool IsOn() => canMove;
+        public void AddExternalPrecheck(Action action)
+        {
+            if (action == null) return;
+            ExecuteExternalPrechecks += action;
+        }
     }
-
 }

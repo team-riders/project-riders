@@ -12,9 +12,7 @@ namespace RidersRuntime.VehicleSystem
         bool m_HasCollision = false;
         Vector3 m_LastCollisionNormal = Vector3.zero;
         public List<WheelCollider> m_PhysicsWheels;
-
         Action ExecuteExternalPrechecks;
-
         GrindPath m_GrindPathTarget;
 
         public float GetMaxSpeed()
@@ -62,6 +60,7 @@ namespace RidersRuntime.VehicleSystem
 
         public float LocalSpeed()
         {
+            // ! Keep for VFX
             if (canMove)
             {
                 float dot = Vector3.Dot(transform.forward, m_rigidbody.linearVelocity);
@@ -116,9 +115,9 @@ namespace RidersRuntime.VehicleSystem
         Blackboard SendBlackboard()
         {
             Blackboard blackboard = new();
-            blackboard.SetValue("Rigidbody", m_rigidbody);
-            blackboard.SetValue("VehicleStats", m_VehicleStats._vehicleStats);
-            blackboard.SetValue("InputData", inputIntention);
+            blackboard.SetValue("Rigidbody", m_rigidbody); // Don't need, can just set up in constructor
+            blackboard.SetValue("VehicleStats", m_VehicleStats._vehicleStats); // Don't need, same as above
+            blackboard.SetValue("InputData", inputIntention); // Might still need
             blackboard.SetValue("GroundPercent", GroundPercent);
             blackboard.SetValue("HasCollision", m_HasCollision);
             blackboard.SetValue("LastCollisionNormal", m_LastCollisionNormal);
@@ -128,13 +127,9 @@ namespace RidersRuntime.VehicleSystem
 
         public void SetGrindPath(GrindPath path)
         {
-            m_GrindPathTarget = path;
+            if (grindingMovementState.CanEnterGrind())
+                m_GrindPathTarget = path;
         }
 
-        public void AddExternalPrecheck(Action action)
-        {
-            if (action == null) return;
-            ExecuteExternalPrechecks += action;
-        }
     }
 }

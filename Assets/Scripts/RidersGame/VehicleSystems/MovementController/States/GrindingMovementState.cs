@@ -6,17 +6,15 @@ namespace RidersRuntime.VehicleSystem
     public class GrindingMovementState : MovementStateAlt
     {
         public float minimumDownwardSpeed = 0.5f;
-        private bool isGrinding = false;
+        public const float GrindCooldownDuration = 5f;
+        public bool CanEnterGrind() => _grindCooldownTimer <= 0f && timerReady;
+        public bool IsGrinding => !isComplete && !!currentPath;
 
-        private GrindPath currentPath;
-
-        public bool IsGrinding => isGrinding && currentPath != null;
-
-        public const float GrindCooldownDuration = 0.5f;
+        bool timerReady = true;
 
         private float _grindCooldownTimer = 0f;
-
-        public bool CanGrind => _grindCooldownTimer <= 0f;
+        private bool isComplete = true;
+        private GrindPath currentPath;
 
         public void DoCooldown()
         {
@@ -24,9 +22,11 @@ namespace RidersRuntime.VehicleSystem
             {
                 _grindCooldownTimer -= Time.fixedDeltaTime;
             }
-            else if (_grindCooldownTimer < 0)
+
+            if (_grindCooldownTimer < 0)
             {
                 _grindCooldownTimer = 0;
+                timerReady = true;
             }
         }
 
@@ -35,21 +35,22 @@ namespace RidersRuntime.VehicleSystem
             _featureQueue = new(new()
             {
                 new GrindEnterFeature(),
-                new AccelerationFeature(),
+                new AccelerationNoRBFeature(),
                 new GrindingFeature(),
-                new JumpFeature(),
+                new JumpFeature(() => true),
                 new GrindExitFeature(),
             });
         }
 
-        public override void ComputeIntention(Blackboard externalBlackboard = null)
+        public override void ComputePhysicsIntentions(Blackboard externalBlackboard = null)
         {
-            base.ComputeIntention(externalBlackboard);
+            base.ComputePhysicsIntentions(externalBlackboard);
 
-            isGrinding = _refBlackboard.GetValue<bool>("IsGrinding");
+            float currentProgress = _refBlackboard.GetValue<float>("CurrentProgress");
+            isComplete = currentProgress >= 1.0f || currentProgress <= 0.0f;
             currentPath = _refBlackboard.GetValue<GrindPath>("CurrentPath");
 
-            if (!isGrinding || currentPath == null)
+            if (!isComplete || currentPath == null)
             {
                 _refBlackboard.SetValue("GrindEntered", false);
                 _refBlackboard.Remove("CurrentPath");
@@ -60,8 +61,6 @@ namespace RidersRuntime.VehicleSystem
         public override void OnEnter()
         {
             _refBlackboard.SetValue("Entered", true);
-            _refBlackboard.SetValue("IsGrinding", true);
-            isGrinding = true;
         }
 
         public override void OnExit()
@@ -69,7 +68,9 @@ namespace RidersRuntime.VehicleSystem
             _refBlackboard.SetValue("GrindEntered", false);
             _refBlackboard.Remove("CurrentPath");
 
+            Parent.GetComponent<RideMovementController>().SetGrindPath(null);
             _grindCooldownTimer = GrindCooldownDuration;
+            timerReady = false;
         }
     }
 }

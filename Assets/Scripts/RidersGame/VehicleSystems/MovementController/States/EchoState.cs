@@ -1,4 +1,3 @@
-using RidersRuntime.Input;
 using UnityEngine;
 
 namespace RidersRuntime.VehicleSystem
@@ -14,7 +13,7 @@ namespace RidersRuntime.VehicleSystem
             Debug.Log("EchoState OnUpdate called.");
         }
 
-        public override void ComputeIntention(Blackboard blackboard)
+        public override void ComputePhysicsIntentions(Blackboard blackboard)
         {
             Debug.Log("EchoState ComputeIntention called.");
         }

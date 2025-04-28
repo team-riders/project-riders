@@ -38,6 +38,7 @@ public class StateMachineTest
         condition2 = false;
         condition3 = false;
         stateMachine.ForceTransition(stateMachine.GetStateByName("TestState"));
+        stateMachine.CurrentState.JustEntered = false;
     }
 
     // A Test behaves as an ordinary method
@@ -90,6 +91,16 @@ public class StateMachineTest
         stateMachine.Update();
         Assert.AreEqual("TestState3", stateMachine.CurrentState.Name);
         condition1 = true;
+        stateMachine.Update();
+        Assert.AreEqual("TestState2", stateMachine.CurrentState.Name);
+    }
+
+    [Test]
+    public void T6_TransitionToState2AndInvokeOnEntry()
+    {
+        condition1 = true;
+        stateMachine.Update();
+        Assert.AreEqual("TestState2", stateMachine.CurrentState.Name);
         stateMachine.Update();
         Assert.AreEqual("TestState2", stateMachine.CurrentState.Name);
     }

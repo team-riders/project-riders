@@ -8,9 +8,9 @@ namespace RidersRuntime.VehicleSystem
     /// Needs blackboard information about InputData, RigidBody, VehicleStats, FinalAcceleration, HasCollision and GroundPercent
     /// Sets "MovementVector" in the blackboard.
     /// </summary>
-    public class SteerTurnFeature : IDataPipelineStep<Blackboard>
+    public class SteerTurnFeature : DataPipelineStep<Blackboard>
     {
-        public Blackboard ProcessData(Blackboard blackboard)
+        public override Blackboard OnStep(Blackboard blackboard)
         {
             ActorInputData input = blackboard.GetValue<ActorInputData>("InputData");
             Rigidbody rigidbody = blackboard.GetValue<Rigidbody>("Rigidbody");

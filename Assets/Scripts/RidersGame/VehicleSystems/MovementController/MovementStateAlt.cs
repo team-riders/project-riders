@@ -7,7 +7,7 @@ namespace RidersRuntime.VehicleSystem
         GameObject _parent;
         protected GameObject Parent => _parent;
         protected Blackboard _refBlackboard;
-        protected DataPipleline<IDataPipelineStep<Blackboard>, Blackboard> _featureQueue = new();
+        protected DataPipleline<DataPipelineStep<Blackboard>, Blackboard> _featureQueue = new();
         public MovementStateAlt(string name) : base(name)
         {
             _refBlackboard = new Blackboard();
@@ -18,10 +18,9 @@ namespace RidersRuntime.VehicleSystem
             return _refBlackboard;
         }
 
-        public virtual void ComputeIntention(Blackboard externalBlackboard = null)
+        public virtual void ComputePhysicsIntentions(Blackboard externalBlackboard = null)
         {
             _refBlackboard.AppendOrOverwrite(externalBlackboard);
-            // TODO: Implement these passive features to the pipeline
             // Death happens here
             _featureQueue.Process(_refBlackboard);
         }

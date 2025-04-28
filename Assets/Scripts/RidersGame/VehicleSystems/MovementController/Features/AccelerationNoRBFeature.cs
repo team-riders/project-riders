@@ -8,36 +8,33 @@ namespace RidersRuntime.VehicleSystem
     /// Needs blackboard information about InputData, RigidBody and VehicleStats.
     /// Sets a FinalAcceleration value in the blackboard.
     /// </summary>
-    public class AccelerationFeature : DataPipelineStep<Blackboard>
+    public class AccelerationNoRBFeature : DataPipelineStep<Blackboard>
     {
         const float accelerationCurveCoeff = 5;
+        const float minimumGrindingSpeed = 2f;
 
         public override Blackboard OnStep(Blackboard blackboard)
         {
             ActorInputData input = blackboard.GetValue<ActorInputData>("InputData");
-            Rigidbody rigidbody = blackboard.GetValue<Rigidbody>("Rigidbody");
             VehicleStats stats = blackboard.GetValue<VehicleStats>("VehicleStats");
+            int direction = blackboard.GetValue<int>("Direction");
+            float currentSpeed = blackboard.GetValue<float>("CurrentSpeed");
+
             float Accelerate = input.Accelerate;
             float Brake = input.Brake;
 
-            Transform currentTransform = rigidbody.transform;
-            Vector3 linearVelocity = rigidbody.linearVelocity;
             float accelInput = Accelerate - Brake;
             //Debug.Log("accelInput: " + accelInput);
 
-            // manual acceleration curve coefficient scalar
-            Vector3 localVel = currentTransform.InverseTransformVector(linearVelocity);
-
             bool accelDirectionIsFwd = accelInput >= 0;
             //Debug.Log("accelDirectionIsFwd: " + accelDirectionIsFwd);
-            bool localVelDirectionIsFwd = localVel.z >= 0;
+            bool localVelDirectionIsFwd = direction >= 0;
 
             // use the max speed for the direction we are going--forward or reverse.
             float maxSpeed = localVelDirectionIsFwd ? stats.TopSpeed : stats.ReverseSpeed;
             float accelPower = accelDirectionIsFwd ? stats.Acceleration : stats.ReverseAcceleration;
             //Debug.Log("accelPower: " + accelPower);
 
-            float currentSpeed = linearVelocity.magnitude;
             float accelRampT = currentSpeed / maxSpeed;
             float multipliedAccelerationCurve = stats.AccelerationCurve * accelerationCurveCoeff;
             float accelRamp = Mathf.Lerp(multipliedAccelerationCurve, 1, accelRampT * accelRampT);
@@ -49,6 +46,12 @@ namespace RidersRuntime.VehicleSystem
             float finalAccelPower = isBraking ? stats.Braking : accelPower;
 
             float finalAcceleration = finalAccelPower * accelRamp;
+
+            // Actually generate the speed here
+            currentSpeed += finalAcceleration * Time.fixedDeltaTime * accelInput;
+
+
+            currentSpeed = Mathf.Max(currentSpeed, minimumGrindingSpeed);
 
             blackboard.SetValue("FinalAcceleration", finalAcceleration);
             blackboard.SetValue("CurrentSpeed", currentSpeed);

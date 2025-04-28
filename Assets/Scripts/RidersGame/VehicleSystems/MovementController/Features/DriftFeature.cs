@@ -3,7 +3,8 @@ using UnityEngine;
 
 namespace RidersRuntime.VehicleSystem
 {
-    public class DriftFeature : IDataPipelineStep<Blackboard>
+    // We're not using it yet
+    public class DriftFeature : DataPipelineStep<Blackboard>
     {
         [Header("Drifting")]
         [Range(0.01f, 1.0f), Tooltip("The grip value when drifting.")]
@@ -40,7 +41,7 @@ namespace RidersRuntime.VehicleSystem
 
         Transform transform;
 
-        float m_DriftTurningPower = 0.0f;
+        // float m_DriftTurningPower = 0.0f;
 
         private void ActivateDriftVFX(bool active)
         {
@@ -78,7 +79,7 @@ namespace RidersRuntime.VehicleSystem
             }
         }
 
-        public Blackboard ProcessData(Blackboard blackboard)
+        public override Blackboard OnStep(Blackboard blackboard)
         {
             throw new System.NotImplementedException();
         }

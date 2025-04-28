@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace RidersRuntime.VehicleSystem
 {
-    public class RotateToForwardsFeature : IDataPipelineStep<Blackboard>
+    public class RotateToForwardsFeature : DataPipelineStep<Blackboard>
     {
         const float angularVelocitySteering = 0.4f;
         const float angularVelocitySmoothSpeed = 20f;
         const float velocitySteering = 25f;
 
-        public Blackboard ProcessData(Blackboard blackboard)
+        public override Blackboard OnStep(Blackboard blackboard)
         {
             VehicleStats stats = blackboard.GetValue<VehicleStats>("VehicleStats");
             Rigidbody rb = blackboard.GetValue<Rigidbody>("Rigidbody");
