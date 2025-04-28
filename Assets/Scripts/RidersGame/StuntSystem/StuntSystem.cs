@@ -21,13 +21,13 @@ namespace RidersRuntime.StuntSystem
             stuntDatabase.PopulateStunts();
         }
 
-        public void OnStuntRequestWithFrameData(List<FrameKeyData> frameData, StuntType stuntType)
+        public void OnStuntRequestTimed(List<TimedInput> timedInputs, StuntType stuntType)
         {
             // Handle the stunt request with frame data
             if (stuntType != StuntType.None)
             {
                 // Query the stunt database for the stunt
-                Stunt stunt = stuntDatabase.QueryStuntByFrames(stuntType, frameData);
+                Stunt stunt = stuntDatabase.QueryStuntByTime(stuntType, timedInputs);
                 if (stunt != Stunt.None)
                 {
                     // Execute the stunt
@@ -37,9 +37,14 @@ namespace RidersRuntime.StuntSystem
                 else
                 {
                     Debug.Log("No valid stunt found for the given frame data.");
-                    StuntPeripheralInputHandler.ShowSingleLineOutput(frameData);
                 }
             }
         }
+
+        public Stunt TryDetectStunt(List<TimedInput> timedInputs, StuntType stuntType)
+        {
+            return stuntType == StuntType.None ? Stunt.None : stuntDatabase.QueryStuntByTime(stuntType, timedInputs);
+        }
+
     }
 }

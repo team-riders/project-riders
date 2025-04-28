@@ -1,7 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scripts/RidersGame/RidersRuntime.asmdef.meta
+guid: f7200fc466f3ff943a2bfd1e542f785c
+AssemblyDefinitionImporter:
+========
 guid: bff3b187fd0a46e458bb66057b7f11ac
 folderAsset: yes
 DefaultImporter:
+>>>>>>>> origin/dev:Assets/Scripts/RidersGame.meta
   externalObjects: {}
   userData: 
   assetBundleName: 

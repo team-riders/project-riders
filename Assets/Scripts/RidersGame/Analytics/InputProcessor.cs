@@ -15,7 +15,7 @@ namespace RidersRuntime.Analytics
         private InputActionAsset playerInput;
         private InputActionMap inputMap;
 
-        void Awake()
+        void Start()
         {
             playerInput = GetComponent<UnityEngine.InputSystem.PlayerInput>().actions;
             inputMap = playerInput.FindActionMap(DebugFlags.Instance.DebugInputMapName);
