@@ -6,7 +6,7 @@ namespace RidersRuntime.VehicleSystem
 {
     public class GrindingFeature : DataPipelineStep<Blackboard>
     {
-        public float feetOffsetY = 0.9f;
+        public float feetOffsetY = 0.2f;
 
         public override Blackboard OnStep(Blackboard data)
         {
@@ -31,10 +31,7 @@ namespace RidersRuntime.VehicleSystem
 
             rigidbody.MovePosition(worldPos + up * feetOffsetY); // MovePosition is used to ensure the rigidbody is moved correctly in the physics simulation
 
-
-            // Rotate the body such that the rigid body's up is aligned with the path normal
-
-            Quaternion targetRotation = Quaternion.LookRotation(forward);
+            Quaternion targetRotation = Quaternion.LookRotation(forward, up);
 
             rigidbody.rotation = targetRotation;
 

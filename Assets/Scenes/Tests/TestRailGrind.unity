@@ -154,7 +154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Container: {fileID: 363431285}
-  m_RebuildOnSplineChange: 1
+  m_RebuildOnSplineChange: 0
   m_RebuildFrequency: 30
   m_UpdateColliders: 1
   m_Sides: 8
@@ -301,10 +301,10 @@ MonoBehaviour:
         z: 1
       Rotation:
         value:
-          x: 0
+          x: -0
           y: 0
-          z: 0
-          w: 1
+          z: -0.468624
+          w: 0.88339776
     - Position:
         x: -0.0000009536743
         y: 0.0000009536743
@@ -321,8 +321,8 @@ MonoBehaviour:
         value:
           x: 0
           y: 0
-          z: 0
-          w: 1
+          z: 0.45565176
+          w: 0.8901581
     - Position:
         x: -5.7000017
         y: 0.0000009536743
@@ -946,7 +946,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Container: {fileID: 1112628404}
-  m_RebuildOnSplineChange: 1
+  m_RebuildOnSplineChange: 0
   m_RebuildFrequency: 30
   m_UpdateColliders: 1
   m_Sides: 8
@@ -1220,7 +1220,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Container: {fileID: 1264281943}
-  m_RebuildOnSplineChange: 1
+  m_RebuildOnSplineChange: 0
   m_RebuildFrequency: 30
   m_UpdateColliders: 1
   m_Sides: 8
@@ -1326,35 +1326,35 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -1.7786584
+        z: -1.8104339
       TangentOut:
         x: 0
         y: 0
-        z: 1.7786584
+        z: 1.8104339
       Rotation:
         value:
-          x: -0.057433665
-          y: 0.016475812
-          z: 0.0009479612
-          w: 0.9982129
+          x: -0.05642172
+          y: 0.016186954
+          z: 0.0009714571
+          w: 0.9982753
     - Position:
         x: 0.5831127
         y: 2.0400019
-        z: 17.659584
+        z: 17.979584
       TangentIn:
         x: -0
         y: -0
-        z: -1.6713705
+        z: -1.6511165
       TangentOut:
         x: 0
         y: 0
-        z: 1.06729
+        z: 1.0638144
       Rotation:
         value:
-          x: -0.4254917
-          y: 0.44154066
-          z: 0.42496392
-          w: 0.6658862
+          x: -0.611986
+          y: 0.083490565
+          z: -0.07884069
+          w: 0.7824875
     - Position:
         x: 1.5331116
         y: 6.1500025
@@ -1362,17 +1362,17 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -2.1177037
+        z: -2.18885
       TangentOut:
         x: 0
         y: 0
-        z: 2.083883
+        z: 2.1159265
       Rotation:
         value:
-          x: -0.0016740107
-          y: 0.99777085
-          z: 0.0625741
-          w: 0.02312969
+          x: 0.98242235
+          y: -0.17656928
+          z: 0.011224036
+          w: -0.059528396
     - Position:
         x: 1.1831131
         y: 3.7200022
@@ -1387,10 +1387,10 @@ MonoBehaviour:
         z: 1.1507415
       Rotation:
         value:
-          x: -0.40339828
-          y: 0.6218433
-          z: -0.3775295
-          w: -0.55502456
+          x: 0.7170476
+          y: -0.18778163
+          z: -0.09491849
+          w: 0.6645083
     - Position:
         x: -1.1868877
         y: 0.0000019073486
@@ -1407,7 +1407,7 @@ MonoBehaviour:
         value:
           x: 0.11498136
           y: -0.07142068
-          z: 0.012687033
+          z: 0.012687035
           w: 0.9907156
     - Position:
         x: -0.9872074
@@ -1643,7 +1643,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Container: {fileID: 2092434255}
-  m_RebuildOnSplineChange: 1
+  m_RebuildOnSplineChange: 0
   m_RebuildFrequency: 30
   m_UpdateColliders: 1
   m_Sides: 8
