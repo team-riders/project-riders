@@ -14,6 +14,13 @@ public class stopwatchScript : MonoBehaviour
     GameObject Start;
     float countdownTime = 5;
 
+    Stopwatch stopwatch = new Stopwatch();
+
+    void Start()
+    {
+        stopwatch.Start();
+    }
+
     void Update()
     {
         if (Start == null)
