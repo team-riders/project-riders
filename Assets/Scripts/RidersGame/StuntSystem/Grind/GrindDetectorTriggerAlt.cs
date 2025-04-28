@@ -35,10 +35,7 @@ namespace RidersRuntime.VehicleSystem
         public void ExternalAutoGrind()
         {
             GrindPath path = GetNearestPathWithinRadius(autoGrindRadius);
-            if (path != null)
-            {
-                rmc.SetGrindPath(path);
-            }
+            rmc.SetGrindPath(path);
         }
 
         /// <summary>
