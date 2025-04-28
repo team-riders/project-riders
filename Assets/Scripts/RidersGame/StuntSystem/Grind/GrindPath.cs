@@ -11,13 +11,21 @@ namespace RidersRuntime.VehicleSystem
         public bool loop = false;
         public bool reverse = false;
 
-        [Header("References")]
+        [Header("References - Don't need to assign")]
         public Transform splineTransform;
         public SplineContainer SplineContainer;
 
         public void Awake()
         {
-            SplineContainer = GetComponent<SplineContainer>();
+            if (SplineContainer == null)
+            {
+                SplineContainer = GetComponent<SplineContainer>();
+            }
+
+            if (splineTransform == null)
+            {
+                splineTransform = transform;
+            }
         }
 
         /// <summary>
