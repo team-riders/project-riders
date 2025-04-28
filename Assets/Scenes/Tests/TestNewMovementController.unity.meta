@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scenes/Tests/TestNewMovementController.unity.meta
 guid: ffe1c9a6edf5e1d4babbbcafe98d2679
 DefaultImporter:
+========
+guid: c2a03ca174e54ee4887bbed6cee38c0d
+AssemblyDefinitionImporter:
+>>>>>>>> origin/dev:Assets/Scripts/Tests/Tests.asmdef.meta
   externalObjects: {}
   userData: 
   assetBundleName: 
