@@ -1,5 +1,5 @@
 using System;
-using Assets.Scripts.VehicleSystems;
+using RidersRuntime.VehicleSystem;
 using UnityEngine;
 
 public class CheckpointSingle : MonoBehaviour
