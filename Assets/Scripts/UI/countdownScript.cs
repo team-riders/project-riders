@@ -8,12 +8,12 @@ public class countdownScript : MonoBehaviour
 {
     public GameObject CountdownCanvas;
     [SerializeField] TextMeshProUGUI countdownText;
-    GameObject Start;
+    GameObject startObject;
     float countdownTime = 5;
 
     void Update()
     {
-        if (Start == null)
+        if (startObject == null)
         {
             if (countdownTime > 0)
             {
@@ -30,7 +30,6 @@ public class countdownScript : MonoBehaviour
                 }
                 
             }
-            startTimer();
         }
     }
 }
