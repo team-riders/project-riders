@@ -1,0 +1,50 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace RidersRuntime.StuntSystem
+{
+    public class StuntSystem : MonoBehaviour
+    {
+        // VehicleType currentVehicleType;
+
+        StuntDatabase stuntDatabase;
+
+        void Start()
+        {
+            // currentVehicleType = VehicleType.Skateboard;
+            PopulateStunts();
+        }
+
+        void PopulateStunts()
+        {
+            stuntDatabase = new();
+            stuntDatabase.PopulateStunts();
+        }
+
+        public void OnStuntRequestTimed(List<TimedInput> timedInputs, StuntType stuntType)
+        {
+            // Handle the stunt request with frame data
+            if (stuntType != StuntType.None)
+            {
+                // Query the stunt database for the stunt
+                Stunt stunt = stuntDatabase.QueryStuntByTime(stuntType, timedInputs);
+                if (stunt != Stunt.None)
+                {
+                    // Execute the stunt
+                    Debug.Log($"Executing stunt: {stunt.name} of type {stunt.type}");
+                    // Add your stunt execution logic here
+                }
+                else
+                {
+                    Debug.Log("No valid stunt found for the given frame data.");
+                }
+            }
+        }
+
+        public Stunt TryDetectStunt(List<TimedInput> timedInputs, StuntType stuntType)
+        {
+            return stuntType == StuntType.None ? Stunt.None : stuntDatabase.QueryStuntByTime(stuntType, timedInputs);
+        }
+
+    }
+}

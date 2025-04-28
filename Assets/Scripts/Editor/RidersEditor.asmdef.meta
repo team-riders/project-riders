@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Prefabs/Vehicles/PrototypeBoard.prefab.meta
+guid: b78ab4eb8a360f642b460f2ceda60535
+PrefabImporter:
+========
+guid: d0b18f2bc867fd2429371388d4f1c18a
+AssemblyDefinitionImporter:
+>>>>>>>> origin/dev:Assets/Scripts/Editor/RidersEditor.asmdef.meta
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
