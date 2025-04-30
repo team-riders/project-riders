@@ -31,6 +31,8 @@ namespace RidersRuntime.VehicleSystem
             AddedGravity = 1f,
             BoostTopSpeed = 80f,
             BoostAccel = 15f,
+            BoostGaugeMax = 300f,
+            BoostGaugePerCharge = 100f,
         };
 
         // list is created, wheels are not until child classes

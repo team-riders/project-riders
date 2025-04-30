@@ -57,6 +57,12 @@ namespace RidersRuntime.Data
         [Tooltip("Additional acceleration immediately after Boost")]
         public float BoostAccel;
 
+        [Tooltip("Maximum amount of Boost gauge")]
+        public float BoostGaugeMax;
+
+        [Tooltip("How much Boost gauge is used per charge")]
+        public float BoostGaugePerCharge;
+
 
         // allow for stat adding for powerups.
         public static VehicleStats operator +(VehicleStats a, VehicleStats b)

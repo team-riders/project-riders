@@ -1,5 +1,6 @@
 using RidersRuntime.Data;
 using RidersRuntime.Input;
+using System;
 using UnityEngine;
 
 namespace RidersRuntime.VehicleSystem
@@ -12,7 +13,7 @@ namespace RidersRuntime.VehicleSystem
                 new AccelerationFeature(),
                 new SteerTurnFeature(),
                 new JumpFeature(IsGrounded),
-                new StopAccelerationPastMaxSpeed(),
+                new StopAccelerationPastMaxSpeed(IsNotBoosting),
                 new ScaleToFixedDeltaTime(),
                 new ClampToMaxSpeedOnGroundFeature(),
                 new CoastingFeature(),
@@ -31,11 +32,16 @@ namespace RidersRuntime.VehicleSystem
             }
             return false;
         }
+
+        bool IsNotBoosting()
+        {
+            return true;
+        }
     }
 
     // ? DOWN HERE ARE SOME LAZY METHODS I PUT IN
 
-    public class StopAccelerationPastMaxSpeed : DataPipelineStep<Blackboard>
+    public class StopAccelerationPastMaxSpeed : ConditionalDataPipelineStep<Blackboard>
     {
         public override Blackboard OnStep(Blackboard blackboard)
         {
@@ -53,6 +59,14 @@ namespace RidersRuntime.VehicleSystem
 
             return blackboard;
         }
+        public StopAccelerationPastMaxSpeed(Func<bool> condition = null) : base(condition)
+        {
+        }
+
+        //public override bool IsConditionMet(Blackboard data)
+        //{
+        //    return base.IsConditionMet(data);
+        //}
     }
 
     public class ScaleToFixedDeltaTime : DataPipelineStep<Blackboard>
