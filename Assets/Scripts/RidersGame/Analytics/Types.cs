@@ -18,9 +18,20 @@ namespace RidersRuntime.Analytics
     }
 
     // For JSON serialisation
-    [System.Serializable]
+    [Serializable]
     public class InputHistoryData
     {
         public List<InputFrameRecord> inputHistory = new();
+    }
+
+    public struct Paths
+    {
+        public const string Logs = "Logs/";
+    }
+
+    public struct FileNames
+    {
+        public const string InputCsv = "InputHistory.csv";
+        public const string InputJson = "InputHistory.json";
     }
 }

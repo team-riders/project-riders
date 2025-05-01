@@ -45,7 +45,7 @@ namespace RidersRuntime.Analytics
         {
             get
             {
-                string logsDir = Path.Combine(Application.dataPath, "Logs");
+                string logsDir = Path.Combine(Application.dataPath, Paths.Logs);
                 if (!Directory.Exists(logsDir)) Directory.CreateDirectory(logsDir);
                 return logsDir;
             }
@@ -64,7 +64,7 @@ namespace RidersRuntime.Analytics
         // DEBUG
         public void SaveHistoryAsCsv()
         {
-            string path = Path.Combine(LogsPath, "InputHistory.csv");
+            string path = Path.Combine(LogsPath, FileNames.InputCsv);
             StringBuilder csv = new StringBuilder();
 
             csv.AppendLine("Frame,Accelerate,Brake,TurnInput,Jump,JumpHoldDuration,StuntA,StuntB,StuntC,Drift,BoostRam");
@@ -92,7 +92,7 @@ namespace RidersRuntime.Analytics
         // DEBUG
         public void SaveHistoryAsJson()
         {
-            string path = Path.Combine(LogsPath, "InputHistory.json");
+            string path = Path.Combine(LogsPath, FileNames.InputJson);
 
             InputHistoryData historyData = new InputHistoryData
             {
