@@ -8,7 +8,7 @@ namespace RidersRuntime.Input
     public class PlayerInput : BaseInput
     {
         InputActionAsset m_playerInput;
-        public string m_inputMapName = "Player";
+        string m_inputMapName = InputMap.Player;
         ActorInputData currentFrameInputData = new();
 
         void Start()
