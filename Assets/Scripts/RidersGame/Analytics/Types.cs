@@ -5,14 +5,14 @@ using System.Collections.Generic;
 namespace RidersRuntime.Analytics
 {
     [Serializable]
-    public struct InputFrameRecord
+    public struct InputSnapshot
     {
-        public int Frame;
+        public int TimeMs;
         public ActorInputData Input;
 
-        public InputFrameRecord(int frame, ActorInputData input)
+        public InputSnapshot(int timeMs, ActorInputData input)
         {
-            Frame = frame;
+            TimeMs = timeMs;
             Input = input;
         }
     }
@@ -21,7 +21,7 @@ namespace RidersRuntime.Analytics
     [Serializable]
     public class InputHistoryData
     {
-        public List<InputFrameRecord> inputHistory = new();
+        public List<InputSnapshot> inputHistory = new();
     }
 
     public struct Paths
