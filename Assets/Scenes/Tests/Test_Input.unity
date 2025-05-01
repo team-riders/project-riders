@@ -284,23 +284,23 @@ MonoBehaviour:
 
     I = Grind
 
-    K = Something
+    K = Unused
+    atm
 
 
-    Using
-    Numpad syntax to quickly write info (google it)
+    Using Numpad syntax
 
-    236U = Frontside Pop Shuv
-    It
+    2U - Pop Shuvit
 
-    214U = Backside Pop Shuv It
+    4U - Kickflip
 
-    6U = Kickflip | 4U = Heel flip
+    6U
+    - Heelflip
 
-    5I
-    = 50-50 | 4I = Nose slide | 6I = Tail slide
 
-    Check console for output'
+    4I - Nose Slide
+
+    6I - Tail Slide'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
