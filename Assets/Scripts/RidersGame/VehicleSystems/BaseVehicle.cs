@@ -29,11 +29,14 @@ namespace RidersRuntime.VehicleSystem
             CoastingDrag = 4f,
             Grip = .95f,
             AddedGravity = 1f,
-            BoostTopSpeed = 80f,
+            BoostTopSpeed = 30f,
             BoostAccel = 15f,
             BoostGaugeMax = 300f,
             BoostGaugePerCharge = 100f,
         };
+
+        // boost gauge current
+        public float BoostGauge;
 
         // list is created, wheels are not until child classes
         [Header("Vehicle Visual")]
@@ -201,6 +204,8 @@ namespace RidersRuntime.VehicleSystem
             powerupController = new PowerupController(baseStats);
 
             StateMachine.Initialise(GroundState);
+
+            BoostGauge = baseStats.BoostGaugePerCharge;
 
             // add to child classes instead
 
@@ -431,7 +436,8 @@ namespace RidersRuntime.VehicleSystem
         //Boost
         public void Boost(bool wantsToBoost)
         {
-            if (wantsToBoost)
+            Debug.Log("Boost Gauge: " + BoostGauge);
+            if (wantsToBoost && BoostGauge >= baseStats.BoostGaugePerCharge)
             {
                 VehicleStats boostStats = new()
                 {
@@ -448,11 +454,14 @@ namespace RidersRuntime.VehicleSystem
                     MaxTime = 5,
                 };
 
-                if (powerupController.IsInList(boostPowerup.PowerUpID))
+                Debug.Log("IsInList: " + powerupController.IsInList(boostPowerup.PowerUpID));
+                if (!powerupController.IsInList(boostPowerup.PowerUpID))
                 {
                     powerupController.AddPowerup(boostPowerup);
 
-                    Rigidbody.AddForce(Vector3.forward * 20, ForceMode.Impulse);
+                    Rigidbody.AddForce(Vector3.forward * 200, ForceMode.Impulse);
+
+                    //BoostGauge -= baseStats.BoostGaugePerCharge;
                 }
             }
         }

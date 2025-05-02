@@ -51,10 +51,10 @@ namespace RidersRuntime.Data
         public float AddedGravity;
 
         //additions
-        [Tooltip("Additional top speed when activating Boost")]
+        [Tooltip("Additional top speed during Boost")]
         public float BoostTopSpeed;
 
-        [Tooltip("Additional acceleration immediately after Boost")]
+        [Tooltip("Additional acceleration during Boost")]
         public float BoostAccel;
 
         [Tooltip("Maximum amount of Boost gauge")]
