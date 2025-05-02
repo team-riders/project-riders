@@ -407,7 +407,7 @@ namespace RidersRuntime.VehicleSystem
 
         //jump management
         // should be satisfactory until we add ramps
-        float Jump(float jumpHold, bool jump, float maxSpeed)
+        public float Jump(float jumpHold, bool jump, float maxSpeed)
         {
             if (jumpHold > 0 && GroundPercent > 0.0f)
             {
@@ -426,6 +426,35 @@ namespace RidersRuntime.VehicleSystem
                 WantsToJumpHold = 0.0f;
             }
             return maxSpeed;
+        }
+
+        //Boost
+        public void Boost(bool wantsToBoost)
+        {
+            if (wantsToBoost)
+            {
+                VehicleStats boostStats = new()
+                {
+                    TopSpeed = baseStats.BoostTopSpeed,
+                    Acceleration = baseStats.BoostAccel,
+                    AccelerationCurve = 0.4f
+                };
+
+                StatPowerup boostPowerup = new()
+                {
+                    modifiers = boostStats,
+                    PowerUpID = "boost",
+                    ElapsedTime = 0,
+                    MaxTime = 5,
+                };
+
+                if (powerupController.IsInList(boostPowerup.PowerUpID))
+                {
+                    powerupController.AddPowerup(boostPowerup);
+
+                    Rigidbody.AddForce(Vector3.forward * 20, ForceMode.Impulse);
+                }
+            }
         }
 
         //make virtual?

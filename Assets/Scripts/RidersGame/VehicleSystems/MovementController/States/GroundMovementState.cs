@@ -13,11 +13,12 @@ namespace RidersRuntime.VehicleSystem
                 new AccelerationFeature(),
                 new SteerTurnFeature(),
                 new JumpFeature(IsGrounded),
-                new StopAccelerationPastMaxSpeed(IsNotBoosting),
+                new StopAccelerationPastMaxSpeed(),
                 new ScaleToFixedDeltaTime(),
                 new ClampToMaxSpeedOnGroundFeature(),
                 new CoastingFeature(),
-                // // new DriftFeature()
+                // new DriftFeature(),
+                // new BoostFeature(IsNotBoosting),
                 new RotateToForwardsFeature(),
                 new KeepUprightFeature()
             });
@@ -33,6 +34,8 @@ namespace RidersRuntime.VehicleSystem
             return false;
         }
 
+        // don't need it on StopAccelerationPastMaxSpeed, stat powerups are additive and will increase max speed anyway
+        // WILL need it on BoostFeature
         bool IsNotBoosting()
         {
             return true;
