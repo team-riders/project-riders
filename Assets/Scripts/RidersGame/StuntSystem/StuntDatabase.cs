@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace RidersRuntime.StuntSystem
 {
@@ -9,18 +10,13 @@ namespace RidersRuntime.StuntSystem
 
         public void PopulateStunts()
         {
-            // Example of populating the stunt database
-            // If for efficiency, we can populate into a tree structure
+            StuntSO[] stunts = Resources.LoadAll<StuntSO>("Data/Stunts");
 
-            // TODO: Add frame limit & priorities
-            // TODO: Single slides are broken atm. Absolutely needs priority
-
-            stunts.Add(new Stunt(4, "Pop Shuvit", StuntType.Flip, 2, 80, 2));
-            // stunts.Add(new Stunt(5, "Backside Pop Shuvit", StuntType.Flip, 2, 80, new string[] { "2", "1", "4", StuntKeys.StuntA }));
-            stunts.Add(new Stunt(2, "Kickflip", StuntType.Flip, 1, 30, 4));
-            stunts.Add(new Stunt(3, "Heelflip", StuntType.Flip, 1, 30, 6));
-            stunts.Add(new Stunt(7, "Nose Slide", StuntType.Grind, 1, 50, 4));
-            stunts.Add(new Stunt(8, "Tail Slide", StuntType.Grind, 1, 50, 6));
+            foreach (var stuntSO in stunts)
+            {
+                Stunt newStunt = new Stunt(stuntSO.stunt.id, stuntSO.stunt.name, stuntSO.stunt.type, stuntSO.stunt.difficulty, stuntSO.stunt.reward, stuntSO.stunt.key);
+                this.stunts.Add(newStunt);
+            }
         }
 
         public Stunt QueryStuntByTime(StuntType stuntType, List<TimedInput> inputs)

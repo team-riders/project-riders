@@ -1,5 +1,8 @@
+using System;
+
 namespace RidersRuntime.StuntSystem
 {
+    [Serializable]
     public struct Stunt
     {
         public int id;
