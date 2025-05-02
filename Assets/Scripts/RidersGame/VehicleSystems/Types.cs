@@ -63,6 +63,9 @@ namespace RidersRuntime.Data
         [Tooltip("How much Boost gauge is used per charge")]
         public float BoostGaugePerCharge;
 
+        [Tooltip("Stores jump force")]
+        public float JumpForce;
+
 
         // allow for stat adding for powerups.
         public static VehicleStats operator +(VehicleStats a, VehicleStats b)
