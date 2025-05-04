@@ -25,6 +25,7 @@ namespace RidersRuntime.VehicleSystem
         {
             base.PhysicsUpdate();
             vehicle.GroundAirbourne();
+            vehicle.Boost(vehicle.Input.BoostRam);
 
             if (!vehicle.m_InAir)
             {

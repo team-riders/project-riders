@@ -125,7 +125,7 @@ namespace RidersRuntime.VehicleSystem
         [Range(0.1f, 1.0f), Tooltip("Stores charge amount for jumping on ramps; helps determine ramp jump height, directly correlates to trick speed")]
         float JumpCharge;
         [Tooltip("Stores jump force")]
-        public float JumpForce = 150.0f;
+        public float JumpForce = 300.0f;
 
         #region State Machine Variables
 
@@ -459,7 +459,8 @@ namespace RidersRuntime.VehicleSystem
                 {
                     powerupController.AddPowerup(boostPowerup);
 
-                    Rigidbody.AddForce(Vector3.forward * 200, ForceMode.Impulse);
+                    // adds an immediate force forward, intended to allow for reaching top speed quicker
+                    Rigidbody.AddForce(Rigidbody.transform.forward * 500, ForceMode.Impulse);
 
                     //BoostGauge -= baseStats.BoostGaugePerCharge;
                 }

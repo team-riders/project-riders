@@ -51,6 +51,8 @@ namespace RidersRuntime.Data
         public float AddedGravity;
 
         //additions
+        // boost
+        [Header("Boost")]
         [Tooltip("Additional top speed during Boost")]
         public float BoostTopSpeed;
 
@@ -62,6 +64,11 @@ namespace RidersRuntime.Data
 
         [Tooltip("How much Boost gauge is used per charge")]
         public float BoostGaugePerCharge;
+
+        // jumping stuff
+        [Header("Jump")]
+        [Range(0.1f, 1.0f), Tooltip("Stores charge amount for jumping on ramps; helps determine ramp jump height, directly correlates to trick speed")]
+        public float JumpCharge;
 
         [Tooltip("Stores jump force")]
         public float JumpForce;
