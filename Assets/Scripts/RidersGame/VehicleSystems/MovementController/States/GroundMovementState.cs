@@ -18,7 +18,7 @@ namespace RidersRuntime.VehicleSystem
                 new ClampToMaxSpeedOnGroundFeature(),
                 new CoastingFeature(),
                 // new DriftFeature(),
-                new BoostFeature(IsNotBoosting),
+                new BoostFeature(),
                 new RotateToForwardsFeature(),
                 new KeepUprightFeature()
             });
@@ -32,13 +32,6 @@ namespace RidersRuntime.VehicleSystem
                 return _refBlackboard.GetValue<float>("GroundPercent") > 0.0f;
             }
             return false;
-        }
-
-        // don't need it on StopAccelerationPastMaxSpeed, stat powerups are additive and will increase max speed anyway
-        // WILL need it on BoostFeature
-        bool IsNotBoosting()
-        {
-            return true;
         }
     }
 

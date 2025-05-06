@@ -47,9 +47,7 @@ namespace RidersRuntime
                 {
                     powerupController.AddPowerup(boostPowerup);
                     
-                    // almost certainly a better way to do this by changing IncreaseGauge()
-                    boostGauge -= boostGaugePerCharge;
-                    Mathf.Clamp(boostGauge, 0, boostGaugeMax);
+                    DecreaseGauge(boostGaugePerCharge);
 
                     return true;
                 }
@@ -60,6 +58,12 @@ namespace RidersRuntime
         public void IncreaseGauge(float increase)
         {
             boostGauge += increase;
+            Mathf.Clamp(boostGauge, 0, boostGaugeMax);
+        }
+
+        public void DecreaseGauge(float decrease)
+        {
+            boostGauge -= decrease;
             Mathf.Clamp(boostGauge, 0, boostGaugeMax);
         }
     }
