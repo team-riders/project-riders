@@ -1,6 +1,8 @@
+using RidersRuntime.Data;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+
 
 [CustomEditor(typeof(MapConfiguration))]
 public class MapConfigurationEditor : Editor

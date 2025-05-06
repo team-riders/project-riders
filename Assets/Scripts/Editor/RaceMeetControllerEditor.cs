@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEditor;
+using RidersRuntime.Data;
+using RidersRuntime.RaceManager;
 
 [CustomEditor(typeof(RaceMeetController))]
 public class RaceMeetControllerEditor : Editor
