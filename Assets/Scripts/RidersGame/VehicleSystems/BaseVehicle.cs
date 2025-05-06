@@ -46,33 +46,6 @@ namespace RidersRuntime.VehicleSystem
         [Range(0.0f, 20.0f), Tooltip("Coefficient used to reorient the kart in the air. The higher the number, the faster the kart will readjust itself along the horizontal plane.")]
         public float AirborneReorientationCoefficient = 3.0f;
 
-        //brought old drifting stuff back in to try and figure out what's not letting the vehicle move
-        [Header("Drifting")]
-        [Range(0.01f, 1.0f), Tooltip("The grip value when drifting.")]
-        public float DriftGrip = 0.4f;
-        [Range(0.0f, 10.0f), Tooltip("Additional steer when the kart is drifting.")]
-        public float DriftAdditionalSteer = 5.0f;
-        [Range(1.0f, 30.0f), Tooltip("The higher the angle, the easier it is to regain full grip.")]
-        public float MinAngleToFinishDrift = 10.0f;
-        [Range(0.01f, 0.99f), Tooltip("Mininum speed percentage to switch back to full grip.")]
-        public float MinSpeedPercentToFinishDrift = 0.5f;
-        [Range(1.0f, 20.0f), Tooltip("The higher the value, the easier it is to control the drift steering.")]
-        public float DriftControl = 10.0f;
-        [Range(0.0f, 20.0f), Tooltip("The lower the value, the longer the drift will last without trying to control it by steering.")]
-        public float DriftDampening = 10.0f;
-
-        //VFX for wheels, should be able to be used anywhere
-        [Header("VFX")]
-        [Tooltip("VFX that will be placed on the wheels when drifting.")]
-        public ParticleSystem DriftSparkVFX;
-        [Range(0.0f, 0.2f), Tooltip("Offset to displace the VFX to the side.")]
-        public float DriftSparkHorizontalOffset = 0.1f;
-        [Range(0.0f, 90.0f), Tooltip("Angle to rotate the VFX.")]
-        public float DriftSparkRotation = 17.0f;
-        [Tooltip("VFX that will be placed on the wheels when drifting.")]
-        public GameObject DriftTrailPrefab;
-        [Range(-0.1f, 0.1f), Tooltip("Vertical to move the trails up or down and ensure they are above the ground.")]
-        public float DriftTrailVerticalOffset;
         [Tooltip("VFX that will spawn upon landing, after a jump.")]
         public GameObject JumpVFX;
         [Tooltip("VFX that is spawn on the nozzles of the kart.")]
@@ -96,17 +69,10 @@ namespace RidersRuntime.VehicleSystem
         const float k_NullSpeed = 0.01f;
         Vector3 m_VerticalReference = Vector3.up;
 
-        // Drift params
-        // CHANGE LATER
-        public bool WantsToDrift { get; private set; } = false;
-        public bool IsDrifting { get; private set; } = false;
         public bool WantsToJump { get; set; } = false;
         public float WantsToJumpHold { get; set; } = 0.0f;
         float m_CurrentGrip = 1.0f;
-        float m_DriftTurningPower = 0.0f;
         float m_PreviousGroundPercent = 1.0f;
-        readonly List<(GameObject trailRoot, WheelCollider wheel, TrailRenderer trail)> m_DriftTrailInstances = new List<(GameObject, WheelCollider, TrailRenderer)>();
-        readonly List<(WheelCollider wheel, float horizontalOffset, float rotation, ParticleSystem sparks)> m_DriftSparkInstances = new List<(WheelCollider, float, float, ParticleSystem)>();
 
         // can the kart move?
         public bool m_CanMove = true;
@@ -145,43 +111,6 @@ namespace RidersRuntime.VehicleSystem
         //{
         //    m_VisualWheels.Add(wheelCollider);
         //}
-
-        private void ActivateDriftVFX(bool active)
-        {
-            foreach (var vfx in m_DriftSparkInstances)
-            {
-                if (active && vfx.wheel.GetGroundHit(out WheelHit hit))
-                {
-                    if (!vfx.sparks.isPlaying)
-                        vfx.sparks.Play();
-                }
-                else
-                {
-                    if (vfx.sparks.isPlaying)
-                        vfx.sparks.Stop(true, ParticleSystemStopBehavior.StopEmitting);
-                }
-
-            }
-
-            foreach (var trail in m_DriftTrailInstances)
-                trail.Item3.emitting = active && trail.wheel.GetGroundHit(out WheelHit hit);
-        }
-
-        private void UpdateDriftVFXOrientation()
-        {
-            foreach (var vfx in m_DriftSparkInstances)
-            {
-                vfx.sparks.transform.position = vfx.wheel.transform.position - (vfx.wheel.radius * Vector3.up) + (DriftTrailVerticalOffset * Vector3.up) + (transform.right * vfx.horizontalOffset);
-                vfx.sparks.transform.rotation = transform.rotation * Quaternion.Euler(0.0f, 0.0f, vfx.rotation);
-            }
-
-            foreach (var trail in m_DriftTrailInstances)
-            {
-                trail.trailRoot.transform.position = trail.wheel.transform.position - (trail.wheel.radius * Vector3.up) + (DriftTrailVerticalOffset * Vector3.up);
-                trail.trailRoot.transform.rotation = transform.rotation;
-            }
-        }
-
         private void Awake()
         {
             StateMachine = new MovementStateMachine();
@@ -292,7 +221,7 @@ namespace RidersRuntime.VehicleSystem
 
             m_PreviousGroundPercent = GroundPercent;
 
-            UpdateDriftVFXOrientation();
+            SetRotation();
         }
 
         void CheckGround()
@@ -341,15 +270,14 @@ namespace RidersRuntime.VehicleSystem
         {
             // reset input
             Input = new ActorInputData();
-            WantsToDrift = false;
+            // WantsToDrift = false;
 
             // gather nonzero input from our sources
             for (int i = 0; i < m_Inputs.Length; i++)
             {
                 Input = m_Inputs[i].GrabCurrentFrameInputs();
-                WantsToDrift = Input.Brake == 1 && Vector3.Dot(Rigidbody.linearVelocity, transform.forward) > 0.0f;
-                // We can only try to jump if we're on the ground. Prevents buffering chain jumps
-                if (Input.Jump && GroundPercent >= 0.5f)
+                // WantsToDrift = Input.Brake == 1 && Vector3.Dot(Rigidbody.linearVelocity, transform.forward) > 0.0f;
+                if (Input.Jump)
                 {
                     WantsToJump = true;
                     WantsToJumpHold = Input.JumpHoldDuration;
@@ -501,7 +429,7 @@ namespace RidersRuntime.VehicleSystem
             //Debug.Log(finalAcceleration);
 
             // apply inputs to forward/backward
-            float turningPower = IsDrifting ? m_DriftTurningPower : turnInput * m_FinalStats.Steer;
+            float turningPower = turnInput * m_FinalStats.Steer;
 
             Quaternion turnAngle = Quaternion.AngleAxis(turningPower, transform.up);
             Vector3 fwd = turnAngle * transform.forward;
@@ -534,99 +462,34 @@ namespace RidersRuntime.VehicleSystem
 
             Rigidbody.linearVelocity = newVelocity;
 
-            // Drift
-            if (GroundPercent > 0.0f)
-            {
-                if (m_InAir)
-                {
-                    m_InAir = false;
-                    //Instantiate(JumpVFX, transform.position, Quaternion.identity);
-                }
+            //
+            // START MOVEMENT LOGIC
+            //
 
-                // manual angular velocity coefficient
-                float angularVelocitySteering = 0.4f;
-                float angularVelocitySmoothSpeed = 20f;
+            // manual angular velocity coefficient
+            float angularVelocitySteering = 0.4f;
+            float angularVelocitySmoothSpeed = 20f;
 
-                // turning is reversed if we're going in reverse and pressing reverse
-                if (!localVelDirectionIsFwd && !accelDirectionIsFwd)
-                    angularVelocitySteering *= -1.0f;
+            // turning is reversed if we're going in reverse and pressing reverse
+            if (!localVelDirectionIsFwd && !accelDirectionIsFwd)
+                angularVelocitySteering *= -1.0f;
 
-                var angularVel = Rigidbody.angularVelocity;
+            var angularVel = Rigidbody.angularVelocity;
 
-                // move the Y angular velocity towards our target
-                angularVel.y = Mathf.MoveTowards(angularVel.y, turningPower * angularVelocitySteering, Time.fixedDeltaTime * angularVelocitySmoothSpeed);
+            // move the Y angular velocity towards our target
+            angularVel.y = Mathf.MoveTowards(angularVel.y, turningPower * angularVelocitySteering, Time.fixedDeltaTime * angularVelocitySmoothSpeed);
 
-                // apply the angular velocity
-                Rigidbody.angularVelocity = angularVel;
+            // apply the angular velocity
+            Rigidbody.angularVelocity = angularVel;
 
-                // rotate rigidbody's velocity as well to generate immediate velocity redirection
-                // manual velocity steering coefficient
-                float velocitySteering = 25f;
+            // rotate rigidbody's velocity as well to generate immediate velocity redirection
+            // manual velocity steering coefficient
+            float velocitySteering = 25f;
 
-                // drifting, change later
-                // If the karts lands with a forward not in the velocity direction, we start the drift
-                if (GroundPercent >= 0.0f && m_PreviousGroundPercent < 0.1f)
-                {
-                    Vector3 flattenVelocity = Vector3.ProjectOnPlane(Rigidbody.linearVelocity, m_VerticalReference).normalized;
-                    if (Vector3.Dot(flattenVelocity, transform.forward * Mathf.Sign(accelInput)) < Mathf.Cos(MinAngleToFinishDrift * Mathf.Deg2Rad))
-                    {
-                        IsDrifting = true;
-                        m_CurrentGrip = DriftGrip;
-                        m_DriftTurningPower = 0.0f;
-                    }
-                }
 
-                // Drift Management
-                if (!IsDrifting)
-                {
-                    if ((WantsToDrift || isBraking) && currentSpeed > maxSpeed * MinSpeedPercentToFinishDrift)
-                    {
-                        IsDrifting = true;
-                        m_DriftTurningPower = turningPower + (Mathf.Sign(turningPower) * DriftAdditionalSteer);
-                        m_CurrentGrip = DriftGrip;
+            // rotate our velocity based on current steer value
+            Rigidbody.linearVelocity = Quaternion.AngleAxis(turningPower * Mathf.Sign(localVel.z) * velocitySteering * m_CurrentGrip * Time.fixedDeltaTime, transform.up) * Rigidbody.linearVelocity;
 
-                        ActivateDriftVFX(true);
-                    }
-                }
-
-                if (IsDrifting)
-                {
-                    float turnInputAbs = Mathf.Abs(turnInput);
-                    if (turnInputAbs < k_NullInput)
-                        m_DriftTurningPower = Mathf.MoveTowards(m_DriftTurningPower, 0.0f, Mathf.Clamp01(DriftDampening * Time.fixedDeltaTime));
-
-                    // Update the turning power based on input
-                    float driftMaxSteerValue = m_FinalStats.Steer + DriftAdditionalSteer;
-                    m_DriftTurningPower = Mathf.Clamp(m_DriftTurningPower + (turnInput * Mathf.Clamp01(DriftControl * Time.fixedDeltaTime)), -driftMaxSteerValue, driftMaxSteerValue);
-
-                    bool facingVelocity = Vector3.Dot(Rigidbody.linearVelocity.normalized, transform.forward * Mathf.Sign(accelInput)) > Mathf.Cos(MinAngleToFinishDrift * Mathf.Deg2Rad);
-
-                    bool canEndDrift = true;
-                    if (isBraking)
-                        canEndDrift = false;
-                    else if (!facingVelocity)
-                        canEndDrift = false;
-                    else if (turnInputAbs >= k_NullInput && currentSpeed > maxSpeed * MinSpeedPercentToFinishDrift)
-                        canEndDrift = false;
-
-                    if (canEndDrift || currentSpeed < k_NullSpeed)
-                    {
-                        // No Input, and car aligned with speed direction => Stop the drift
-                        IsDrifting = false;
-                        m_CurrentGrip = m_FinalStats.Grip;
-                    }
-
-                }
-
-                // rotate our velocity based on current steer value
-                Rigidbody.linearVelocity = Quaternion.AngleAxis(turningPower * Mathf.Sign(localVel.z) * velocitySteering * m_CurrentGrip * Time.fixedDeltaTime, transform.up) * Rigidbody.linearVelocity;
-            }
-            else
-            {
-                m_InAir = true;
-            }
-
-            bool validPosition = false;
             if (Physics.Raycast(transform.position + (transform.up * 0.1f), -transform.up, out RaycastHit hit, 3.0f, 1 << 9 | 1 << 10 | 1 << 11)) // Layer: ground (9) / Environment(10) / Track (11)
             {
                 Vector3 lerpVector = (m_HasCollision && m_LastCollisionNormal.y > hit.normal.y) ? m_LastCollisionNormal : hit.normal;
@@ -638,27 +501,27 @@ namespace RidersRuntime.VehicleSystem
                 m_VerticalReference = Vector3.Slerp(m_VerticalReference, lerpVector, Mathf.Clamp01(AirborneReorientationCoefficient * Time.fixedDeltaTime));
             }
 
-            validPosition = GroundPercent > 0.7f && !m_HasCollision && Vector3.Dot(m_VerticalReference, Vector3.up) > 0.9f;
+            //
+            // END MOVEMENT LOGIC
+            //
+        }
 
-            // Airborne / Half on ground management
-            if (GroundPercent < 0.7f)
+        // When going up a ramp, player visibly rotates upwards
+        void SetRotation()
+        {
+            if (GroundPercent > 0.7)
             {
-                Rigidbody.angularVelocity = new Vector3(0.0f, Rigidbody.angularVelocity.y * 0.98f, 0.0f);
-                Vector3 finalOrientationDirection = Vector3.ProjectOnPlane(transform.forward, m_VerticalReference);
-                finalOrientationDirection.Normalize();
-                if (finalOrientationDirection.sqrMagnitude > 0.0f)
+                Ray ray = new Ray(transform.position + Vector3.up * 0.5f, Vector3.down);
+                if (Physics.Raycast(ray, out RaycastHit hit, 2f))
                 {
-                    Rigidbody.MoveRotation(Quaternion.Lerp(Rigidbody.rotation, Quaternion.LookRotation(finalOrientationDirection, m_VerticalReference), Mathf.Clamp01(AirborneReorientationCoefficient * Time.fixedDeltaTime)));
+                    // Align "up" with the surface normal
+                    Quaternion slopeRotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
+
+                    // Smooth transition to the slope rotation
+                    transform.rotation = Quaternion.Slerp(transform.rotation, slopeRotation, Time.fixedDeltaTime * 10f);
                 }
             }
-            else if (validPosition)
-            {
-                m_LastValidPosition = transform.position;
-                m_LastValidRotation.eulerAngles = new Vector3(0.0f, transform.rotation.y, 0.0f);
-            }
-
-            ActivateDriftVFX(IsDrifting && GroundPercent > 0.0f);
         }
-    }
 
+    }
 }

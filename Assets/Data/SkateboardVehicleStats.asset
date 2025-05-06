@@ -23,5 +23,5 @@ MonoBehaviour:
     Grip: 0.95
     Steer: 5
     AddedGravity: -0.1
-    BoostTopSpeed: 80
-    BoostAccel: 15
+    BoostTopSpeed: 25
+    BoostAccel: 5

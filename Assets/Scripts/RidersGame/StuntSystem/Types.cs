@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace RidersRuntime.StuntSystem
 {
-    public struct FrameKeyData
+    public struct TimedInput
     {
-        public int frameCount;
-        public List<string> inputs;
+        public float time;
+        public string key;
     }
 
     public enum StuntType
@@ -25,5 +25,7 @@ namespace RidersRuntime.StuntSystem
             { StuntButtonNamesShort.StuntB, StuntType.Grind },
             { StuntButtonNamesShort.StuntC, StuntType.Spin }
         };
+
+        public static float timeWindowMax = 0.5f;
     }
 }

@@ -7,7 +7,7 @@ namespace RidersRuntime.VehicleSystem
             _featureQueue = new(new()
             {
                 new AccelerationFeature(),
-                new SteerTurnFeature(),
+                // new SteerTurnFeature(),
                 new ScaleToFixedDeltaTime(),
                 new CoastingFeature(),
                 new FallFasterInAirFeature(),
