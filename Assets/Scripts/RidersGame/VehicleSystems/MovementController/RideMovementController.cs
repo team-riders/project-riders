@@ -85,7 +85,6 @@ namespace RidersRuntime.VehicleSystem
             // In reality nothing actually happens here for now, we are just doing the transitions.
 
             MovementStateAlt state = m_stateMachine.CurrentState;
-            Debug.Log($"Current State: {state.Name}");
             // Pass any information we need to the states here.
             state.ComputePhysicsIntentions(SendBlackboard());
         }
