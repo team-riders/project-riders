@@ -1,51 +1,36 @@
-//using RidersRuntime.Data;
-//using RidersRuntime.Input;
-//using System;
-//using UnityEditor.Experimental.GraphView;
-//using UnityEngine;
+using RidersRuntime.Data;
+using RidersRuntime.Input;
+using System;
+using UnityEditor.Experimental.GraphView;
+using UnityEngine;
 
-//namespace RidersRuntime.VehicleSystem
-//{
-//    public class BoostFeature : ConditionalDataPipelineStep<Blackboard>
-//    {
+namespace RidersRuntime.VehicleSystem
+{
+    public class BoostFeature : ConditionalDataPipelineStep<Blackboard>
+    {
 
-//        public override Blackboard OnStep(Blackboard blackboard)
-//        {
-//            ActorInputData input = blackboard.GetValue<ActorInputData>("InputData");
-//            Rigidbody rigidbody = blackboard.GetValue<Rigidbody>("Rigidbody");
+        public override Blackboard OnStep(Blackboard blackboard)
+        {
+            ActorInputData input = blackboard.GetValue<ActorInputData>("InputData");
+            Rigidbody rigidbody = blackboard.GetValue<Rigidbody>("Rigidbody");
 
-
-//            float boostTopSpeed = blackboard.GetValue<float>("");   // figure out tag
-//            float boostAccel = blackboard.GetValue<float>("");
-
-//            PowerupController powerupController = blackboard.GetValue<PowerupController>("PowerupController");
+            BoostController boostController = blackboard.GetValue<BoostController>("BoostController");
 
 
-//            if (input.BoostRam)
-//            {
-//                VehicleStats boostStats = new()
-//                {
-//                    TopSpeed = boostTopSpeed,
-//                    Acceleration = boostAccel,
-//                    AccelerationCurve = 0.4f
-//                };
+            if (input.BoostRam)
+            {
+                if (boostController.ApplyBoost())
+                {
+                    rigidbody.AddForce(Vector3.forward * 500, ForceMode.Impulse);
+                }
+            }
 
-//                StatPowerup boostPowerup = new()
-//                {
-//                    modifiers = boostStats,
-//                    PowerUpID = "boost",
-//                    ElapsedTime = 0,
-//                    MaxTime = 5,
-//                };
+            // nothing in the blackboard ends up actually changing, run by james
+            return blackboard;
+        }
 
-//                powerupController.AddPowerup(boostPowerup);
-
-//                rigidbody.AddForce(Vector3.forward * 20, ForceMode.Impulse);
-//            }
-//        }
-
-//        public BoostFeature(Func<bool> condition = null) : base(condition)
-//        {
-//        }
-//    }
-//}
+        public BoostFeature(Func<bool> condition = null) : base(condition)
+        {
+        }
+    }
+}

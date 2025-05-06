@@ -17,6 +17,7 @@ namespace RidersRuntime.VehicleSystem
         ActorInputData inputIntention;
         IInput m_ActorInputComponent;
         PowerupController powerupController;
+        BoostController boostController;
 
         // Eventually serialize this to show internal function properties
         GrindingMovementState grindingMovementState = new();
@@ -63,6 +64,7 @@ namespace RidersRuntime.VehicleSystem
             m_ActorInputComponent = GetComponent<IInput>();
 
             powerupController = new(m_VehicleStats._vehicleStats);
+            boostController = new(powerupController);
             SetCenterOfMass();
 
             DefineStates();
