@@ -123,6 +123,7 @@ namespace RidersRuntime.VehicleSystem
             blackboard.SetValue("LastCollisionNormal", m_LastCollisionNormal);
             blackboard.SetValue("CurrentPath", m_GrindPathTarget);
             blackboard.SetValue("JumpIntention", JumpIntention);
+            blackboard.SetValue("BoostController", boostController);
             return blackboard;
         }
 
