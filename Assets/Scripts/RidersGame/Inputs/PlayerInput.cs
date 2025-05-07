@@ -49,6 +49,7 @@ namespace RidersRuntime.Input
                         {
                             inputValues[ButtonNamesShort.Jump] = 0;
                             inputValues[InputNameSpecial.JumpHoldDuration] = currentFrameInputData.JumpHoldDuration + 1;
+                            UnityEngine.Debug.Log($"JumpHoldDuration: {currentFrameInputData.JumpHoldDuration}");
                         }
                         else
                         {

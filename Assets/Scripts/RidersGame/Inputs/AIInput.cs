@@ -7,15 +7,18 @@ namespace RidersRuntime.Input
 {
 public class AIInput : BaseInput
 {
+    InputActionAsset m_playerInput;
     [SerializeField] private NodePath path;
     [SerializeField] private float nodeReachThreshold = 3f;
-    [SerializeField] private float nodeCloseThreshold = 5f;
+    [SerializeField] private float nodeCloseThreshold = 2f;
+    [SerializeField] private float nodeAccelerateThreshold = 3.5f;
     private BaseVehicle baseVehicle;
     private Vector3 targetPosition;
    
     private int currentNodeIndex = 0;
     public float distanceToTarget;
     public Transform targetNode;
+    private Node currentJumpNode;
     void Awake()
     {
         baseVehicle = GetComponent<BaseVehicle>();
@@ -30,8 +33,8 @@ public class AIInput : BaseInput
         SetTargetPosition(targetNode.position);
         if (Vector3.Distance(baseVehicle.transform.position, targetNode.position) < nodeReachThreshold)
         {
-            currentNodeIndex = (currentNodeIndex + 1) % path.nodes.Length; // loop path
-            
+            currentNodeIndex = (currentNodeIndex + 1) % path.nodes.Length;
+        
         }
         inputData = FollowNodes();
     }
@@ -50,8 +53,8 @@ public class AIInput : BaseInput
         float angleToTarget = Vector3.SignedAngle(forward, diffToTarget, Vector3.up);
 
         float turnInput = Mathf.Clamp(angleToTarget / 45f, -1f, 1f);
-        float accelerate = distanceToTarget > nodeCloseThreshold ? 1f : 0f;
-        float brake = distanceToTarget < nodeReachThreshold ? 1f : 0f;
+        float accelerate = distanceToTarget > nodeAccelerateThreshold ? 1f : 0f;
+        float brake = distanceToTarget < nodeCloseThreshold ? 1f : 0f;
         
         return new ActorInputData
         {
@@ -60,7 +63,7 @@ public class AIInput : BaseInput
             TurnInput = turnInput,
 
             Jump = JumpInput(),
-            JumpHoldDuration = 1f,
+            JumpHoldDuration = currentJumpNode.jumpHoldDuration,
             StuntA = false,
             StuntB = false,
             StuntC = false,
@@ -72,16 +75,9 @@ public class AIInput : BaseInput
 
     private bool JumpInput()
     {
-        Node currentNode;
-        if (currentNodeIndex == 0)
-        {
-        currentNode = path.nodes[currentNodeIndex].GetComponent<Node>();
-        }
-        else 
-        {
-            currentNode = path.nodes[currentNodeIndex - 1].GetComponent<Node>();
-        }
-        if (currentNode != null && currentNode.isJumpNode && distanceToTarget < nodeReachThreshold)
+        currentJumpNode = CorrectNodeIndex();
+
+        if (currentJumpNode != null && currentJumpNode.isJumpNode && distanceToTarget < nodeReachThreshold)
         {
             return true;
         }
@@ -91,6 +87,18 @@ public class AIInput : BaseInput
         }
     }
 
+    private Node CorrectNodeIndex()
+    {
+        if (currentNodeIndex == 0)
+        {
+            currentJumpNode = path.nodes[currentNodeIndex].GetComponent<Node>();
+        }
+        else 
+        {
+            currentJumpNode = path.nodes[currentNodeIndex - 1].GetComponent<Node>();
+        }
+        return currentJumpNode;
+    }
     public override ActorInputData GrabCurrentFrameInputs() => inputData;
 }
 }
