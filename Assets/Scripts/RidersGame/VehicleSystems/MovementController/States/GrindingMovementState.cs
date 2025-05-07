@@ -37,7 +37,6 @@ namespace RidersRuntime.VehicleSystem
                 new GrindEnterFeature(),
                 new AccelerationNoRBFeature(),
                 new GrindingFeature(),
-                new JumpFeature(() => true),
                 new GrindExitFeature(),
             });
         }

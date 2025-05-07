@@ -5,7 +5,7 @@ using UnityEngine;
 namespace RidersRuntime.VehicleSystem
 {
 
-    public class JumpFeature : ConditionalDataPipelineStep<Blackboard>
+    public class JumpFeature : DataPipelineStep<Blackboard>
     {
         const float JumpForce = 300f;
         const int JumpBoostHoldFrameThreshold = 180;
@@ -13,6 +13,8 @@ namespace RidersRuntime.VehicleSystem
         const float JumpBoostHoldMaxDuration = 120f;
         const float JumpChargeMinScale = 0.5f;
         const float JumpChargeMaxScale = 1.0f;
+
+        float localJumpCharge = 0f;
 
         public override Blackboard OnStep(Blackboard blackboard)
         {
@@ -22,17 +24,20 @@ namespace RidersRuntime.VehicleSystem
             float GroundPercent = blackboard.GetValue<float>("GroundPercent");
             float maxSpeed = blackboard.GetValue<float>("MaxSpeed");
 
-            bool WantsToJump = input.Jump;
+            bool WantsToJump = blackboard.GetValue<bool>("JumpIntention");
             float WantsToHold = input.JumpHoldDuration;
 
-            // We don't deal with any of this crap if we are not on the ground
-            if (GroundPercent <= 0.0f) return blackboard;
+            // This feature won't actually be working for grinding so we can do ground checks here
 
-            float JumpCharge = 0;
+            if (GroundPercent <= 0.0f)
+            {
+                localJumpCharge = 0f;
+                return blackboard;
+            }
 
             if (WantsToHold > 0)
             {
-                JumpCharge = Mathf.Clamp(WantsToHold / JumpBoostHoldMaxDuration, JumpChargeMinScale, JumpChargeMaxScale);
+                localJumpCharge = Mathf.Clamp(WantsToHold / JumpBoostHoldMaxDuration, JumpChargeMinScale, JumpChargeMaxScale);
                 if (WantsToHold > JumpBoostHoldFrameThreshold)
                 {
                     maxSpeed *= JumpSpeedBoost;
@@ -41,19 +46,18 @@ namespace RidersRuntime.VehicleSystem
 
             if (WantsToJump)
             {
-                rigidbody.AddForce(Vector3.up * (JumpForce * JumpCharge), ForceMode.Impulse);
+                rigidbody.AddForce(Vector3.up * (JumpForce * localJumpCharge), ForceMode.Impulse);
                 blackboard.SetValue("MaxSpeed", maxSpeed);
                 if (blackboard.ContainsKey("GrindPath"))
                 {
                     blackboard.Remove("GrindPath");
                 }
+
+                localJumpCharge = 0f;
             }
 
+            blackboard.SetValue("JumpIntention", false);
             return blackboard;
-        }
-
-        public JumpFeature(Func<bool> condition = null) : base(condition)
-        {
         }
     }
 }

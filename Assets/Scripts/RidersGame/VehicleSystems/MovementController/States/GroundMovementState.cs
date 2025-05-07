@@ -6,12 +6,14 @@ namespace RidersRuntime.VehicleSystem
 {
     public class GroundMovementState : MovementStateAlt
     {
+
+        // Cheating the jump feature here 
         public GroundMovementState() : base("Ground Movement State")
         {
             _featureQueue = new(new() {
                 new AccelerationFeature(),
                 new SteerTurnFeature(),
-                new JumpFeature(IsGrounded),
+                new JumpFeature(),
                 new StopAccelerationPastMaxSpeed(),
                 new ScaleToFixedDeltaTime(),
                 new ClampToMaxSpeedOnGroundFeature(),
