@@ -7,7 +7,7 @@ namespace RidersRuntime.VehicleSystem
     public class GrindExitFeature : ConditionalDataPipelineStep<Blackboard>
     {
         const float KickoffSpeed = 5;
-        const float HackExitSpeedNerfCoeff = 0.8f;
+        const float HackExitSpeedNerfCoeff = 0.6f;
 
         public override bool IsConditionMet(Blackboard data)
         {
