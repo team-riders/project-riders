@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Prefabs/Vehicles/PlayerSet.prefab.meta
+guid: 7512643b31f4ea44dbf2e51c116fec88
+PrefabImporter:
+========
+guid: d0b18f2bc867fd2429371388d4f1c18a
+AssemblyDefinitionImporter:
+>>>>>>>> origin/dev:Assets/Scripts/Editor/RidersEditor.asmdef.meta
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
