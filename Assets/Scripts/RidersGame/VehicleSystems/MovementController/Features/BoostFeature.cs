@@ -23,11 +23,13 @@ namespace RidersRuntime.VehicleSystem
                 Debug.Log("ApplyBoost: " + boostController.ApplyBoost());
                 if (boostController.ApplyBoost())
                 {
-                    rigidbody.AddForce(Vector3.forward * 500, ForceMode.Impulse);
+                    Debug.Log("applying rigidbody forward force");
+                    rigidbody.AddForce(rigidbody.transform.forward * 500, ForceMode.Impulse);
                 }
             }
 
             // nothing in the blackboard ends up actually changing, run by james
+            blackboard.SetValue("Rigidbody", rigidbody);
             return blackboard;
         }
 

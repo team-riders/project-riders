@@ -20,6 +20,7 @@ namespace RidersRuntime.VehicleSystem
                 new ClampToMaxSpeedOnGroundFeature(),
                 new CoastingFeature(),
                 // new DriftFeature(),
+                new PowerupsFeature(),
                 new BoostFeature(),
                 new RotateToForwardsFeature(),
                 new KeepUprightFeature()

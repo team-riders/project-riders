@@ -58,5 +58,10 @@ namespace RidersRuntime.VehicleSystem
         {
             computedStats.Grip = Mathf.Clamp(computedStats.Grip, 0.0f, 1.0f);
         }
+
+        public VehicleStats ReturnComputedStats()
+        {
+            return computedStats;
+        }
     }
 }

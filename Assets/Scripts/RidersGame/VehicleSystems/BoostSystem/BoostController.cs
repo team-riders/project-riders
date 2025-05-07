@@ -55,7 +55,7 @@ namespace RidersRuntime
                 {
                     powerupController.AddPowerup(boostPowerup);
                     
-                    DecreaseGauge(boostGaugePerCharge);
+                    //DecreaseGauge(boostGaugePerCharge);
 
                     return true;
                 }

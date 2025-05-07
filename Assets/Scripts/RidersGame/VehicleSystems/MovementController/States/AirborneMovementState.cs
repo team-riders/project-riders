@@ -12,6 +12,8 @@ namespace RidersRuntime.VehicleSystem
                 new CoastingFeature(),
                 new FallFasterInAirFeature(),
                 new KeepUprightFeature(),
+                new PowerupsFeature(),
+                new BoostFeature(),
             });
         }
     }

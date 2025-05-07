@@ -124,6 +124,7 @@ namespace RidersRuntime.VehicleSystem
             blackboard.SetValue("CurrentPath", m_GrindPathTarget);
             blackboard.SetValue("JumpIntention", JumpIntention);
             blackboard.SetValue("BoostController", boostController);
+            blackboard.SetValue("PowerupController", powerupController);
             return blackboard;
         }
 
