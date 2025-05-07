@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using RidersRuntime.VehicleSystem;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -45,26 +46,14 @@ namespace RidersRuntime.Input
                     // Special handle for Jump
                     if (action.name == ButtonNamesShort.Jump)
                     {
-                        if (action.WasPressedThisFrame())
+                        inputValues[ButtonNamesShort.Jump] = action.WasReleasedThisFrame() ? 1 : 0;
+                        inputValues[InputNameSpecial.JumpHoldDuration] = (true) switch
                         {
-                            inputValues[ButtonNamesShort.Jump] = 0;
-                            inputValues[InputNameSpecial.JumpHoldDuration] = 0;
-                        }
-                        else if (action.WasReleasedThisFrame())
-                        {
-                            inputValues[ButtonNamesShort.Jump] = 1;
-                            inputValues[InputNameSpecial.JumpHoldDuration] = currentFrameInputData.JumpHoldDuration;
-                        }
-                        else if (action.IsPressed())
-                        {
-                            inputValues[ButtonNamesShort.Jump] = 0;
-                            inputValues[InputNameSpecial.JumpHoldDuration] = currentFrameInputData.JumpHoldDuration + 1;
-                        }
-                        else
-                        {
-                            inputValues[ButtonNamesShort.Jump] = 0;
-                            inputValues[InputNameSpecial.JumpHoldDuration] = 0;
-                        }
+                            true when action.WasPressedThisFrame() => 0,
+                            true when action.WasReleasedThisFrame() => currentFrameInputData.JumpHoldDuration,
+                            true when action.IsPressed() => currentFrameInputData.JumpHoldDuration + 1,
+                            _ => 0
+                        };
                     }
                     else
                     {

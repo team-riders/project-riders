@@ -15,6 +15,7 @@ namespace RidersRuntime.VehicleSystem
         Rigidbody m_rigidbody;
         StateMachine<MovementStateAlt> m_stateMachine;
         ActorInputData inputIntention;
+        bool JumpIntention = false;
         IInput m_ActorInputComponent;
         PowerupController powerupController;
         BoostController boostController;
@@ -50,6 +51,7 @@ namespace RidersRuntime.VehicleSystem
 
             m_stateMachine.ForceTransition(groundMovementState);
         }
+
         bool TransitionCanGrind()
         {
 
@@ -89,6 +91,8 @@ namespace RidersRuntime.VehicleSystem
             MovementStateAlt state = m_stateMachine.CurrentState;
             // Pass any information we need to the states here.
             state.ComputePhysicsIntentions(SendBlackboard());
+            Blackboard data = state.ReturnStateBlackboard();
+            PostExecuteBlackboardChange(data);
         }
 
         void PreCalcChecks()
@@ -100,34 +104,22 @@ namespace RidersRuntime.VehicleSystem
 
         void ProcessAndBufferIntent()
         {
-            ActorInputData new_inputs = m_ActorInputComponent.GrabCurrentFrameInputs();
-
-            inputIntention = new()
-            {
-                Accelerate = new_inputs.Accelerate,
-                Brake = new_inputs.Brake,
-                TurnInput = new_inputs.TurnInput,
-                // TODO: MOVE THIS TO THE INPUT PROCESSOR INSTEAD
-                // Force jump to be a "consumable" intention.
-                // i.e. Jump will only turn false if 
-                //     1. We are not trying to jump
-                //     2. The "jump" we set up has been consumed (changed to false)
-                // ! JUMP IS BROKEN, NEEDS TO BE FIXED
-                Jump = inputIntention.Jump || new_inputs.Jump,
-                JumpHoldDuration = new_inputs.JumpHoldDuration,
-                StuntA = new_inputs.StuntA,
-                StuntB = new_inputs.StuntB,
-                StuntC = new_inputs.StuntC,
-
-                Drift = new_inputs.Drift,
-                BoostRam = new_inputs.BoostRam
-            };
+            inputIntention = m_ActorInputComponent.GrabCurrentFrameInputs();
+            JumpIntention = JumpIntention || inputIntention.Jump;
         }
 
         public void AddExternalPrecheck(Action action)
         {
             if (action == null) return;
             ExecuteExternalPrechecks += action;
+        }
+
+        public void PostExecuteBlackboardChange(Blackboard blackboard)
+        {
+            if (blackboard.GetValue<bool>("JumpIntention") == false)
+            {
+                JumpIntention = false;
+            }
         }
     }
 }
