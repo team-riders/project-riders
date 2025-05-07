@@ -14,14 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _vehicleStats:
     TopSpeed: 20
-    Acceleration: 2
+    Acceleration: 5
     ReverseSpeed: 1
     ReverseAcceleration: 0.25
     AccelerationCurve: 0.5
     Braking: 10
-    CoastingDrag: 1
+    CoastingDrag: 0
     Grip: 0.95
     Steer: 5
     AddedGravity: -0.1
     BoostTopSpeed: 25
     BoostAccel: 5
+    BoostGaugeMax: 300
+    BoostGaugePerCharge: 100
+    JumpCharge: 0.1
+    JumpForce: 0

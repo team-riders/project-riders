@@ -17,8 +17,10 @@ namespace RidersRuntime.VehicleSystem
             BoostController boostController = blackboard.GetValue<BoostController>("BoostController");
 
 
+            Debug.Log("input.BoostRam " + input.BoostRam);
             if (input.BoostRam)
             {
+                Debug.Log("ApplyBoost: " + boostController.ApplyBoost());
                 if (boostController.ApplyBoost())
                 {
                     rigidbody.AddForce(Vector3.forward * 500, ForceMode.Impulse);

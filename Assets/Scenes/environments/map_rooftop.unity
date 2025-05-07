@@ -27197,6 +27197,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: -180
       objectReference: {fileID: 0}
+    - target: {fileID: 1609476882227281414, guid: 7512643b31f4ea44dbf2e51c116fec88, type: 3}
+      propertyPath: m_ForwardFriction.m_ExtremumValue
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685060253340696303, guid: 7512643b31f4ea44dbf2e51c116fec88, type: 3}
+      propertyPath: m_ForwardFriction.m_ExtremumValue
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 3315173821069480551, guid: 7512643b31f4ea44dbf2e51c116fec88, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1297.6199
@@ -27268,6 +27276,14 @@ PrefabInstance:
     - target: {fileID: 4002945755623813062, guid: 7512643b31f4ea44dbf2e51c116fec88, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6704588025918618960, guid: 7512643b31f4ea44dbf2e51c116fec88, type: 3}
+      propertyPath: m_ForwardFriction.m_ExtremumValue
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6953606168784727518, guid: 7512643b31f4ea44dbf2e51c116fec88, type: 3}
+      propertyPath: m_ForwardFriction.m_ExtremumValue
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 7777575478848986754, guid: 7512643b31f4ea44dbf2e51c116fec88, type: 3}
       propertyPath: m_LocalPosition.x

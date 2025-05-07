@@ -36,13 +36,21 @@ namespace RidersRuntime
             boostGaugePerCharge = powerupController.BaseStats.BoostGaugePerCharge;
             boostGaugeMax = powerupController.BaseStats.BoostGaugeMax;
             boostGauge = boostGaugePerCharge;
+
+            Debug.Log("boostStats: " + boostStats);
+            Debug.Log("boostPowerup: " + boostPowerup);
+            Debug.Log("boostGaugePerCharge: " + boostGaugePerCharge);
+            Debug.Log("boostGaugeMax: " + boostGaugeMax);
+            Debug.Log("boostGauge: " + boostGauge);
         }
 
         // applies boost
         public bool ApplyBoost()
         {
-            if (boostGauge > boostGaugePerCharge)
+            Debug.Log("boostGauge >= boostGaugePerCharge: " + (boostGauge >= boostGaugePerCharge));
+            if (boostGauge >= boostGaugePerCharge)
             {
+                Debug.Log("!powerupController.IsInList(boostPowerup.PowerUpID): " + !powerupController.IsInList(boostPowerup.PowerUpID));
                 if (!powerupController.IsInList(boostPowerup.PowerUpID))
                 {
                     powerupController.AddPowerup(boostPowerup);
