@@ -13,16 +13,15 @@ namespace RidersRuntime.StuntSystem
         StuntSystem stuntSystem;
         IInput playerPeripheralInput;
         public bool isInRecordingMode = false;
-        List<FrameKeyData> recordedKeys = new();
+        private Queue<TimedInput> inputBuffer = new();
+        private List<string> previousFrameKeys = new();
 
         StuntType currentStunt = StuntType.None;
-        int pollFrameHoldCounter = 0;
 
         void Start()
         {
             playerPeripheralInput = GetComponent<PlayerInput>();
             stuntSystem = GetComponent<StuntSystem>();
-            Application.targetFrameRate = 60;
         }
 
         public void Initialize()
@@ -32,29 +31,44 @@ namespace RidersRuntime.StuntSystem
 
         void Update()
         {
-            if (isInRecordingMode)
-            {
-                ActorInputData currentFrameData = playerPeripheralInput.GrabCurrentFrameInputs();
-                // Interpret this and record it down
+            if (!isInRecordingMode) return;
 
-                // If any has been pressed we can handle all cases 
-                List<string> lastPressedKeys = RecordKeyFrames(currentFrameData, out bool isNew);
-                List<string> stuntIntersect = lastPressedKeys.Intersect(StuntButtonNamesShort.AllStuntButtons).ToList();
-                if (stuntIntersect.Count() > 0 && isNew)
-                {
-                    HandleStuntKeyPress(stuntIntersect[0]);
-                }
+            // Prune old inputs
+            while (inputBuffer.Count > 0 && Time.time - inputBuffer.Peek().time > Values.timeWindowMax)
+                inputBuffer.Dequeue();
+
+            // Get new inputs
+            var current = playerPeripheralInput.GrabCurrentFrameInputs();
+            var keys = GetCurrentKeys(current);
+            foreach (var key in keys)
+                inputBuffer.Enqueue(new TimedInput { key = key, time = Time.time });
+
+            List<string> newKeys = keys.Except(previousFrameKeys).ToList();
+            var newStuntKey = newKeys.FirstOrDefault(k => StuntButtonNamesShort.AllStuntButtons.Contains(k));
+            if (newStuntKey != null)
+            {
+                HandleStuntKeyPress(newStuntKey);
             }
+            previousFrameKeys = keys;
+
         }
 
         void HandleStuntKeyPress(string key)
         {
             currentStunt = Values.stuntBindings[key];
-            // Build print out the actions for the last 10 actions
-            List<FrameKeyData> keys = recordedKeys.Skip(Mathf.Max(0, recordedKeys.Count - 10)).ToList();
-
-            stuntSystem.OnStuntRequestWithFrameData(keys, currentStunt);
+            stuntSystem.OnStuntRequestTimed(new List<TimedInput>(inputBuffer), currentStunt);
             currentStunt = StuntType.None;
+        }
+
+
+        List<string> GetCurrentKeys(ActorInputData input)
+        {
+            float horizontal = input.TurnInput;
+            float vertical = input.Accelerate > 0 ? input.Accelerate : -1 * input.Brake;
+            int dir = ConvertVector2To8WayDirection(new Vector2(horizontal, vertical));
+            var keys = input.KeysThatAreNonZeroExceptAnalog();
+            keys.Add(dir.ToString());
+            return keys;
         }
 
         int ConvertVector2To8WayDirection(Vector2 input)
@@ -75,84 +89,6 @@ namespace RidersRuntime.StuntSystem
             if (input.y < deadzone) return 2; // Down
 
             return -1; // No valid direction
-        }
-
-        List<string> RecordKeyFrames(ActorInputData input, out bool isNew)
-        {
-            isNew = false;
-            // 1. Convert from 3 var input to 1 var 8 way input
-            // Need to reimplement this - adapter to 8 way
-            float horizontal = input.TurnInput;
-            float vertical = input.Accelerate;
-            vertical = vertical > 0 ? vertical : -1 * input.Brake;
-
-            int direction = ConvertVector2To8WayDirection(new(horizontal, vertical));
-
-            // 2. Get all positive inputs
-            List<string> currentFrameKeys = input.KeysThatAreNonZeroExceptAnalog();
-            currentFrameKeys.Add(direction.ToString());
-
-            // Grab information about the previous frame
-            List<string> previousFrameKeys = recordedKeys.Count > 0 ? recordedKeys.Last().inputs : new List<string>();
-            // Check if the current frame keys are different from the previous frame keys
-            if (currentFrameKeys.SequenceEqual(previousFrameKeys))
-            {
-                pollFrameHoldCounter++;
-                // Replace the last entry in the list with the current frame keys
-                recordedKeys[^1] = new FrameKeyData
-                {
-                    frameCount = pollFrameHoldCounter,
-                    inputs = currentFrameKeys
-                };
-            }
-            else
-            {
-                pollFrameHoldCounter = 1;
-                isNew = true;
-                recordedKeys.Add(new FrameKeyData
-                {
-                    frameCount = 1,
-                    inputs = currentFrameKeys
-                });
-            }
-
-            return currentFrameKeys;
-        }
-
-
-        // Function to get the last pressed keys from a list of lists of keystrokes
-        public static List<string> GetLastPressedKeys(List<List<string>> keys)
-        {
-            List<string> lastPressedKeys = new();
-            List<string> previous = new();
-
-            foreach (var keystrokes in keys)
-            {
-                var newKeys = keystrokes.Except(previous).ToList();
-                if (newKeys.Count > 0) lastPressedKeys.Add(newKeys[0]);
-
-                previous = keystrokes;
-            }
-
-            return lastPressedKeys;
-        }
-
-        public static void ShowPressedKeys(List<FrameKeyData> keys)
-        {
-            foreach (var key in keys)
-            {
-                Debug.Log($"Frame: {key.frameCount}, Keys: {string.Join(", ", key.inputs)}");
-            }
-        }
-        public static void ShowSingleLineOutput(List<FrameKeyData> keys)
-        {
-            List<List<string>> keyInputs = new();
-            foreach (var frameData in keys)
-            {
-                keyInputs.Add(frameData.inputs);
-            }
-            List<string> lastPressedKeys = GetLastPressedKeys(keyInputs);
-            Debug.Log($"Last pressed keys: {string.Join(", ", lastPressedKeys)}");
         }
     }
 }

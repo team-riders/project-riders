@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Prefabs/PlayerRootObject.prefab.meta
+guid: f5f1ae737f31a23459028be72e0f6696
+========
+guid: 144b7806a61f9fb4ab5bc0ebfcd29f5f
+>>>>>>>> origin/dev:Assets/Prefabs/Characters/Y Bot.prefab.meta
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
