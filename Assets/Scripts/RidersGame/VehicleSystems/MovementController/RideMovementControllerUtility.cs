@@ -116,7 +116,7 @@ namespace RidersRuntime.VehicleSystem
         {
             Blackboard blackboard = new();
             blackboard.SetValue("Rigidbody", m_rigidbody); // Don't need, can just set up in constructor
-            blackboard.SetValue("VehicleStats", m_VehicleStats._vehicleStats); // Don't need, same as above
+            //blackboard.SetValue("VehicleStats", m_VehicleStats._vehicleStats); // Don't need, same as above
             blackboard.SetValue("InputData", inputIntention); // Might still need
             blackboard.SetValue("GroundPercent", GroundPercent);
             blackboard.SetValue("HasCollision", m_HasCollision);

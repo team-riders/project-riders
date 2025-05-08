@@ -34,6 +34,7 @@ namespace RidersRuntime.VehicleSystem
         {
             _featureQueue = new(new()
             {
+                new PowerupsFeature(),
                 new GrindEnterFeature(),
                 new AccelerationNoRBFeature(),
                 new GrindingFeature(),
