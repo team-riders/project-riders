@@ -62,7 +62,7 @@ namespace RidersRuntime.VehicleSystem
                 {
                     powerupController.AddPowerup(boostPowerup);
                     
-                    //DecreaseGauge(boostGaugePerCharge);
+                    DecreaseGauge(boostGaugePerCharge);
                 }
             }
         }
