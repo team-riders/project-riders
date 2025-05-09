@@ -38,7 +38,10 @@ namespace RidersRuntime.GameSystems
 
             // when complete, then we need to pass the meet configuration to the character selection manager
 
-            FindFirstObjectByType<CharacterSelectionManager>().GrabHostInformation(meetConfiguration, OnRaceMeetSetupComplete);
+            CharacterSelectionManager selector = FindFirstObjectByType<CharacterSelectionManager>();
+            selector.transform.SetParent(transform);
+            selector.GrabHostInformation(meetConfiguration, OnRaceMeetSetupComplete);
+
         }
 
         public void OnRaceMeetSetupComplete(List<RiderSelection> selectedRiders)
@@ -67,6 +70,7 @@ namespace RidersRuntime.GameSystems
             }
 
             GameObject obj = new GameObject("RaceMeetController");
+            obj.transform.SetParent(transform);
             sessionRaceMeetController = obj.AddComponent<RaceMeetController>();
 
             sessionRaceMeetController.AssignFields(sessionMeet, allRiders, OnRaceMeetComplete);

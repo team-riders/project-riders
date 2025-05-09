@@ -78,7 +78,7 @@ namespace RidersRuntime.RaceManager
         public void SpawnRacer(RiderSelection racer)
         {
             GameObject playerAsset = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/RacerPrefab.prefab");
-            GameObject player = GameObject.Instantiate(playerAsset, initialSpawn + incrementalSpawn * spawnIndex, Quaternion.identity);
+            GameObject player = GameObject.Instantiate(playerAsset);
 
             RiderSelection rs = racer;
             GameObject racerPrefab = rs.rider.characterModelPrefab;

@@ -420,77 +420,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &430840905
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 430840907}
-  - component: {fileID: 430840906}
-  m_Layer: 0
-  m_Name: RaceMeetController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &430840906
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 430840905}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: edaed7453ff6d5842b840b930abaa286, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  racers:
-  - rider: {fileID: 11400000, guid: 82b802f40fb05a64587b342508fe5174, type: 2}
-    vehicleType: 0
-    isPlayer: 1
-  - rider: {fileID: 11400000, guid: a9380d4710ae38f49a8e8aca39810b55, type: 2}
-    vehicleType: 0
-    isPlayer: 1
-  - rider: {fileID: 11400000, guid: e234c22663b8d45428150d48274ad6c2, type: 2}
-    vehicleType: 0
-    isPlayer: 0
-  - rider: {fileID: 11400000, guid: 7f93c7818ea46ad448f045a263148768, type: 2}
-    vehicleType: 0
-    isPlayer: 0
-  - rider: {fileID: 11400000, guid: 5bbfbe1238d41df4587cef3ea18a9ba1, type: 2}
-    vehicleType: 0
-    isPlayer: 0
-  - rider: {fileID: 11400000, guid: 2c58b2b730f12b6439c85e5cf69976c1, type: 2}
-    vehicleType: 0
-    isPlayer: 0
-  - rider: {fileID: 11400000, guid: 63e96ea7ea5de5147aae300ed69a9781, type: 2}
-    vehicleType: 0
-    isPlayer: 0
-  - rider: {fileID: 11400000, guid: d608e4fb2c799d546994953fbd8e51e9, type: 2}
-    vehicleType: 0
-    isPlayer: 0
-  raceMeet: {fileID: 11400000, guid: 6838c8142b708af48aeddc28d9d750be, type: 2}
-  playerIndexToRacerIndex: 0000000001000000
---- !u!4 &430840907
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 430840905}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.638771, y: 0.5033941, z: -0.2728293}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &434198576
 GameObject:
   m_ObjectHideFlags: 0
@@ -1459,7 +1388,6 @@ CanvasRenderer:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 430840907}
   - {fileID: 1169502244}
   - {fileID: 1799338660}
   - {fileID: 1603886219}

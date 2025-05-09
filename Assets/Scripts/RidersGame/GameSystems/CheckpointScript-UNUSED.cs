@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class CheckpointScript : MonoBehaviour
@@ -10,12 +8,12 @@ public class CheckpointScript : MonoBehaviour
     [SerializeField] Vector3 vectorPoint;
     [SerializeField] int checkpointsPassed;
     [SerializeField] int checkpointNum;
-    
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -42,7 +40,7 @@ public class CheckpointScript : MonoBehaviour
             vectorPoint = player.transform.position;
             checkpointsPassed += 1;
         }
-        
+
     }
 
 }

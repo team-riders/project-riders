@@ -27,7 +27,7 @@ namespace RidersRuntime.RaceManager
         // Chances are 0 = 0, 1 = 1, 2 = 2, 3 = 3
         public List<int> playerIndexToRacerIndex = new();
 
-        int currentRaceIndex = -1;
+        int currentRaceIndex = 0;
 
         // Reference to the current RaceEventController
         RaceEventController currentRaceEventController;
@@ -59,9 +59,10 @@ namespace RidersRuntime.RaceManager
         {
             // ------ SCENE TRANSITION -------
             // await the scene transition to complete
+            SetupRace();
         }
 
-        public void SetupNextRace()
+        public void GotoNextRace()
         {
             currentRaceIndex++;
             if (currentRaceIndex >= raceMeet.raceEvents.Count)
@@ -69,6 +70,11 @@ namespace RidersRuntime.RaceManager
                 return;
             }
 
+            SetupRace();
+        }
+
+        void SetupRace()
+        {
             currentRaceEventController ??= new RaceEventController();
 
             currentRaceEventController.SetupRace(
