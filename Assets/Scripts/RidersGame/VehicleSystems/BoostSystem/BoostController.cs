@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace RidersRuntime.VehicleSystem
 {
+    [RequireComponent(typeof(RideMovementController))]
     public class BoostController : MonoBehaviour
     {
         public RideMovementController controller;
@@ -16,6 +17,11 @@ namespace RidersRuntime.VehicleSystem
 
         IInput iInput;
         ActorInputData inputData;
+
+        public bool needsGauge = false;
+        public void TurnOn() => needsGauge = true;
+        public void TurnOff() => needsGauge = false;
+        public bool IsOn() => needsGauge;
 
         void Start()
         {
@@ -61,8 +67,11 @@ namespace RidersRuntime.VehicleSystem
                 if (!powerupController.IsInList(boostPowerup.PowerUpID))
                 {
                     powerupController.AddPowerup(boostPowerup);
-                    
-                    DecreaseGauge(boostGaugePerCharge);
+
+                    if (needsGauge)
+                    {
+                        DecreaseGauge(boostGaugePerCharge);
+                    }
                 }
             }
         }
