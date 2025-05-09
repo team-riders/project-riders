@@ -93,6 +93,11 @@ namespace RidersRuntime.RaceManager
             // We need to eventually disable the player input & physics here
         }
 
+        public void SpawnPlayerRacer(RiderSelection racer, int PlayerIndex)
+        {
+
+        }
+
 
         // The event scenario that should happen when the announcer says go
         public void StartRace()

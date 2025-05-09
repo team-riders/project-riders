@@ -16,3 +16,4 @@ MonoBehaviour:
   Name_Meet: Release 0.1 Time Attack
   raceEvents:
   - {fileID: 11400000, guid: 251117fe35405a943b694b7cd270508e, type: 2}
+  NumberOfRacers: 8

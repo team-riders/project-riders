@@ -32,9 +32,33 @@ namespace RidersRuntime.RaceManager
         // Reference to the current RaceEventController
         RaceEventController currentRaceEventController;
 
+        Action<object> onRaceComplete;
+
         public void Start()
         {
-            SetupNextRace();
+            // SetupNextRace();
+        }
+        public void AssignFields(RaceMeetConfiguration meetConfiguration, List<RiderSelection> selectedRiders, Action<object> callback)
+        {
+            raceMeet = meetConfiguration;
+            racers = selectedRiders;
+
+            // Setup the player index to racer index mapping
+            for (int i = 0; i < racers.Count; i++)
+            {
+                if (racers[i].isPlayer)
+                {
+                    playerIndexToRacerIndex.Add(i);
+                }
+            }
+
+            onRaceComplete = callback;
+        }
+
+        public void StartNewMeetSession()
+        {
+            // ------ SCENE TRANSITION -------
+            // await the scene transition to complete
         }
 
         public void SetupNextRace()
