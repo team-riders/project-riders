@@ -1,11 +1,12 @@
 using RidersRuntime.Data;
-using RidersRuntime.VehicleSystem;
+using RidersRuntime.Input;
 using UnityEngine;
 
-namespace RidersRuntime
+namespace RidersRuntime.VehicleSystem
 {
-    public class BoostController
+    public class BoostController : MonoBehaviour
     {
+        public RideMovementController controller;
         public PowerupController powerupController { get; set; }
         VehicleStats boostStats;
         StatPowerup boostPowerup;
@@ -14,15 +15,22 @@ namespace RidersRuntime
         float boostGaugeMax;
         float boostGaugePerCharge;
 
-        public BoostController(PowerupController powerupController)
+        IInput iInput;
+        ActorInputData inputData;
+
+        void Start()
         {
-            this.powerupController = powerupController;
+            controller = GetComponent<RideMovementController>();
+            powerupController = controller.powerupController;
+            Debug.Log("powerupController: " + powerupController);
+            iInput = GetComponent<BaseInput>();
 
             boostStats = new()
             {
-                TopSpeed = powerupController.BaseStats.BoostTopSpeed,
-                Acceleration = powerupController.BaseStats.BoostAccel,
-                AccelerationCurve = 0.4f
+                TopSpeed = controller.m_VehicleStats._vehicleStats.BoostTopSpeed,
+                Acceleration = controller.m_VehicleStats._vehicleStats.BoostAccel,
+                AccelerationCurve = 0.4f,
+                ForceAccel = 1
             };
 
             boostPowerup = new()
@@ -30,11 +38,11 @@ namespace RidersRuntime
                 modifiers = boostStats,
                 PowerUpID = "boost",
                 ElapsedTime = 0,
-                MaxTime = 5,
+                MaxTime = 1,
             };
 
-            boostGaugePerCharge = powerupController.BaseStats.BoostGaugePerCharge;
-            boostGaugeMax = powerupController.BaseStats.BoostGaugeMax;
+            boostGaugePerCharge = controller.m_VehicleStats._vehicleStats.BoostGaugePerCharge;
+            boostGaugeMax = controller.m_VehicleStats._vehicleStats.BoostGaugeMax;
             boostGauge = boostGaugePerCharge;
 
             Debug.Log("boostStats: " + boostStats);
@@ -45,7 +53,7 @@ namespace RidersRuntime
         }
 
         // applies boost
-        public bool ApplyBoost()
+        public void ApplyBoost()
         {
             Debug.Log("boostGauge >= boostGaugePerCharge: " + (boostGauge >= boostGaugePerCharge));
             if (boostGauge >= boostGaugePerCharge)
@@ -55,12 +63,9 @@ namespace RidersRuntime
                 {
                     powerupController.AddPowerup(boostPowerup);
                     
-                    //DecreaseGauge(boostGaugePerCharge);
-
-                    return true;
+                    DecreaseGauge(boostGaugePerCharge);
                 }
             }
-            return false;
         }
 
         public void IncreaseGauge(float increase)
@@ -73,6 +78,21 @@ namespace RidersRuntime
         {
             boostGauge -= decrease;
             Mathf.Clamp(boostGauge, 0, boostGaugeMax);
+        }
+
+        private void Update()
+        {
+            inputData = iInput.GrabCurrentFrameInputs();
+        }
+
+        void FixedUpdate()
+        {
+            Debug.Log("topspeed: " + controller.m_VehicleStats._vehicleStats.BoostTopSpeed);
+            if (inputData.BoostRam)
+            {
+                Debug.Log("boosting");
+                ApplyBoost();
+            }
         }
     }
 }

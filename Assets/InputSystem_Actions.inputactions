@@ -411,7 +411,7 @@
                     "path": "<Keyboard>/period",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";Keyboard&Mouse",
                     "action": "Boost/Ram",
                     "isComposite": false,
                     "isPartOfComposite": false

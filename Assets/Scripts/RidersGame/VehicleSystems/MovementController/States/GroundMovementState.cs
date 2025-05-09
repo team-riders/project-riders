@@ -12,7 +12,7 @@ namespace RidersRuntime.VehicleSystem
         public GroundMovementState() : base("Ground Movement State")
         {
             _featureQueue = new(new() {
-                new PowerupsFeature(),
+                //new PowerupsFeature(),
                 new AccelerationFeature(),
                 new SteerTurnFeature(),
                 new JumpFeature(),
@@ -21,7 +21,7 @@ namespace RidersRuntime.VehicleSystem
                 new ClampToMaxSpeedOnGroundFeature(),
                 new CoastingFeature(),
                 // new DriftFeature(),
-                new BoostFeature(),
+                //new BoostFeature(),
                 new RotateToForwardsFeature(),
                 new KeepUprightFeature()
             });
