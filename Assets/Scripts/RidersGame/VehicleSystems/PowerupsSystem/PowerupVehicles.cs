@@ -39,7 +39,7 @@ namespace RidersRuntime.VehicleSystem
 
         public void TickPowerups()
         {
-            m_ActivePowerupList.RemoveAll(powerup => powerup.ElapsedTime > powerup.MaxTime);
+            m_ActivePowerupList.RemoveAll(powerup => powerup.ElapsedTime >= powerup.MaxTime);
 
             VehicleStats stats = new();
 

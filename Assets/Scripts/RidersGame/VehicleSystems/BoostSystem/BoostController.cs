@@ -9,7 +9,6 @@ namespace RidersRuntime.VehicleSystem
         public RideMovementController controller;
         public PowerupController powerupController { get; set; }
         VehicleStats boostStats;
-        StatPowerup boostPowerup;
 
         float boostGauge;
         float boostGaugeMax;
@@ -33,20 +32,12 @@ namespace RidersRuntime.VehicleSystem
                 ForceAccel = 1
             };
 
-            boostPowerup = new()
-            {
-                modifiers = boostStats,
-                PowerUpID = "boost",
-                ElapsedTime = 0,
-                MaxTime = 1,
-            };
-
             boostGaugePerCharge = controller.m_VehicleStats._vehicleStats.BoostGaugePerCharge;
             boostGaugeMax = controller.m_VehicleStats._vehicleStats.BoostGaugeMax;
             boostGauge = boostGaugePerCharge;
 
             Debug.Log("boostStats: " + boostStats);
-            Debug.Log("boostPowerup: " + boostPowerup);
+            //Debug.Log("boostPowerup: " + boostPowerup);
             Debug.Log("boostGaugePerCharge: " + boostGaugePerCharge);
             Debug.Log("boostGaugeMax: " + boostGaugeMax);
             Debug.Log("boostGauge: " + boostGauge);
@@ -58,12 +49,20 @@ namespace RidersRuntime.VehicleSystem
             Debug.Log("boostGauge >= boostGaugePerCharge: " + (boostGauge >= boostGaugePerCharge));
             if (boostGauge >= boostGaugePerCharge)
             {
+                StatPowerup boostPowerup = new()
+                {
+                    modifiers = boostStats,
+                    PowerUpID = "boost",
+                    ElapsedTime = 0,
+                    MaxTime = 1,
+                };
+
                 Debug.Log("!powerupController.IsInList(boostPowerup.PowerUpID): " + !powerupController.IsInList(boostPowerup.PowerUpID));
                 if (!powerupController.IsInList(boostPowerup.PowerUpID))
                 {
                     powerupController.AddPowerup(boostPowerup);
                     
-                    DecreaseGauge(boostGaugePerCharge);
+                    //DecreaseGauge(boostGaugePerCharge);
                 }
             }
         }
@@ -87,10 +86,10 @@ namespace RidersRuntime.VehicleSystem
 
         void FixedUpdate()
         {
-            Debug.Log("topspeed: " + controller.m_VehicleStats._vehicleStats.BoostTopSpeed);
+            //Debug.Log("topspeed: " + controller.m_VehicleStats._vehicleStats.BoostTopSpeed);
             if (inputData.BoostRam)
             {
-                Debug.Log("boosting");
+                Debug.Log("applying boost");
                 ApplyBoost();
             }
         }

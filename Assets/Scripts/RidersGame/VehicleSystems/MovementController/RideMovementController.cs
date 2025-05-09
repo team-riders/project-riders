@@ -81,6 +81,7 @@ namespace RidersRuntime.VehicleSystem
 
         void FixedUpdate()
         {
+            powerupController.TickPowerups();
             if (!canMove) return;
             PreCalcChecks();
             m_stateMachine.Update();
