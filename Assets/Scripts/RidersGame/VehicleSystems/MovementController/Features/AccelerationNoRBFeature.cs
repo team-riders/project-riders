@@ -47,12 +47,6 @@ namespace RidersRuntime.VehicleSystem
 
             float finalAcceleration = finalAccelPower * accelRamp;
 
-            // Actually generate the speed here
-            currentSpeed += finalAcceleration * Time.fixedDeltaTime * accelInput;
-
-
-            currentSpeed = Mathf.Max(currentSpeed, minimumGrindingSpeed);
-
             blackboard.SetValue("FinalAcceleration", finalAcceleration);
             blackboard.SetValue("CurrentSpeed", currentSpeed);
             blackboard.SetValue("MaxSpeed", maxSpeed);
