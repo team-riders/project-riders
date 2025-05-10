@@ -71,12 +71,13 @@ namespace RidersRuntime.VehicleSystem
 
         // can the kart move?
         public bool m_CanMove = true;
-        List<StatPowerup> m_ActivePowerupList = new List<StatPowerup>();
-        VehicleStats m_FinalStats;
 
+        PowerupController powerupController;
+        VehicleStats m_FinalStats;
         Quaternion m_LastValidRotation;
         Vector3 m_LastValidPosition;
         Vector3 m_LastCollisionNormal;
+
         bool m_HasCollision;
         public bool m_InAir = false;
 
@@ -97,7 +98,6 @@ namespace RidersRuntime.VehicleSystem
         #endregion
 
         // methods
-        public void AddPowerup(StatPowerup statPowerup) => m_ActivePowerupList.Add(statPowerup);
         public void SetCanMove(bool move) => m_CanMove = move;
         public float GetMaxSpeed() => Mathf.Max(m_FinalStats.TopSpeed, m_FinalStats.ReverseSpeed);
 
@@ -124,6 +124,8 @@ namespace RidersRuntime.VehicleSystem
             m_CurrentGrip = baseStats.Grip;
 
             SetCenterOfMass();
+
+            powerupController = new PowerupController(baseStats);
 
             StateMachine.Initialise(GroundState);
 
@@ -171,7 +173,8 @@ namespace RidersRuntime.VehicleSystem
         {
             // maybe later
             // apply our powerups to create our finalStats
-            TickPowerups();
+            powerupController.TickPowerups();
+            m_FinalStats = powerupController.GetCurrentStats();
 
             // apply our physics properties
 
@@ -253,7 +256,6 @@ namespace RidersRuntime.VehicleSystem
                 center += wc.transform.position;
             }
             center /= wheelColliders.Count;
-
             Rigidbody.centerOfMass = transform.InverseTransformPoint(center);
         }
 
@@ -274,34 +276,6 @@ namespace RidersRuntime.VehicleSystem
                     WantsToJumpHold = Input.JumpHoldDuration;
                 }
             }
-        }
-
-        // ignore for now, delete if we decide we don't want powerups
-        void TickPowerups()
-        {
-            // remove all elapsed powerups
-            m_ActivePowerupList.RemoveAll((p) => { return p.ElapsedTime > p.MaxTime; });
-
-            // zero out powerups before we add them all up
-            var powerups = new VehicleStats();
-
-            // add up all our powerups
-            for (int i = 0; i < m_ActivePowerupList.Count; i++)
-            {
-                var p = m_ActivePowerupList[i];
-
-                // add elapsed time
-                p.ElapsedTime += Time.fixedDeltaTime;
-
-                // add up the powerups
-                powerups += p.modifiers;
-            }
-
-            // add powerups to our final stats
-            m_FinalStats = baseStats + powerups;
-
-            // clamp values in finalstats
-            m_FinalStats.Grip = Mathf.Clamp(m_FinalStats.Grip, 0, 1);
         }
 
         public void GroundAirbourne()
