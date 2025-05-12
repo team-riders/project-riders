@@ -1,19 +1,30 @@
 using System.Collections.Generic;
+using RidersRuntime.VehicleSystem;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace RidersRuntime.Input
 {
-    [RequireComponent(typeof(UnityEngine.InputSystem.PlayerInput))]
     public class PlayerInput : BaseInput
     {
         InputActionAsset m_playerInput;
-        public string m_inputMapName = "Player";
+        string m_inputMapName = InputMap.Player;
         ActorInputData currentFrameInputData = new();
 
         void Start()
         {
-            m_playerInput = GetComponent<UnityEngine.InputSystem.PlayerInput>().actions;
+            // TODO: If it's not present here, we should check the parent as well. 
+            // The board may not necessarily have the Player Input component
+            UnityEngine.InputSystem.PlayerInput playerInput = GetComponent<UnityEngine.InputSystem.PlayerInput>();
+            playerInput = playerInput != null ? playerInput : GetComponentInParent<UnityEngine.InputSystem.PlayerInput>();
+
+            if (playerInput == null)
+            {
+                Debug.LogError("PlayerInput component not found in the GameObject or its parents.");
+                return;
+            }
+
+            m_playerInput = playerInput.actions;
         }
         void Update()
         {
@@ -35,26 +46,14 @@ namespace RidersRuntime.Input
                     // Special handle for Jump
                     if (action.name == ButtonNamesShort.Jump)
                     {
-                        if (action.WasPressedThisFrame())
+                        inputValues[ButtonNamesShort.Jump] = action.WasReleasedThisFrame() ? 1 : 0;
+                        inputValues[InputNameSpecial.JumpHoldDuration] = (true) switch
                         {
-                            inputValues[ButtonNamesShort.Jump] = 0;
-                            inputValues[InputNameSpecial.JumpHoldDuration] = 0;
-                        }
-                        else if (action.WasReleasedThisFrame())
-                        {
-                            inputValues[ButtonNamesShort.Jump] = 1;
-                            inputValues[InputNameSpecial.JumpHoldDuration] = currentFrameInputData.JumpHoldDuration;
-                        }
-                        else if (action.IsPressed())
-                        {
-                            inputValues[ButtonNamesShort.Jump] = 0;
-                            inputValues[InputNameSpecial.JumpHoldDuration] = currentFrameInputData.JumpHoldDuration + 1;
-                        }
-                        else
-                        {
-                            inputValues[ButtonNamesShort.Jump] = 0;
-                            inputValues[InputNameSpecial.JumpHoldDuration] = 0;
-                        }
+                            true when action.WasPressedThisFrame() => 0,
+                            true when action.WasReleasedThisFrame() => currentFrameInputData.JumpHoldDuration,
+                            true when action.IsPressed() => currentFrameInputData.JumpHoldDuration + 1,
+                            _ => 0
+                        };
                     }
                     else
                     {

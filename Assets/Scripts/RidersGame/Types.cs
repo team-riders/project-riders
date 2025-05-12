@@ -43,4 +43,16 @@ namespace RidersRuntime.Data
         public const string Obstacle = "Obstacle";
         public const string FinishLine = "FinishLine";
     }
+
+    public enum GameScene
+    {
+        TitleScreen = 0,
+        MainMenu = 1,
+        Loading = 2,
+        Game = 3,
+        TutorialArea = 4,
+        FirstRaceInMelbourne = 5
+        // Add more scenes as needed
+    }
+
 }

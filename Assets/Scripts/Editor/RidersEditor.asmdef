@@ -3,7 +3,8 @@
     "rootNamespace": "RidersEditor",
     "references": [
         "GUID:343deaaf83e0cee4ca978e7df0b80d21",
-        "GUID:10151229ad4427f48a30e0ed20a14cd9"
+        "GUID:c46b52fbdafc59f459f30d1b8eb6bd99",
+        "GUID:f7200fc466f3ff943a2bfd1e542f785c"
     ],
     "includePlatforms": [
         "Editor"

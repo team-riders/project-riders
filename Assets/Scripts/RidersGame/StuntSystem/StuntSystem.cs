@@ -40,11 +40,5 @@ namespace RidersRuntime.StuntSystem
                 }
             }
         }
-
-        public Stunt TryDetectStunt(List<TimedInput> timedInputs, StuntType stuntType)
-        {
-            return stuntType == StuntType.None ? Stunt.None : stuntDatabase.QueryStuntByTime(stuntType, timedInputs);
-        }
-
     }
 }
