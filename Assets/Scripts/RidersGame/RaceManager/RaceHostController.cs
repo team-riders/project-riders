@@ -1,10 +1,7 @@
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using RidersRuntime.Data;
 using RidersRuntime.RaceManager;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace RidersRuntime.GameSystems
 {
@@ -12,26 +9,32 @@ namespace RidersRuntime.GameSystems
     {
         // This class manages the dispatching of the race and awaits the character selections
 
-        PlayerInputManager pim;
-
         RaceMeetConfiguration sessionMeet;
 
         RaceMeetController sessionRaceMeetController;
 
         void Start()
         {
-            // Singleton ahh
-
-
 
             DontDestroyOnLoad(this);
         }
 
         public void RequestRaceSetup(RaceMeetConfiguration meetConfiguration)
         {
+            if (sessionMeet != null)
+            {
+                Debug.LogError("A race is already in progress.");
+                return;
+            }
             sessionMeet = meetConfiguration;
             // This method will be called when a race type has been selected
             // For the time being there will be just a single player
+
+            if (GetComponent<MultiDeviceControllerSystem>().GetPlayerCount() == 0)
+            {
+                Debug.LogError("Please ensure that there is at least one player in the game");
+                return;
+            }
 
             // ------ SCENE TRANSITION -------
             // await the scene transition to complete
@@ -49,24 +52,22 @@ namespace RidersRuntime.GameSystems
             // This method will be called when the character selection is complete
             // Check with the number of players to see if we need to add any AI riders
 
+            // Check if we already have a race session
+            if (sessionRaceMeetController != null)
+            {
+                Debug.LogError("A race session has already been started.");
+                return;
+            }
+
             int playerCount = selectedRiders.Count;
             int aiCount = sessionMeet.NumberOfRacers - playerCount;
 
-            List<RiderSelection> allRiders = new List<RiderSelection>(selectedRiders);
+            List<RiderSelection> allRiders = new(selectedRiders);
 
             for (int i = 0; i < aiCount; i++)
             {
                 RiderSelection aiRider = CreateUniqueBotRider(allRiders);
                 allRiders.Add(aiRider);
-            }
-
-            // Rearrange the list
-
-            for (int i = 0; i < playerCount; i++)
-            {
-                RiderSelection playerRider = allRiders[i];
-                allRiders.RemoveAt(i);
-                allRiders.Add(playerRider);
             }
 
             GameObject obj = new GameObject("RaceMeetController");

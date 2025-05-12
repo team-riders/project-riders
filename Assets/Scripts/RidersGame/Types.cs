@@ -25,11 +25,13 @@ namespace RidersRuntime.Data
     {
         public const string Config = "Config/";
         public const string Riders = "Riders/";
+        public const string ResourcesPrefabs = "Prefabs/";
     }
 
     public struct FileNames
     {
         public const string DebugFlags = "debug_flags.json";
+        public const string RacerPrefab = "RacerPrefab";
     }
 
     public struct LayerNames

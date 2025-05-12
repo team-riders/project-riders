@@ -11,7 +11,7 @@ namespace RidersRuntime.RaceManager
     public class RaceEventController
     {
         RaceEventConfiguration raceEvent;
-        List<RiderSelection> racers;
+        List<RacerComponent> racers;
 
         List<int> playerIndices;
 
@@ -19,18 +19,9 @@ namespace RidersRuntime.RaceManager
 
         // Checkpoints class here
 
-        [Header("Move these to the map")]
-        public Vector3 initialSpawn = new(0, 0, 0);
-        public Vector3 incrementalSpawn = new(5, 0, 0);
-
-        public List<GameObject> pooledGameObjects = new();
-
-        int spawnIndex = 0;
-
-
         public void SetupRace(
             RaceEventConfiguration raceEvent,
-            List<RiderSelection> racers, // We could spawn in RaceMeetController instead?
+            List<RacerComponent> racers, // We could spawn in RaceMeetController instead?
             List<int> playerIndices
             )
         {
@@ -50,7 +41,7 @@ namespace RidersRuntime.RaceManager
             // Prepare the race transition sequence
             // Play the sequence
 
-            LoadRacers();
+            // LoadRacers();
         }
 
         public void LoadRacers()
@@ -59,43 +50,6 @@ namespace RidersRuntime.RaceManager
             // Spawn the racers in the map
 
             // TODO: Use pooling for the racer instead of instantiating them every time
-
-
-            foreach (int i in playerIndices)
-            {
-                SpawnRacer(racers[i]);
-                spawnIndex++;
-            }
-
-            for (int i = 0; i < racers.Count; i++)
-            {
-                if (playerIndices.Contains(i)) continue; // Skip if it's a player
-                SpawnRacer(racers[i]);
-                spawnIndex++;
-            }
-        }
-
-        public void SpawnRacer(RiderSelection racer)
-        {
-            GameObject playerAsset = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/RacerPrefab.prefab");
-            GameObject player = GameObject.Instantiate(playerAsset);
-
-            RiderSelection rs = racer;
-            GameObject racerPrefab = rs.rider.characterModelPrefab;
-
-            RacerComponent rc = player.GetComponent<RacerComponent>();
-            rc.rider = racer.rider;
-
-            // Setup the visuals in the racer component instead honestly
-            GameObject visual = GameObject.Instantiate(racerPrefab, player.transform);
-
-
-            // We need to eventually disable the player input & physics here
-        }
-
-        public void SpawnPlayerRacer(RiderSelection racer, int PlayerIndex)
-        {
-
         }
 
 
