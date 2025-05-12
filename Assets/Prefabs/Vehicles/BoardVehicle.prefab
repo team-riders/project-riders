@@ -168,10 +168,9 @@ GameObject:
   - component: {fileID: 4711103303932495809}
   - component: {fileID: 3440123402843066155}
   - component: {fileID: 7622961024952553118}
-  - component: {fileID: 4448864653755112223}
   - component: {fileID: 1225790300879622887}
+  - component: {fileID: 4448864653755112223}
   - component: {fileID: 9102658750407949755}
-  - component: {fileID: 4430385445409082725}
   m_Layer: 0
   m_Name: BoardVehicle
   m_TagString: Player
@@ -269,18 +268,6 @@ MonoBehaviour:
   FrontRightWheel: {fileID: 7994507693005347565}
   BackLeftWheel: {fileID: 1637631556285962578}
   BackRightWheel: {fileID: 3112367254603467228}
---- !u!114 &4448864653755112223
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2072811018097086297}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5256c658527fb8f439d3da0e44dd8834, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!136 &1225790300879622887
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -304,6 +291,18 @@ CapsuleCollider:
   m_Height: 1.45
   m_Direction: 2
   m_Center: {x: 0, y: 0.48, z: 0}
+--- !u!114 &4448864653755112223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2072811018097086297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5256c658527fb8f439d3da0e44dd8834, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &9102658750407949755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -382,20 +381,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &4430385445409082725
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2072811018097086297}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1da8a6fe8626d56419f60ea7afd1dd11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speedText: {fileID: 0}
-  angleText: {fileID: 0}
 --- !u!1 &2804422840742534173
 GameObject:
   m_ObjectHideFlags: 0

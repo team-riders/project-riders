@@ -4,7 +4,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
 
-namespace RidersGame.VehicleSystem
+namespace RidersRuntime.VehicleSystem
 {
     public class GrindEnterFeature : ConditionalDataPipelineStep<Blackboard>
     {

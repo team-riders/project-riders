@@ -71,4 +71,12 @@ namespace RidersRuntime.Data
         public string Name;
         public string SceneName;
     }
+
+    [Serializable]
+    public class RiderSelection
+    {
+        public RiderConfig rider;
+        public VehicleType vehicleType;
+        public bool isPlayer;
+    }
 }

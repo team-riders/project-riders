@@ -7,6 +7,7 @@ namespace RidersRuntime.RaceManager
     // We will work here before moving into the vehicle system
     public class RacerComponent : MonoBehaviour
     {
+        public int racerID;
         public RiderConfig rider;
         public bool isPlayer;
 
@@ -33,11 +34,23 @@ namespace RidersRuntime.RaceManager
             }
         }
 
-        public void SetRider(RiderSelection newRider)
+        public void SetupRider(RiderSelection newRider)
         {
             rider = newRider.rider;
             isPlayer = newRider.isPlayer;
             vehicleType = newRider.vehicleType;
+
+            SetupVisuals();
+        }
+
+        void SetupVisuals()
+        {
+            // Character visuals
+            GameObject visualPrefab = rider.characterModelPrefab;
+            GameObject visualObj = Instantiate(visualPrefab, transform);
+            visualObj.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+
+            // Ride visuals
         }
 
         void InitializePlayerSettings()
