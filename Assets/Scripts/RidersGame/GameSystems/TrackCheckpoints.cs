@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using RidersRuntime.VehicleSystem;
+using RidersRuntime.Data;
 using RidersRuntine.GameSystems;
 using UnityEngine;
 
@@ -18,6 +18,11 @@ namespace RidersRuntime.RaceManager
             LapStartTime = 0f;
             CurrentLapTime = 0f;
         }
+
+        public void StartNewLap()
+        {
+            LapStartTime = Time.time;
+        }
     }
 
     public class TrackCheckpoints : MonoBehaviour
@@ -27,9 +32,11 @@ namespace RidersRuntime.RaceManager
         public event EventHandler OnLapCompleted;
         private List<CheckpointSingle> checkpointSingleList;
 
+        public List<RacerComponent> racersList;
+
         private Dictionary<int, RiderProgression> ridersProgression = new();
 
-        private void Awake()
+        private void Start()
         {
             Transform checkpointsTransform = transform.Find("Checkpoints");
 
@@ -41,15 +48,22 @@ namespace RidersRuntime.RaceManager
                 checkpointSingle.Setup(OnVehicleThroughCheckpoint);
                 checkpointSingleList.Add(checkpointSingle);
             }
+
+            SetupRacers(racersList);
         }
 
         // Grabs all the racers information here
-        public void SetupRacers()
+        public void SetupRacers(List<RacerComponent> racers)
         {
-            foreach (var vehicle in new List<GameObject>())
+            foreach (var racer in racers)
             {
-                ridersProgression.Add(vehicle.GetInstanceID(), new RiderProgression());
+                if (!ridersProgression.ContainsKey(racer.racerID))
+                {
+                    ridersProgression.Add(racer.racerID, new RiderProgression());
+                }
             }
+
+            StartRace();
         }
 
         public void StartRace()
@@ -63,13 +77,13 @@ namespace RidersRuntime.RaceManager
 
         public void OnVehicleThroughCheckpoint(CheckpointSingle checkpointSingle, GameObject vehicle)
         {
-            if (vehicle.layer != LayerMask.NameToLayer("Vehicle"))
+            if (vehicle.layer != LayerMask.NameToLayer(LayerNames.Vehicle))
             {
                 return;
             }
 
             // TODO: Change script to use rider information explicitly
-            if (!vehicle.TryGetComponent(out BaseVehicle baseVehicle))
+            if (!vehicle.TryGetComponent(out RacerComponent racer))
             {
                 return;
             }
@@ -77,46 +91,43 @@ namespace RidersRuntime.RaceManager
             // Check if the checkpoint is part of the system
             if (checkpointSingleList.Contains(checkpointSingle))
             {
-                int vehicleId = vehicle.GetInstanceID();
-                if (!ridersProgression.ContainsKey(vehicleId))
+                int racerId = racer.racerID;
+                if (!ridersProgression.ContainsKey(racerId))
                 {
                     Debug.LogError($"Vehicle {vehicle.name} is not registered in the checkpoint system.");
                     return;
                 }
-                RiderProgression progress = ridersProgression[vehicleId];
+                RiderProgression progress = ridersProgression[racerId];
 
                 // ! WE CAN'T USE TIME.TIME BECAUSE OF PAUSING
-                progress.CurrentLapTime = Time.time - progress.LapStartTime;
-                progress.LapStartTime = Time.time;
-                progress.NextCheckpointSingleIndex = checkpointSingleList.IndexOf(checkpointSingle);
-                PlayerThroughCheckpoint(checkpointSingle);
+
+                PlayerThroughCheckpoint(racerId, checkpointSingle);
             }
         }
 
-        public void PlayerThroughCheckpoint(CheckpointSingle checkpointSingle)
+        public void PlayerThroughCheckpoint(int racerId, CheckpointSingle checkpointSingle)
         {
-            // if (checkpointSingleList.IndexOf(checkpointSingle) == nextCheckpointSingleIndex)
-            // {
-            //     // Get lap time
-            //     currentLapTime = Time.time - lapStartTime;
-
-            //     // Add to checkpoint count
-            //     nextCheckpointSingleIndex = (nextCheckpointSingleIndex + 1) % checkpointSingleList.Count;
-            //     OnPlayerCorrectCheckpoint?.Invoke(this, EventArgs.Empty);
-
-            //     // Start new lap if all checkpoints hit
-            //     if (nextCheckpointSingleIndex == 0)
-            //     {
-            //         OnLapCompleted?.Invoke(this, EventArgs.Empty);
-            //         StartNewLap();
-            //     }
-            // }
-            // else
-            // {
-            //     // Wrong way UI 
-            //     OnPlayerIncorrectCheckpoint?.Invoke(this, EventArgs.Empty);
-
-            // }
+            RiderProgression progress = ridersProgression[racerId];
+            if (checkpointSingleList.IndexOf(checkpointSingle) == progress.NextCheckpointSingleIndex)
+            {
+                // Get lap time
+                progress.CurrentLapTime = Time.time - progress.LapStartTime;
+                // Add to checkpoint count
+                progress.NextCheckpointSingleIndex = (progress.NextCheckpointSingleIndex + 1) % checkpointSingleList.Count;
+                OnPlayerCorrectCheckpoint?.Invoke(this, EventArgs.Empty);
+                // Start new lap if all checkpoints hit
+                if (progress.NextCheckpointSingleIndex == 0)
+                {
+                    OnLapCompleted?.Invoke(this, EventArgs.Empty);
+                    Debug.Log($"Lap completed by {racerId} in {progress.CurrentLapTime}");
+                    progress.StartNewLap();
+                }
+            }
+            else
+            {
+                // Wrong way UI 
+                OnPlayerIncorrectCheckpoint?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         public float GetCurrentLapTime()

@@ -86,6 +86,7 @@ namespace RidersRuntime.RaceManager
 
         private void DisplayLapTime(float time)
         {
+            return;
             int minutes = Mathf.FloorToInt(time / 60);
             int seconds = Mathf.FloorToInt(time % 60);
             int milliseconds = Mathf.FloorToInt((time * 1000) % 1000);

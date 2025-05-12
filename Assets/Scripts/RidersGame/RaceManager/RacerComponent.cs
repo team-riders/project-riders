@@ -7,6 +7,7 @@ namespace RidersRuntime.RaceManager
     // We will work here before moving into the vehicle system
     public class RacerComponent : MonoBehaviour
     {
+        public int racerID;
         public RiderConfig rider;
         public bool isPlayer;
 
