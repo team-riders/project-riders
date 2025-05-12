@@ -1,4 +1,4 @@
-using RidersGame.VehicleSystem;
+using RidersRuntime.VehicleSystem;
 using RidersRuntime.Input;
 using Unity.Mathematics;
 using UnityEngine;
