@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using StuntKeys = RidersRuntime.Input.StuntButtonNamesShort;
+using UnityEngine;
 
 namespace RidersRuntime.StuntSystem
 {
@@ -10,20 +10,13 @@ namespace RidersRuntime.StuntSystem
 
         public void PopulateStunts()
         {
-            // Example of populating the stunt database
-            // If for efficiency, we can populate into a tree structure
+            StuntSO[] stunts = Resources.LoadAll<StuntSO>("Data/Stunts");
 
-            // TODO: Add frame limit & priorities
-            // TODO: Single slides are broken atm. Absolutely needs priority
-
-            stunts.Add(new Stunt(4, "Frontside Pop Shuvit", StuntType.Flip, 2, 80, new string[] { "2", "3", "6", StuntKeys.StuntA }));
-            stunts.Add(new Stunt(5, "Backside Pop Shuvit", StuntType.Flip, 2, 80, new string[] { "2", "1", "4", StuntKeys.StuntA }));
-            stunts.Add(new Stunt(2, "Kickflip", StuntType.Flip, 1, 30, new string[] { "6", StuntKeys.StuntA }));
-            stunts.Add(new Stunt(3, "Heelflip", StuntType.Flip, 1, 30, new string[] { "4", StuntKeys.StuntA }));
-            stunts.Add(new Stunt(7, "Nose Slide", StuntType.Grind, 1, 50, new string[] { "4", StuntKeys.StuntB }));
-            stunts.Add(new Stunt(8, "Tail Slide", StuntType.Grind, 1, 50, new string[] { "6", StuntKeys.StuntB }));
-            stunts.Add(new Stunt(6, "50-50 Grind", StuntType.Grind, 1, 30, new string[] { "5", StuntKeys.StuntB }));
-            // Add more stunts as needed
+            foreach (var stuntSO in stunts)
+            {
+                Stunt newStunt = new Stunt(stuntSO.stunt.id, stuntSO.stunt.name, stuntSO.stunt.type, stuntSO.stunt.difficulty, stuntSO.stunt.reward, stuntSO.stunt.key);
+                this.stunts.Add(newStunt);
+            }
         }
 
         public Stunt QueryStuntByTime(StuntType stuntType, List<TimedInput> inputs)
@@ -32,23 +25,23 @@ namespace RidersRuntime.StuntSystem
 
             foreach (var stunt in validStunts)
             {
-                int comboIdx = 0;
                 float startTime = -1f;
 
-                foreach (var input in inputs)
-                {
-                    if (input.key == stunt.comboKeys[comboIdx])
-                    {
-                        if (comboIdx == 0) startTime = input.time;
-                        comboIdx++;
+                // Find the correct StuntButton based on the StuntType
+                string stuntKey = Values.stuntBindings.FirstOrDefault(x => x.Value == stunt.type).Key;
+                TimedInput? input = inputs.FirstOrDefault(input => input.key == stunt.key.ToString());
 
-                        if (comboIdx == stunt.comboKeys.Length)
-                        {
-                            if (input.time - startTime <= Values.timeWindowMax)
-                                return stunt;
-                            else
-                                break;
-                        }
+                // Check if the stuntKey is pressed and then the stunt key is pressed
+                if (input.HasValue)
+                {
+                    // Get the time of the stunt key press
+                    startTime = input.Value.time;
+
+                    // Find the first key that matches the stuntKey
+                    var keyInput = inputs.FirstOrDefault(input => input.key == stuntKey);
+                    if (keyInput.time - startTime <= Values.timeWindowMax)
+                    {
+                        return stunt;
                     }
                 }
             }
