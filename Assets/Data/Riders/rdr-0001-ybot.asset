@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d06d13afc3d0ac4c9dae4e4c7f94185, type: 3}
+  m_Name: rdr-0001-ybot
+  m_EditorClassIdentifier: 
+  racerInformation:
+    RiderID: 1
+    RiderName: yBot1
+    TeamID: 0
+    defaultVehicleType: 0
+    defaultRideSkin: 0
+  characterModelPrefab: {fileID: 6412232414021252490, guid: f5f1ae737f31a23459028be72e0f6696, type: 3}
