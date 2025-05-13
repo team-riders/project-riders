@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 713e0022c0ffe974bb14d5e0611b0797, type: 3}
+  m_Name: map_Melbourne_Sequence
+  m_EditorClassIdentifier: 
+  m_RootIndex: 0
+  m_Manager:
+    rid: 8687351626198417697
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 8687351626198417697
+      type: {class: SequenceManager, ns: UnityEngine.Sequences, asm: Unity.Sequences}
+      data:
+        m_Data:
+        - rid: 8687351626198417698
+        - rid: -2
+        m_AvailableIndices:
+          rid: 8687351626198417702
+    - rid: 8687351626198417698
+      type: {class: TimelineSequence, ns: UnityEngine.Sequences, asm: Unity.Sequences}
+      data:
+        m_Name: map_Melbourne_Sequence
+        m_Fps: 60
+        m_Start: 0
+        m_Duration: 2
+        m_Parent: -1
+        m_Children: 
+        m_Timeline: {fileID: 11400000, guid: 9651b5908f10e154eb7f2bed81726095, type: 2}
+        m_ChildrenTrack: {fileID: 0}
+        m_DefaultChildrenTrackName: Sequences
+        m_EditorialClipAsset: {fileID: 0}
+    - rid: 8687351626198417702
+      type: {class: StackInt, ns: UnityEngine.Sequences, asm: Unity.Sequences}
+      data: 

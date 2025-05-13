@@ -16,9 +16,19 @@ namespace RidersRuntime.Input
             SetCameraMode(false);
         }
 
+        public void SetCameraReference(Camera camera)
+        {
+            input.camera = camera;
+        }
+
         public void SetCameraMode(bool isGameplayCamera)
         {
             this.isGameplayCamera = isGameplayCamera;
+            if (input.camera == null)
+            {
+                Debug.LogError("Camera reference is not set in PlayerInput.");
+                return;
+            }
             if (input == null)
             {
                 input = GetComponent<UnityEngine.InputSystem.PlayerInput>();

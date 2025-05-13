@@ -105,6 +105,7 @@ namespace RidersRuntime.GameSystems
             sessionRaceMeetController = obj.AddComponent<RaceMeetController>();
 
             sessionRaceMeetController.AssignFields(sessionMeet, allRiders, OnRaceMeetComplete);
+
             await sessionRaceMeetController.StartNewMeetSession();
         }
 

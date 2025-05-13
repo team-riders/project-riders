@@ -44,12 +44,6 @@ namespace RidersRuntime
             if (isLoading) return;
             isLoading = true;
 
-            // Disable input during loading
-            if (EventSystem.current != null)
-            {
-                EventSystem.current.enabled = false;
-            }
-
             onLoadActualscene = onLoad;
 
             targetGameScene = scene;
@@ -64,19 +58,13 @@ namespace RidersRuntime
             if (isLoading) return;
             isLoading = true;
 
-            // Disable input during loading
-            if (EventSystem.current != null)
-            {
-                EventSystem.current.enabled = false;
-            }
-
             onLoadActualscene = onLoad;
 
             targetGameScene = (GameScene)scene;
             targetLoadingScene = loadingScene;
 
             // Sets up the loading screen
-            await DoLoadingScreenTask(scene);
+            await DoLoadingScreenTask((int)targetLoadingScene);
         }
 
         /// <summary>
@@ -86,10 +74,6 @@ namespace RidersRuntime
         /// <returns></returns>
         public static async Task ActivateNewScene()
         {
-            if (EventSystem.current != null)
-            {
-                EventSystem.current.enabled = false;
-            }
 
             currentlyTryingToLoadScene.allowSceneActivation = true;
 
@@ -133,10 +117,6 @@ namespace RidersRuntime
             await InternalLoadSceneAsync(loadingSceneIndex);
 
             // There may be an event system in the loading scene
-            if (EventSystem.current != null)
-            {
-                EventSystem.current.enabled = true;
-            }
         }
 
         private static void DoSceneLoadingTask(int sceneIndex)
@@ -164,6 +144,20 @@ namespace RidersRuntime
             {
                 await Task.Yield();
             }
+        }
+
+        private static void ReportSceneManager()
+        {
+            Debug.Log("SceneManager: " + SceneManager.sceneCount);
+            for (int i = 0; i < SceneManager.sceneCount; i++)
+            {
+                Debug.Log("Scene: " + SceneManager.GetSceneAt(i).name);
+            }
+        }
+
+        public static int GetBuildIndexByPath(string path)
+        {
+            return SceneUtility.GetBuildIndexByScenePath(path);
         }
     }
 }

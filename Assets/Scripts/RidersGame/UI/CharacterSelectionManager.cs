@@ -70,7 +70,7 @@ namespace RidersRuntime.GameSystems
         {
             if (eventSystem != null)
             {
-                eventSystem.SetSelectedGameObject(defaultButton.gameObject);
+                eventSystem.firstSelectedGameObject = defaultButton.gameObject;
                 eventSystem.enabled = true;
 
                 int caller = eventSystem.GetComponentInParent<UnityEngine.InputSystem.PlayerInput>().playerIndex;
@@ -243,11 +243,6 @@ namespace RidersRuntime.GameSystems
                     Debug.Log($"Rider: {rider.rider.name}, Vehicle: {rider.vehicleType}, IsPlayer: {rider.isPlayer}");
                 }
             }
-        }
-
-        public async void OnExitButton()
-        {
-            await SceneLoader.PrepareScene(GameScene.MainMenu);
         }
     }
 }

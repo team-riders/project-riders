@@ -56,9 +56,10 @@ namespace RidersRuntime.RaceManager
             // ------ SCENE TRANSITION -------
             // await the scene transition to complete
             // Grab the first map scene
-            string map = raceMeet.raceEvents[currentRaceIndex].map.SceneName;
-            SceneManager.GetSceneByName(map);
-            await SceneLoader.PrepareScene(4, onLoad: SetupRace);
+            MapConfiguration mapConfiguration = raceMeet.raceEvents[currentRaceIndex].map;
+            string map = mapConfiguration.ScenePath;
+            int index = SceneLoader.GetBuildIndexByPath(map);
+            await SceneLoader.PrepareScene(index, onLoad: SetupRace);
         }
 
         public void GotoNextRace()
@@ -91,8 +92,9 @@ namespace RidersRuntime.RaceManager
 
             for (int i = 0; i < racers.Count; i++)
             {
-                GameObject obj = new("Racer", typeof(RacerComponent));
-                RacerComponent rc = obj.GetComponent<RacerComponent>();
+                GameObject prefab = Resources.Load<GameObject>("Prefabs/PlayerSet");
+                GameObject obj = Instantiate(prefab);
+                RacerComponent rc = obj.GetComponentInChildren<RacerComponent>();
                 rc.SetupRider(racers[i]);
 
                 pooledRacers.Add(rc);
@@ -122,7 +124,16 @@ namespace RidersRuntime.RaceManager
                             continue;
                         }
                         // Assign the player input to the racer
+
                         obj.transform.SetParent(playerInput.transform);
+                        // Remove the object's player input component
+                        UnityEngine.InputSystem.PlayerInput playerInputComponent = obj.GetComponentInChildren<UnityEngine.InputSystem.PlayerInput>();
+                        if (playerInputComponent != null)
+                        {
+                            Destroy(playerInputComponent);
+                        }
+
+                        playerInput.camera = obj.GetComponentInChildren<Camera>();
 
                     }
                 }

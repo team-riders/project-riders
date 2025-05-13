@@ -1,8 +1,7 @@
 using RidersRuntime.Data;
+using RidersRuntime.GameSystems;
 using System;
 using System.Collections.Generic;
-using UnityEditor;
-using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -35,13 +34,11 @@ namespace RidersRuntime.RaceManager
         public void PrepareRace()
         {
             // Figure out the order of this 
-            // Load the map (try use additive instead)
-            // Load the racers into the map
             // NOTE: THE DREAM IS THAT RACERS ARE SPAWNED INTO A CINEMATIC SEQUENCE
             // Prepare the race transition sequence
             // Play the sequence
 
-            // LoadRacers();
+            LoadRacers();
         }
 
         public void LoadRacers()
@@ -50,6 +47,18 @@ namespace RidersRuntime.RaceManager
             // Spawn the racers in the map
 
             // TODO: Use pooling for the racer instead of instantiating them every time
+            // Turn off main camera for now
+            Camera.main.gameObject.SetActive(false);
+
+            foreach (RacerComponent racer in racers)
+            {
+                if (racer.isPlayer)
+                {
+                    // Enable the camera
+                    racer.gameObject.GetComponentInParent<RidersRuntime.Input.UnityInputWrapper>().SetCameraMode(true);
+
+                }
+            }
         }
 
 

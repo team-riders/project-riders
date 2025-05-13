@@ -8,7 +8,7 @@ namespace RidersRuntime.Data
     {
         public int ID;
         public string Name;
-        public string SceneName;
+        public string ScenePath;
         // The scene itself typically contain the following information
         // If we want to do a drag and drop of the scene, we will need to create a custom editor that will compile back to the asset
     }

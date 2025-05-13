@@ -15,6 +15,20 @@ namespace RidersRuntime.RaceManager
 
         void Start()
         {
+            SetupRider(new RiderSelection()
+            {
+                rider = rider,
+                vehicleType = vehicleType,
+                isPlayer = isPlayer
+            });
+        }
+
+        public void SetupRider(RiderSelection newRider)
+        {
+            rider = newRider.rider;
+            isPlayer = newRider.isPlayer;
+            vehicleType = newRider.vehicleType;
+
             // Check if there is a rider assigned
             if (rider == null)
             {
@@ -32,15 +46,7 @@ namespace RidersRuntime.RaceManager
                 // Initialize AI-specific settings
                 InitializeAISettings();
             }
-        }
-
-        public void SetupRider(RiderSelection newRider)
-        {
-            rider = newRider.rider;
-            isPlayer = newRider.isPlayer;
-            vehicleType = newRider.vehicleType;
-
-            SetupVisuals();
+            // SetupVisuals();
         }
 
         void SetupVisuals()
