@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
+using UnityEngine.TextCore.Text;
 
 namespace RidersRuntime.GameSystems
 {
@@ -18,6 +20,17 @@ namespace RidersRuntime.GameSystems
             // Handle player joining logic here
             Debug.Log($"Player {playerInput.playerIndex} joined.");
             players.Add(playerInput);
+
+            // If we're in the character selection scene, call join
+
+            var CharSelect = FindFirstObjectByType<CharacterSelectionManager>();
+            if (CharSelect != null)
+            {
+
+                var eventSys = playerInput.uiInputModule.gameObject.GetComponent<MultiplayerEventSystem>();
+                playerInput.GetComponent<RidersRuntime.Input.UnityInputWrapper>().SetCameraMode(false);
+                CharSelect.BindNewPlayerUIInput(eventSys);
+            }
         }
 
         public void OnPlayerLeft(PlayerInput playerInput)

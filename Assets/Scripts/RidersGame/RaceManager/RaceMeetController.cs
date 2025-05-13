@@ -4,8 +4,10 @@ using RidersRuntime.Input;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 namespace RidersRuntime.RaceManager
 {
@@ -49,11 +51,14 @@ namespace RidersRuntime.RaceManager
             onRaceComplete = callback;
         }
 
-        public void StartNewMeetSession()
+        public async Task StartNewMeetSession()
         {
             // ------ SCENE TRANSITION -------
             // await the scene transition to complete
-            SetupRace();
+            // Grab the first map scene
+            string map = raceMeet.raceEvents[currentRaceIndex].map.SceneName;
+            SceneManager.GetSceneByName(map);
+            await SceneLoader.PrepareScene(4, onLoad: SetupRace);
         }
 
         public void GotoNextRace()

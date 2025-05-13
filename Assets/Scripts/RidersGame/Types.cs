@@ -18,7 +18,8 @@ namespace RidersRuntime.Data
     {
         Skateboard,
         Blades,
-        Bike
+        Bike,
+        None
     }
 
     public struct Paths

@@ -57,8 +57,26 @@ namespace RidersRuntime
 
             // Sets up the loading screen
             await DoLoadingScreenTask((int)targetLoadingScene);
-            // Prepare the new scene here
+        }
 
+        public static async Task PrepareScene(int scene, Action onLoad = null, GameScene loadingScene = GameScene.Loading)
+        {
+            if (isLoading) return;
+            isLoading = true;
+
+            // Disable input during loading
+            if (EventSystem.current != null)
+            {
+                EventSystem.current.enabled = false;
+            }
+
+            onLoadActualscene = onLoad;
+
+            targetGameScene = (GameScene)scene;
+            targetLoadingScene = loadingScene;
+
+            // Sets up the loading screen
+            await DoLoadingScreenTask(scene);
         }
 
         /// <summary>
@@ -96,6 +114,9 @@ namespace RidersRuntime
             await InternalUnloadSceneAsync(SceneManager.GetSceneByBuildIndex((int)targetLoadingScene).buildIndex);
             onLoadActualscene?.Invoke();
             onLoadActualscene = null;
+
+            isLoading = false;
+            currentlyTryingToLoadScene = null;
         }
 
         public static float GetCurrentLoadingProgress()

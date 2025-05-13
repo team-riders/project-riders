@@ -18,6 +18,12 @@ public class MapConfigurationEditor : Editor
         EditorGUILayout.LabelField("Map Configuration", EditorStyles.boldLabel);
         id = EditorGUILayout.IntField("ID", controller.ID);
         Name = EditorGUILayout.TextField("Name", controller.Name);
+        // Get the scene asset from the project
+
+        if (!string.IsNullOrEmpty(controller.SceneName))
+        {
+            scene = AssetDatabase.LoadAssetAtPath<SceneAsset>(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets(controller.SceneName + " t:Scene")[0]));
+        }
         scene = (SceneAsset)EditorGUILayout.ObjectField(scene, typeof(SceneAsset), false);
 
         if (GUI.changed)

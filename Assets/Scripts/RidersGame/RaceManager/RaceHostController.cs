@@ -18,8 +18,33 @@ namespace RidersRuntime.GameSystems
 
         void Start()
         {
+            // Check if an instance of this class already exists
+            RaceHostController existing = FindFirstObjectByType<RaceHostController>();
+            if (existing.gameObject != gameObject)
+            {
+                // Destroy this instance if another one already exists
+                Debug.LogWarning("RaceHostController already exists in the scene. Destroying this instance.");
+                existing.ClearSession();
+
+                Destroy(gameObject);
+                return;
+            }
 
             DontDestroyOnLoad(this);
+        }
+
+        public void ClearSession()
+        {
+            if (sessionRaceMeetController != null)
+            {
+                Destroy(sessionRaceMeetController.gameObject);
+                sessionRaceMeetController = null;
+            }
+
+            if (sessionMeet != null)
+            {
+                sessionMeet = null;
+            }
         }
 
         public async void RequestRaceSetup(RaceMeetConfiguration meetConfiguration)
@@ -49,11 +74,10 @@ namespace RidersRuntime.GameSystems
         private void PrepareCharacterSelection()
         {
             CharacterSelectionManager selector = FindFirstObjectByType<CharacterSelectionManager>();
-            selector.transform.SetParent(transform);
             selector.GrabHostInformation(sessionMeet, OnRaceMeetSetupComplete);
         }
 
-        public void OnRaceMeetSetupComplete(List<RiderSelection> selectedRiders)
+        public async void OnRaceMeetSetupComplete(List<RiderSelection> selectedRiders)
         {
             // This method will be called when the character selection is complete
             // Check with the number of players to see if we need to add any AI riders
@@ -81,7 +105,7 @@ namespace RidersRuntime.GameSystems
             sessionRaceMeetController = obj.AddComponent<RaceMeetController>();
 
             sessionRaceMeetController.AssignFields(sessionMeet, allRiders, OnRaceMeetComplete);
-            sessionRaceMeetController.StartNewMeetSession();
+            await sessionRaceMeetController.StartNewMeetSession();
         }
 
         public void OnRaceMeetComplete(object obj)
