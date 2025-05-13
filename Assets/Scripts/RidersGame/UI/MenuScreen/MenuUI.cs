@@ -1,14 +1,38 @@
 using UnityEngine;
 using RidersRuntime.Data;
-using UnityEngine.SceneManagement;
+using RidersRuntime.GameSystems;
+using System.Threading.Tasks;
 
 namespace RidersRuntime.UI
 {
     public class MenuUI : MonoBehaviour
     {
-        public void LoadMainMenu()
+        private RaceHostController hostController;
+
+        private RaceMeetConfiguration selectedMeet;
+
+        void Start()
         {
-            SceneLoader.LoadScene(GameScene.MainMenu);
+            hostController = FindFirstObjectByType<RaceHostController>();
+        }
+        public async Task LoadMainMenu()
+        {
+            await SceneLoader.PrepareScene(GameScene.MainMenu);
+        }
+
+        public void setSelectedMeet(RaceMeetConfiguration meet)
+        {
+            selectedMeet = meet;
+        }
+
+        public void LoadCharacterSelect()
+        {
+            if (selectedMeet == null)
+            {
+                Debug.LogError("No meet selected");
+                return;
+            }
+            hostController.RequestRaceSetup(selectedMeet);
         }
     }
 }

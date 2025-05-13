@@ -1,7 +1,10 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using RidersRuntime.Data;
 using RidersRuntime.RaceManager;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace RidersRuntime.GameSystems
 {
@@ -19,7 +22,7 @@ namespace RidersRuntime.GameSystems
             DontDestroyOnLoad(this);
         }
 
-        public void RequestRaceSetup(RaceMeetConfiguration meetConfiguration)
+        public async void RequestRaceSetup(RaceMeetConfiguration meetConfiguration)
         {
             if (sessionMeet != null)
             {
@@ -39,12 +42,15 @@ namespace RidersRuntime.GameSystems
             // ------ SCENE TRANSITION -------
             // await the scene transition to complete
 
-            // when complete, then we need to pass the meet configuration to the character selection manager
+            // StartCoroutine(LoadNewSceneAsync((int)GameScene.CharacterSelect));
+            await SceneLoader.PrepareScene(GameScene.CharacterSelect, onLoad: PrepareCharacterSelection);
+        }
 
+        private void PrepareCharacterSelection()
+        {
             CharacterSelectionManager selector = FindFirstObjectByType<CharacterSelectionManager>();
             selector.transform.SetParent(transform);
-            selector.GrabHostInformation(meetConfiguration, OnRaceMeetSetupComplete);
-
+            selector.GrabHostInformation(sessionMeet, OnRaceMeetSetupComplete);
         }
 
         public void OnRaceMeetSetupComplete(List<RiderSelection> selectedRiders)

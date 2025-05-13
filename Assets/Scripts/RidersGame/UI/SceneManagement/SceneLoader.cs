@@ -1,19 +1,45 @@
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using System;
-using System.Collections;
 using RidersRuntime.Data;
+using UnityEngine;
+using System.Threading.Tasks;
 
 namespace RidersRuntime
 {
     public static class SceneLoader
     {
         private static bool isLoading = false;
-        private static Action _loadingScreenLoaded;
-        private static Action _loadingScreenUnloaded;
         public static Action loadingScreenStartUnloading;
 
-        public static void LoadScene(GameScene scene)
+        /// <summary>
+        /// Stop loading the screen once we hit this percentage
+        /// </summary>
+        private static float loadingScreenPercentageLock = 0.9f;
+        private static GameScene targetGameScene;
+        private static GameScene targetLoadingScene;
+        public static AsyncOperation currentlyTryingToLoadScene;
+
+        public static bool SceneIsready
+        {
+            get
+            {
+                if (currentlyTryingToLoadScene == null)
+                {
+                    return false;
+                }
+                return currentlyTryingToLoadScene.progress >= loadingScreenPercentageLock;
+            }
+        }
+        private static Action onLoadActualscene;
+
+        /// <summary>
+        /// This will present the loading screen while having the the previous scene nearly ready to be loaded
+        /// </summary>
+        /// <param name="scene"></param>
+        /// <param name="targetLoadingSceneIndex">Use if you want to use a special loading scene</param>
+        /// <returns></returns>
+        public static async Task PrepareScene(GameScene scene, Action onLoad = null, GameScene loadingScene = GameScene.Loading)
         {
             if (isLoading) return;
             isLoading = true;
@@ -24,69 +50,98 @@ namespace RidersRuntime
                 EventSystem.current.enabled = false;
             }
 
-            // Refresh scene event listeners
-            SceneManager.sceneUnloaded -= SceneUnloaded;
-            SceneManager.sceneLoaded -= SceneLoaded;
+            onLoadActualscene = onLoad;
 
-            SceneManager.sceneUnloaded += SceneUnloaded;
-            SceneManager.sceneLoaded += SceneLoaded;
+            targetGameScene = scene;
+            targetLoadingScene = loadingScene;
 
-            _loadingScreenUnloaded = () =>
-            {
-                isLoading = false;
-                SceneManager.UnloadSceneAsync((int)GameScene.Loading);
-            };
+            // Sets up the loading screen
+            await DoLoadingScreenTask((int)targetLoadingScene);
+            // Prepare the new scene here
 
-            _loadingScreenLoaded = () =>
-            {
-                Core.shared.StartCoroutine(InternalSceneLoad(scene));
-                _loadingScreenLoaded = null;
-            };
-
-            var loadingScene = SceneManager.GetSceneByBuildIndex((int)GameScene.Loading);
-            if (loadingScene.isLoaded)
-            {
-                _loadingScreenLoaded?.Invoke();
-                SceneManager.LoadScene("", LoadSceneMode.Additive);
-                return;
-            }
-
-            SceneManager.LoadSceneAsync((int)GameScene.Loading, LoadSceneMode.Additive);
         }
 
-        private static IEnumerator InternalSceneLoad(GameScene scene)
+        /// <summary>
+        /// This will belong in the loading scene that is used. It will be called when the developer wants to do it
+        /// It can be either (when the new scene is fully loaded) or (when the player presses a button). i.e. (automatic or manual)
+        /// </summary>
+        /// <returns></returns>
+        public static async Task ActivateNewScene()
         {
-            // Begin loading target scene
-            var operation = SceneManager.LoadSceneAsync((int)scene, LoadSceneMode.Additive);
+            if (EventSystem.current != null)
+            {
+                EventSystem.current.enabled = false;
+            }
+
+            currentlyTryingToLoadScene.allowSceneActivation = true;
+
+            while (!currentlyTryingToLoadScene.isDone)
+            {
+                await Task.Yield();
+            }
+
+            SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex((int)targetGameScene));
+        }
+
+        public static async void LoadingScreenEntry()
+        {
+            await InternalUnloadSceneAsync(SceneManager.GetActiveScene().buildIndex);
+            DoSceneLoadingTask((int)targetGameScene);
+
+            // SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex((int)GameScene.Loading));
+        }
+
+        public static async void LoadingScreenExit()
+        {
+            await InternalUnloadSceneAsync(SceneManager.GetSceneByBuildIndex((int)targetLoadingScene).buildIndex);
+            onLoadActualscene?.Invoke();
+            onLoadActualscene = null;
+        }
+
+        public static float GetCurrentLoadingProgress()
+        {
+            if (currentlyTryingToLoadScene == null)
+            {
+                return 0f;
+            }
+            return currentlyTryingToLoadScene.progress;
+        }
+
+        private static async Task DoLoadingScreenTask(int loadingSceneIndex)
+        {
+            await InternalLoadSceneAsync(loadingSceneIndex);
+
+            // There may be an event system in the loading scene
+            if (EventSystem.current != null)
+            {
+                EventSystem.current.enabled = true;
+            }
+        }
+
+        private static void DoSceneLoadingTask(int sceneIndex)
+        {
+            isLoading = true;
+            currentlyTryingToLoadScene = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Additive);
+            currentlyTryingToLoadScene.allowSceneActivation = false;
+        }
+
+        private static async Task InternalLoadSceneAsync(int sceneIndex)
+        {
+            AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Additive);
 
             while (!operation.isDone)
             {
-                yield return null;
+                await Task.Yield();
             }
-
-            // Unload current scene (not loading screen)
-            SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
-
-            // Set new scene as active
-            SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex((int)scene));
-
-            // Fade out / clean up loading screen
-            loadingScreenStartUnloading?.Invoke();
-
-            yield return null;
         }
 
-        private static void SceneUnloaded(UnityEngine.SceneManagement.Scene scene) { }
-
-        private static void SceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
+        private static async Task InternalUnloadSceneAsync(int sceneIndex)
         {
-            if (scene.buildIndex == (int)GameScene.Loading)
+            AsyncOperation operation = SceneManager.UnloadSceneAsync(sceneIndex);
+
+            while (!operation.isDone)
             {
-                _loadingScreenLoaded?.Invoke();
-            }
-            else
-            {
-                _loadingScreenUnloaded?.Invoke();
+                await Task.Yield();
             }
         }
     }
