@@ -117,7 +117,7 @@ namespace RidersRuntime.GameSystems
                 // Check if null
                 if (selection.Value.rider == null)
                 {
-                    Debug.Log("Player " + selection.Key + " hasn't made a selection");
+                    // Debug.Log("Player " + selection.Key + " hasn't made a selection");
                     isValid = false;
                     break;
                 }
@@ -161,7 +161,6 @@ namespace RidersRuntime.GameSystems
             // This method will be called when a character is selected
             // Nightmare fuel to handle who is selecting what
             int caller = GetPlayerInput().playerIndex;
-            Debug.Log("Character selected: " + caller + "\n" + racer.name);
 
             if (playerRiderSelection.ContainsKey(caller))
             {

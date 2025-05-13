@@ -1,9 +1,7 @@
 using RidersRuntime.Data;
-using RidersRuntime.GameSystems;
-using System;
+using RidersRuntime.Input;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace RidersRuntime.RaceManager
 {
@@ -11,12 +9,13 @@ namespace RidersRuntime.RaceManager
     {
         RaceEventConfiguration raceEvent;
         List<RacerComponent> racers;
-
         List<int> playerIndices;
 
         // timer Class here
 
         // Checkpoints class here
+
+        // Pause controller here
 
         public void SetupRace(
             RaceEventConfiguration raceEvent,
@@ -55,8 +54,7 @@ namespace RidersRuntime.RaceManager
                 if (racer.isPlayer)
                 {
                     // Enable the camera
-                    racer.gameObject.GetComponentInParent<RidersRuntime.Input.UnityInputWrapper>().SetCameraMode(true);
-
+                    racer.GetComponent<RidersRuntime.Input.PlayerInput>().GetPlayerInputComponent().GetComponent<UnityInputWrapper>().SetCameraMode(true);
                 }
             }
         }
@@ -103,6 +101,10 @@ namespace RidersRuntime.RaceManager
 
             // Unload the map (or just disable it?)
             // Unload all racers (or just disable them?)
+        }
+
+        public void PauseRace(int playerIndex)
+        {
         }
     }
 }

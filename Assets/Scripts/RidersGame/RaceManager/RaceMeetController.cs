@@ -1,13 +1,9 @@
 using RidersRuntime.Data;
 using RidersRuntime.GameSystems;
-using RidersRuntime.Input;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 
 namespace RidersRuntime.RaceManager
 {
@@ -125,13 +121,15 @@ namespace RidersRuntime.RaceManager
                         }
                         // Assign the player input to the racer
 
-                        obj.transform.SetParent(playerInput.transform);
+                        // obj.transform.SetParent(playerInput.transform);
                         // Remove the object's player input component
                         UnityEngine.InputSystem.PlayerInput playerInputComponent = obj.GetComponentInChildren<UnityEngine.InputSystem.PlayerInput>();
                         if (playerInputComponent != null)
                         {
                             Destroy(playerInputComponent);
                         }
+
+                        obj.GetComponentInChildren<RidersRuntime.Input.PlayerInput>().BindPlayerInput(playerInput);
 
                         playerInput.camera = obj.GetComponentInChildren<Camera>();
 
