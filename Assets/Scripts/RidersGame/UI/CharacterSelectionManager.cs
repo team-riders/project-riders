@@ -5,7 +5,9 @@ using System.Linq;
 using RidersRuntime.Data;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
+using UnityEngine.InputSystem.Users;
 using UnityEngine.UI;
 
 namespace RidersRuntime.GameSystems
@@ -57,25 +59,25 @@ namespace RidersRuntime.GameSystems
         {
             MultiplayerEventSystem[] eventSystem = FindObjectsByType<MultiplayerEventSystem>(FindObjectsSortMode.InstanceID);
 
-            foreach (var eventSys in eventSystem)
+            foreach (var user in InputUser.all)
             {
-                Debug.Log("Binding player UI input for " + eventSys.gameObject.name);
-                // We need to destroy and set it up again
-                BindNewPlayerUIInput(eventSys);
+                Debug.Log("Setting up UI for player " + user.index);
+                BindNewPlayerUIInput(user.index);
             }
+
             ValidateForm();
         }
 
-        public void BindNewPlayerUIInput(EventSystem eventSystem)
+        public void BindNewPlayerUIInput(int index)
         {
+            EventSystem eventSystem = EventSystemSpawner.CreateNewPlayerEventSystem(index);
             if (eventSystem != null)
             {
                 eventSystem.firstSelectedGameObject = defaultButton.gameObject;
                 eventSystem.enabled = true;
 
-                int caller = eventSystem.GetComponentInParent<UnityEngine.InputSystem.PlayerInput>().playerIndex;
 
-                playerRiderSelection.Add(caller, new RiderSelection
+                playerRiderSelection.Add(index, new RiderSelection
                 {
                     rider = null,
                     vehicleType = VehicleType.None,
@@ -153,7 +155,19 @@ namespace RidersRuntime.GameSystems
 
         private UnityEngine.InputSystem.PlayerInput GetPlayerInput()
         {
-            return EventSystem.current.GetComponentInParent<UnityEngine.InputSystem.PlayerInput>();
+            PlayerInput[] players = FindObjectsByType<UnityEngine.InputSystem.PlayerInput>(FindObjectsSortMode.None);
+
+            BaseInputModule inputModule = EventSystem.current.currentInputModule;
+
+            foreach (PlayerInput player in players)
+            {
+                if (player.uiInputModule == inputModule)
+                {
+                    return player;
+                }
+            }
+
+            return null;
         }
 
         public void OnCharacterSelected(RiderConfig racer)
@@ -229,7 +243,6 @@ namespace RidersRuntime.GameSystems
             {
                 onCharacterSelectionComplete?.Invoke(playerRiderSelection.Values.ToList());
             }
-
         }
 
         void DebugCharacterSelect()

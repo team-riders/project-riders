@@ -1,3 +1,4 @@
+using RidersRuntime.GameSystems;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Users;
@@ -14,6 +15,20 @@ namespace RidersRuntime.Input
             // ALL PLAYERS WILL BE PERSISTENT THROUGHOUT THE GAME
             DontDestroyOnLoad(gameObject);
             SetCameraMode(false);
+            // Check if we have an event system bound
+            if (input.uiInputModule == null)
+            {
+                SetupUIInputs();
+            }
+        }
+
+        public void Update()
+        {
+            // If there's no event system, make one
+            if (input.uiInputModule == null)
+            {
+                SetupUIInputs();
+            }
         }
 
         public void SetCameraReference(Camera camera)
@@ -26,7 +41,7 @@ namespace RidersRuntime.Input
             this.isGameplayCamera = isGameplayCamera;
             if (input.camera == null)
             {
-                Debug.LogError("Camera reference is not set in PlayerInput.");
+                Debug.LogWarning("Camera reference is not set in PlayerInput.");
                 return;
             }
             if (input == null)
@@ -53,6 +68,11 @@ namespace RidersRuntime.Input
         public void OnDeviceRegained(UnityEngine.InputSystem.PlayerInput playerInput)
         {
             Debug.Log($"Device regained: {playerInput}");
+        }
+
+        public void SetupUIInputs()
+        {
+            EventSystemSpawner.CreateNewPlayerEventSystem(input.playerIndex);
         }
     }
 }

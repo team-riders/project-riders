@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace RidersRuntime
 {
@@ -8,6 +10,9 @@ namespace RidersRuntime
 
         public AnimationClip loadingScreenAnimation;
         public AnimationClip loadingScreenExitAnimation;
+        public GameObject startButton;
+
+        bool isLoaded = false;
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
@@ -21,8 +26,6 @@ namespace RidersRuntime
             // This will be called when the loading screen is activated
             // We can set up the loading screen here
             // Check if we actually have a loading reference
-
-            bool isLoading = SceneLoader.GetCurrentLoadingProgress() > 0.0f;
             animator = GetComponent<Animator>();
             animator.SetTrigger("LoadingScreen");
         }
@@ -31,9 +34,20 @@ namespace RidersRuntime
         {
             float loadingProgress = SceneLoader.GetCurrentLoadingProgress();
 
-            if (SceneLoader.SceneIsready)
+            if (SceneLoader.SceneIsready && !isLoaded)
             {
+                isLoaded = true;
+                StartCoroutine(FakeLoadingProgress(3));
             }
+        }
+
+        IEnumerator FakeLoadingProgress(float seconds)
+        {
+            yield return new WaitForSecondsRealtime(seconds);
+            startButton.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(startButton);
+            // Just call it
+            DoReady();
         }
 
         public void FinishLoadingScreenEntry()
