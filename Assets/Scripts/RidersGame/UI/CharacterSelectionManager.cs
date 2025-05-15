@@ -39,7 +39,6 @@ namespace RidersRuntime.GameSystems
                 // Manually assign stuff for now
                 debugMode = true;
 
-
                 BindAllPlayersUI();
             }
         }
@@ -57,8 +56,6 @@ namespace RidersRuntime.GameSystems
 
         public void BindAllPlayersUI()
         {
-            MultiplayerEventSystem[] eventSystem = FindObjectsByType<MultiplayerEventSystem>(FindObjectsSortMode.InstanceID);
-
             foreach (var user in InputUser.all)
             {
                 Debug.Log("Setting up UI for player " + user.index);
@@ -75,7 +72,6 @@ namespace RidersRuntime.GameSystems
             {
                 eventSystem.firstSelectedGameObject = defaultButton.gameObject;
                 eventSystem.enabled = true;
-
 
                 playerRiderSelection.Add(index, new RiderSelection
                 {

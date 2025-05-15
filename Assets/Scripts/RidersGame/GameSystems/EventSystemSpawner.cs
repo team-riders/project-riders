@@ -13,8 +13,6 @@ namespace RidersRuntime.GameSystems
         // This class is responsible for spawning the event system and setting up the input system
         // It will be used to manage the event system for the character selection screen
 
-        public GameObject eventSystemPrefab;
-
         void Start()
         {
             // SceneManager.sceneLoaded += OnSceneEntered;
