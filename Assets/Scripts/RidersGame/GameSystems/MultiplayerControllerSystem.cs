@@ -49,7 +49,6 @@ namespace RidersRuntime.GameSystems
         /// <param name="context"></param>
         void OnJoinPressed(InputAction.CallbackContext context)
         {
-            // THIS IS A MASSIVE TODO;
             InputDevice targetDevice = context.control.device;
 
             if (inputDevices.Contains(targetDevice))
@@ -57,8 +56,8 @@ namespace RidersRuntime.GameSystems
                 int index = GetPlayerIndexByDevicePaired(targetDevice);
                 if (index != -1)
                 {
-                    Debug.Log($"Device {targetDevice} already paired to player {index}");
-
+                    Debug.Log($"Device {targetDevice.displayName} already paired to player {index}");
+                    InputUser.all[index].ActivateControlScheme(GetControlSchemeByDeviceName(targetDevice.displayName));
                     return;
                 }
                 return;
@@ -75,7 +74,8 @@ namespace RidersRuntime.GameSystems
                 {
                     players[player1.index].neverAutoSwitchControlSchemes = false;
                     InputUser.PerformPairingWithDevice(targetDevice, player1);
-                    Debug.Log($"Bound secondary controls to player {player1.index}");
+                    player1.ActivateControlScheme(GetControlSchemeByDeviceName(targetDevice.displayName));
+                    Debug.Log($"Bound secondary controls {targetDevice.displayName} to player {player1.index}");
                     return;
                 }
             }
@@ -87,20 +87,6 @@ namespace RidersRuntime.GameSystems
                 Debug.Log($"Player {player.playerIndex} joined via MultiDeviceControllerSystem.");
                 EventSystemSpawner.CreateNewPlayerEventSystem(player.playerIndex);
             }
-        }
-
-        public PlayerInput GetPlayerByPlayerIndex(int index)
-        {
-            if (!enabled) return FindFirstObjectByType<PlayerInput>();
-            foreach (var player in players)
-            {
-                if (player.playerIndex == index)
-                {
-                    return player;
-                }
-            }
-            Debug.LogWarning($"Player with index {index} not found.");
-            return null;
         }
 
         public PlayerInput GetPlayerInputByEventSystem(EventSystem eventSystem)
@@ -145,7 +131,7 @@ namespace RidersRuntime.GameSystems
         public string GetControlSchemeByDeviceName(string deviceName)
         {
             if (!enabled) return "Keyboard&Mouse";
-            if (deviceName.Contains("Gamepad"))
+            if (deviceName.Contains("Gamepad") || deviceName.Contains("Controller"))
             {
                 return "Gamepad";
             }
