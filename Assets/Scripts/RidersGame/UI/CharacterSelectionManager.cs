@@ -174,7 +174,9 @@ namespace RidersRuntime.GameSystems
         {
             // This method will be called when a character is selected
             // Nightmare fuel to handle who is selecting what
-            int caller = GetPlayerInput().playerIndex;
+            int caller = 0;
+            //int caller = GetPlayerInput().playerIndex;
+
 
             if (playerRiderSelection.ContainsKey(caller))
             {

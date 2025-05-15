@@ -1,5 +1,4 @@
 using System;
-using RidersRuntime.VehicleSystem;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -18,7 +17,7 @@ namespace RidersRuntime.GameSystems
 
         void Start()
         {
-            SceneManager.sceneLoaded += OnSceneEntered;
+            // SceneManager.sceneLoaded += OnSceneEntered;
         }
 
         private void OnSceneEntered(Scene scene, LoadSceneMode sceneMode)
@@ -44,7 +43,9 @@ namespace RidersRuntime.GameSystems
         public static EventSystem CreateNewPlayerEventSystem(int playerIndex)
         {
             EventSystem es = new GameObject("Event System for " + playerIndex, new Type[] { typeof(MultiplayerEventSystem), typeof(InputSystemUIInputModule) }).GetComponent<MultiplayerEventSystem>();
-            PlayerInput.GetPlayerByIndex(playerIndex).uiInputModule = es.GetComponent<InputSystemUIInputModule>();
+            InputSystemUIInputModule inputMod = es.GetComponent<InputSystemUIInputModule>();
+            inputMod.actionsAsset = PlayerInput.GetPlayerByIndex(playerIndex).actions;
+            PlayerInput.GetPlayerByIndex(playerIndex).uiInputModule = inputMod;
             return es;
         }
     }
