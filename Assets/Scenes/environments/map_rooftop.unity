@@ -37346,12 +37346,39 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0.104875706
       objectReference: {fileID: 0}
+    - target: {fileID: 8530788983562679351, guid: 7512643b31f4ea44dbf2e51c116fec88, type: 3}
+      propertyPath: m_VehicleStats
+      value: 
+      objectReference: {fileID: 11400000, guid: 8c63ad011be404347939d860b49f1ed0, type: 2}
     m_RemovedComponents:
     - {fileID: 8559819407423514983, guid: 7512643b31f4ea44dbf2e51c116fec88, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6302058510488382299, guid: 7512643b31f4ea44dbf2e51c116fec88, type: 3}
+      insertIndex: 3
+      addedObject: {fileID: 1059689191}
   m_SourcePrefab: {fileID: 100100000, guid: 7512643b31f4ea44dbf2e51c116fec88, type: 3}
+--- !u!1 &1059689190 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6302058510488382299, guid: 7512643b31f4ea44dbf2e51c116fec88, type: 3}
+  m_PrefabInstance: {fileID: 1059689189}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1059689191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059689190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 863c6edde8a7ac84ea427a23bb57a97a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  racerID: 0
+  rider: {fileID: 11400000, guid: 82b802f40fb05a64587b342508fe5174, type: 2}
+  isPlayer: 1
 --- !u!43 &1072670153
 Mesh:
   m_ObjectHideFlags: 0
@@ -64827,8 +64854,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2090136841}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.000000010939374, y: -0.9944854, z: 0.10487558, w: 0.000000103732894}
-  m_LocalPosition: {x: 1298.0829, y: 584.002, z: -3.0874333}
+  m_LocalRotation: {x: 0.00000006313865, y: 0.9944854, z: -0.104875706, w: 0.0000005987132}
+  m_LocalPosition: {x: 1297.6199, y: 585.1179, z: -3.6182966}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -65028,3 +65055,6 @@ SceneRoots:
   - {fileID: 1754147218}
   - {fileID: 1741861121}
   - {fileID: 888757677}
+  - {fileID: 7374164830157161938}
+  - {fileID: 1920844856}
+  - {fileID: 2090136844}
