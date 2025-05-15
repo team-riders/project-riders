@@ -45,7 +45,7 @@ namespace RidersRuntime
         {
             yield return new WaitForSecondsRealtime(seconds);
             startButton.SetActive(true);
-            EventSystem.current.SetSelectedGameObject(startButton);
+            // EventSystem.current.SetSelectedGameObject(startButton);
             // Just call it
             DoReady();
         }

@@ -26,6 +26,10 @@ namespace RidersRuntime.UI
             InputSystem.onAnyButtonPress.Call(currentAction =>
             {
                 if (hasPressedKey) return;
+
+                ShowMenu();
+                return;
+
                 InputUser? user = InputUser.FindUserPairedToDevice(currentAction.device);
                 if (user == null)
                 {

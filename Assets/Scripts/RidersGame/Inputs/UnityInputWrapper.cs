@@ -16,19 +16,10 @@ namespace RidersRuntime.Input
             DontDestroyOnLoad(gameObject);
             SetCameraMode(false);
             // Check if we have an event system bound
-            if (input.uiInputModule == null)
-            {
-                SetupUIInputs();
-            }
         }
 
         public void Update()
         {
-            // If there's no event system, make one
-            if (input.uiInputModule == null)
-            {
-                SetupUIInputs();
-            }
         }
 
         public void SetCameraReference(Camera camera)
@@ -68,11 +59,6 @@ namespace RidersRuntime.Input
         public void OnDeviceRegained(UnityEngine.InputSystem.PlayerInput playerInput)
         {
             Debug.Log($"Device regained: {playerInput}");
-        }
-
-        public void SetupUIInputs()
-        {
-            EventSystemSpawner.CreateNewPlayerEventSystem(input.playerIndex);
         }
     }
 }

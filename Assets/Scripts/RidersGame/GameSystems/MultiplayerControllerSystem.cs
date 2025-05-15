@@ -1,11 +1,10 @@
+using System;
 using System.Collections.Generic;
-using NUnit.Framework;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.UI;
 using UnityEngine.InputSystem.Users;
-using UnityEngine.TextCore.Text;
 
 namespace RidersRuntime.GameSystems
 {
@@ -15,16 +14,33 @@ namespace RidersRuntime.GameSystems
         // You can add your multiplayer logic here.
 
         PlayerInputManager pim;
-
-        List<PlayerInput> players = new List<PlayerInput>();
-
+        List<PlayerInput> players = new();
         InputAction joinAction;
-
         List<InputDevice> inputDevices = new();
+
+        [SerializeField]
+        bool SinglePlayerMode = false;
+        [SerializeField]
+        bool Player1SecondaryControls = true;
 
         void Awake()
         {
+            if (FindObjectsByType<MultiDeviceControllerSystem>(FindObjectsSortMode.None).Length > 1)
+            {
+                Destroy(this);
+            }
+            else
+            {
+                DontDestroyOnLoad(this);
+            }
+        }
+
+        void Start()
+        {
+            pim = GetComponent<PlayerInputManager>();
             joinAction = new InputAction(binding: "/*/<button>");
+            joinAction.started += OnJoinPressed;
+            joinAction.Enable();
         }
 
         /// <summary>
@@ -33,12 +49,17 @@ namespace RidersRuntime.GameSystems
         /// <param name="context"></param>
         void OnJoinPressed(InputAction.CallbackContext context)
         {
-            // THIS IS A MASSIVE TODO;
-            return;
             InputDevice targetDevice = context.control.device;
 
             if (inputDevices.Contains(targetDevice))
             {
+                int index = GetPlayerIndexByDevicePaired(targetDevice);
+                if (index != -1)
+                {
+                    Debug.Log($"Device {targetDevice.displayName} already paired to player {index}");
+                    InputUser.all[index].ActivateControlScheme(GetControlSchemeByDeviceName(targetDevice.displayName));
+                    return;
+                }
                 return;
             }
 
@@ -49,65 +70,36 @@ namespace RidersRuntime.GameSystems
             {
                 InputUser player1 = InputUser.all[0];
                 // Check if the player has a Keyboard&Mouse or Gamepad
-                if (player1.pairedDevices.Count == 1)
+                if ((!SinglePlayerMode && Player1SecondaryControls && player1.pairedDevices.Count == 1) || SinglePlayerMode)
                 {
-                    // Engage in special pairing here where we aim to have 2 control schemes on that player "for now"
-                    InputDevice currentDevice = player1.pairedDevices[0];
+                    players[player1.index].neverAutoSwitchControlSchemes = false;
+                    InputUser.PerformPairingWithDevice(targetDevice, player1);
+                    player1.ActivateControlScheme(GetControlSchemeByDeviceName(targetDevice.displayName));
+                    Debug.Log($"Bound secondary controls {targetDevice.displayName} to player {player1.index}");
+                    return;
                 }
             }
-        }
 
-        public void OnPlayerJoined(PlayerInput playerInput)
-        {
-            // Handle player joining logic here
-            Debug.Log($"Player {playerInput.playerIndex} joined.");
-
-            // Check if player 1 already exists and is keyboard only
-            if (players.Count > 0 && players[0].currentControlScheme == "Keyboard&Mouse")
+            PlayerInput player = pim.JoinPlayer(players.Count, pairWithDevice: targetDevice);
+            if (player != null)
             {
-                // If player 1 is keyboard only, add this device to player 1 then remove this player 
-                InputDevice device = playerInput.devices[0];
-                InputUser.PerformPairingWithDevice(device, players[0].user);
-                Destroy(playerInput);
-                return;
+                players.Add(player);
+                Debug.Log($"Player {player.playerIndex} joined via MultiDeviceControllerSystem.");
+                EventSystemSpawner.CreateNewPlayerEventSystem(player.playerIndex);
             }
-
-            players.Add(playerInput);
-
-            // If we're in the character selection scene, call join
-
-            var CharSelect = FindFirstObjectByType<CharacterSelectionManager>();
-            if (CharSelect != null)
-            {
-                // Create a new event system for the player that lives globally
-                playerInput.GetComponent<RidersRuntime.Input.UnityInputWrapper>().SetCameraMode(false);
-            }
-
-            EventSystemSpawner.CreateNewPlayerEventSystem(playerInput.playerIndex);
         }
 
-        // Every scene will need to have a different event system so we will need to continually create new event systems per screen
-        // We COULD try do this as a static thingo that runs every new screen and is consistent
-
-        public void OnPlayerLeft(PlayerInput playerInput)
-        {
-            // Handle player leaving logic here
-            Debug.Log($"Player {playerInput.playerIndex} left.");
-            // We still need to keep the player incase of bug
-            // Destroy(playerInput.gameObject);
-        }
-
-        public PlayerInput GetPlayerByPlayerIndex(int index)
+        public PlayerInput GetPlayerInputByEventSystem(EventSystem eventSystem)
         {
             if (!enabled) return FindFirstObjectByType<PlayerInput>();
             foreach (var player in players)
             {
-                if (player.playerIndex == index)
+                if (player.GetComponent<EventSystem>() == eventSystem)
                 {
                     return player;
                 }
             }
-            Debug.LogWarning($"Player with index {index} not found.");
+            Debug.LogWarning($"Player with EventSystem {eventSystem} not found.");
             return null;
         }
 
@@ -120,6 +112,46 @@ namespace RidersRuntime.GameSystems
         {
             if (!enabled) return 1;
             return players.Count;
+        }
+
+        public int GetPlayerIndexByDevicePaired(InputDevice device)
+        {
+            if (!enabled) return 0;
+            foreach (var player in players)
+            {
+                if (player.devices.Contains(device))
+                {
+                    return player.playerIndex;
+                }
+            }
+            Debug.LogWarning($"Player with device {device} not found.");
+            return -1;
+        }
+
+        public string GetControlSchemeByDeviceName(string deviceName)
+        {
+            if (!enabled) return "Keyboard&Mouse";
+            if (deviceName.Contains("Gamepad") || deviceName.Contains("Controller"))
+            {
+                return "Gamepad";
+            }
+            else if (deviceName.Contains("Keyboard") || deviceName.Contains("Mouse"))
+            {
+                return "Keyboard&Mouse";
+            }
+            return "Keyboard&Mouse";
+        }
+
+        public void CanJoin(bool canJoin)
+        {
+            if (canJoin)
+            {
+                joinAction.Enable();
+            }
+            else
+            {
+                joinAction.Disable();
+            }
         }
     }
 }

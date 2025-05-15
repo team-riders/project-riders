@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace RidersRuntime.RaceManager
 {
@@ -106,7 +107,7 @@ namespace RidersRuntime.RaceManager
                         // We need to find the player object in the scene that matches the player index
 
                         MultiDeviceControllerSystem mdcs = FindFirstObjectByType<MultiDeviceControllerSystem>();
-                        UnityEngine.InputSystem.PlayerInput playerInput = mdcs.GetPlayerByPlayerIndex(i);
+                        UnityEngine.InputSystem.PlayerInput playerInput = PlayerInput.GetPlayerByIndex(i);
 
                         if (playerInput == null)
                         {
