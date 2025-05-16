@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Users;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.UI;
 
@@ -29,24 +28,6 @@ namespace RidersRuntime.UI
 
                 ShowMenu();
                 return;
-
-                InputUser? user = InputUser.FindUserPairedToDevice(currentAction.device);
-                if (user == null)
-                {
-                    // Try to bind to the first available user
-
-                    var newUser = InputUser.PerformPairingWithDevice(currentAction.device, InputUser.all[0]);
-
-                    Debug.Log($"User {newUser.id} pressed a button on device {currentAction.device}");
-
-                }
-                else
-                {
-                    var currentUser = user.Value;
-                    Debug.Log($"Current User {currentUser.index} pressed a button.");
-                    ShowMenu();
-                }
-
             });
         }
 
@@ -62,7 +43,9 @@ namespace RidersRuntime.UI
             if (EventSystem.current != null)
             {
                 if (EventSystem.current.currentSelectedGameObject == null)
+                {
                     EventSystem.current.firstSelectedGameObject = menuDefaultButton;
+                }
             }
         }
 

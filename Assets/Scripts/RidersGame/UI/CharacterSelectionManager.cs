@@ -6,7 +6,6 @@ using RidersRuntime.Data;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.UI;
 using UnityEngine.InputSystem.Users;
 using UnityEngine.UI;
 
@@ -24,6 +23,7 @@ namespace RidersRuntime.GameSystems
 
         // Triggered if this scene is loaded without god
         public bool debugMode = false;
+        public float charAppearanceDelay = 0.1f;
 
         [SerializeField]
         public Button defaultButton;
@@ -31,6 +31,7 @@ namespace RidersRuntime.GameSystems
         [SerializeField]
         private Button startButton;
 
+        Dictionary<int, IEnumerator> charIndexOperationQueue = new();
         void Start()
         {
             // Check if god exists
@@ -149,29 +150,18 @@ namespace RidersRuntime.GameSystems
             return isValid;
         }
 
-        private UnityEngine.InputSystem.PlayerInput GetPlayerInput()
-        {
-            PlayerInput[] players = FindObjectsByType<UnityEngine.InputSystem.PlayerInput>(FindObjectsSortMode.None);
-
-            BaseInputModule inputModule = EventSystem.current.currentInputModule;
-
-            foreach (PlayerInput player in players)
-            {
-                if (player.uiInputModule == inputModule)
-                {
-                    return player;
-                }
-            }
-
-            return null;
-        }
-
         public void OnCharacterSelected(RiderConfig racer)
         {
-            // This method will be called when a character is selected
-            // Nightmare fuel to handle who is selecting what
-            int caller = 0;
-            //int caller = GetPlayerInput().playerIndex;
+            int caller = -1;
+
+            foreach (var user in PlayerInput.all)
+            {
+                if (user.uiInputModule.GetComponent<EventSystem>() == EventSystem.current)
+                {
+                    caller = user.playerIndex;
+                    break;
+                }
+            }
 
 
             if (playerRiderSelection.ContainsKey(caller))
@@ -191,37 +181,48 @@ namespace RidersRuntime.GameSystems
                 playerRiderSelection.Add(caller, newSelection);
             }
 
-            StartCoroutine(ShowCharacterSelected(caller));
+            IEnumerator coroutine = ShowCharacterSelected(caller);
+            if (charIndexOperationQueue.ContainsKey(caller))
+            {
+                StopCoroutine(charIndexOperationQueue[caller]);
+            }
+            else
+            {
+                charIndexOperationQueue.Add(caller, coroutine);
+            }
+
+            StartCoroutine(coroutine);
 
             ValidateForm();
         }
 
         IEnumerator ShowCharacterSelected(int playerIndex)
         {
+            GameObject characterPosition = characterPositions[playerIndex];
+            if (characterPosition.transform.childCount > 0)
+            {
+                foreach (Transform child in characterPosition.transform)
+                {
+                    Destroy(child.gameObject);
+                }
+            }
+
             if (playerRiderSelection.ContainsKey(playerIndex))
             {
                 RiderSelection selection = playerRiderSelection[playerIndex];
                 GameObject charPrefab = selection.rider.characterModelPrefab;
 
-                GameObject characterPosition = characterPositions[playerIndex];
+                yield return new WaitForSeconds(charAppearanceDelay);
 
-                if (characterPosition.transform.childCount > 0)
-                {
-                    // Kill all children
-                    foreach (Transform child in characterPosition.transform)
-                    {
-                        Destroy(child.gameObject);
-                    }
-
-                    yield return new WaitForSeconds(0.3f);
-                }
-
-                GameObject newCharacter = Instantiate(charPrefab, characterPosition.transform);
+                Instantiate(charPrefab, characterPosition.transform);
             }
             else
             {
                 Debug.Log("No character selected for player " + playerIndex);
             }
+
+            charIndexOperationQueue.Remove(playerIndex);
+
         }
 
         public void GrabHostInformation(RaceMeetConfiguration meetConfiguration, Action<List<RiderSelection>> callback)

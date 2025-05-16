@@ -1,10 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using RidersRuntime.Data;
 using RidersRuntime.RaceManager;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace RidersRuntime.GameSystems
 {
@@ -16,21 +13,29 @@ namespace RidersRuntime.GameSystems
 
         RaceMeetController sessionRaceMeetController;
 
-        void Start()
+        static RaceHostController instance;
+
+        void Awake()
         {
-            // Check if an instance of this class already exists
-            RaceHostController existing = FindFirstObjectByType<RaceHostController>();
-            if (existing.gameObject != gameObject)
+            if (instance == null)
             {
-                // Destroy this instance if another one already exists
-                Debug.LogWarning("RaceHostController already exists in the scene. Destroying this instance.");
-                existing.ClearSession();
-
-                Destroy(gameObject);
-                return;
+                instance = this;
+                DontDestroyOnLoad(this);
             }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
 
-            DontDestroyOnLoad(this);
+        public static RaceHostController GetInstance()
+        {
+            if (instance == null)
+            {
+                Debug.LogError("RaceHostController instance is null.");
+                return null;
+            }
+            return instance;
         }
 
         public void ClearSession()
