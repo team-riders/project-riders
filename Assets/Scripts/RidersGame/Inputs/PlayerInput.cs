@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using RidersRuntime.VehicleSystem;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,25 +6,40 @@ namespace RidersRuntime.Input
 {
     public class PlayerInput : BaseInput
     {
-        InputActionAsset m_playerInput;
-        string m_inputMapName = "Player";
+        UnityEngine.InputSystem.PlayerInput m_playerInput;
+        string m_inputMapName = InputMap.Player;
         ActorInputData currentFrameInputData = new();
 
         void Start()
         {
+            // TODO: Need to move a shit ton out of start and move to a separate function
             // TODO: If it's not present here, we should check the parent as well. 
             // The board may not necessarily have the Player Input component
-            UnityEngine.InputSystem.PlayerInput playerInput = GetComponent<UnityEngine.InputSystem.PlayerInput>();
-            playerInput = playerInput != null ? playerInput : GetComponentInParent<UnityEngine.InputSystem.PlayerInput>();
-
-            if (playerInput == null)
+            if (m_playerInput == null)
             {
-                Debug.LogError("PlayerInput component not found in the GameObject or its parents.");
-                return;
-            }
+                UnityEngine.InputSystem.PlayerInput playerInput = GetComponent<UnityEngine.InputSystem.PlayerInput>();
+                playerInput = playerInput != null ? playerInput : GetComponentInParent<UnityEngine.InputSystem.PlayerInput>();
 
-            m_playerInput = playerInput.actions;
+                if (playerInput == null)
+                {
+                    Debug.LogError("PlayerInput component not found in the GameObject or its parents.");
+                    return;
+                }
+
+                m_playerInput = playerInput;
+            }
         }
+
+        public void BindPlayerInput(UnityEngine.InputSystem.PlayerInput inputComponent)
+        {
+            m_playerInput = inputComponent;
+        }
+
+        public UnityEngine.InputSystem.PlayerInput GetPlayerInputComponent()
+        {
+            return m_playerInput;
+        }
+
         void Update()
         {
             currentFrameInputData = PollEveryRideInput();
@@ -35,7 +49,7 @@ namespace RidersRuntime.Input
         {
             Dictionary<string, float> inputValues = new();
 
-            foreach (InputAction action in m_playerInput.FindActionMap(m_inputMapName).actions)
+            foreach (InputAction action in m_playerInput.actions.FindActionMap(m_inputMapName).actions)
             {
                 // Ignore pause
                 if (action.name == ButtonNamesShort.PauseButton)

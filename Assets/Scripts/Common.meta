@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/Scripts/Common.meta
-guid: 11ea9a58414fda240a614c3f6fbcf8c9
-========
-guid: 0641b6a44328f1945b4570f9c13d13f2
->>>>>>>> origin/dev:Assets/Scripts/Editor.meta
+guid: ff4a0fecf06274f49b839a2ce0665305
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

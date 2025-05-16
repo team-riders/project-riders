@@ -5,22 +5,33 @@ using System.Collections.Generic;
 namespace RidersRuntime.Analytics
 {
     [Serializable]
-    public struct InputFrameRecord
+    public struct InputSnapshot
     {
-        public int Frame;
+        public int TimeMs;
         public ActorInputData Input;
 
-        public InputFrameRecord(int frame, ActorInputData input)
+        public InputSnapshot(int timeMs, ActorInputData input)
         {
-            Frame = frame;
+            TimeMs = timeMs;
             Input = input;
         }
     }
 
     // For JSON serialisation
-    [System.Serializable]
+    [Serializable]
     public class InputHistoryData
     {
-        public List<InputFrameRecord> inputHistory = new();
+        public List<InputSnapshot> inputHistory = new();
+    }
+
+    public struct Paths
+    {
+        public const string Logs = "Logs/";
+    }
+
+    public struct FileNames
+    {
+        public const string InputCsv = "InputHistory.csv";
+        public const string InputJson = "InputHistory.json";
     }
 }

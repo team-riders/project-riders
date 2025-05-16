@@ -1,36 +1,25 @@
 using RidersRuntime.Data;
-using System;
+using RidersRuntime.Input;
 using System.Collections.Generic;
-using UnityEditor;
-using UnityEditor.VersionControl;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace RidersRuntime.RaceManager
 {
     public class RaceEventController
     {
         RaceEventConfiguration raceEvent;
-        List<RiderSelection> racers;
-
+        List<RacerComponent> racers;
         List<int> playerIndices;
 
         // timer Class here
 
         // Checkpoints class here
 
-        [Header("Move these to the map")]
-        public Vector3 initialSpawn = new(0, 0, 0);
-        public Vector3 incrementalSpawn = new(5, 0, 0);
-
-        public List<GameObject> pooledGameObjects = new();
-
-        int spawnIndex = 0;
-
+        // Pause controller here
 
         public void SetupRace(
             RaceEventConfiguration raceEvent,
-            List<RiderSelection> racers, // We could spawn in RaceMeetController instead?
+            List<RacerComponent> racers, // We could spawn in RaceMeetController instead?
             List<int> playerIndices
             )
         {
@@ -44,8 +33,6 @@ namespace RidersRuntime.RaceManager
         public void PrepareRace()
         {
             // Figure out the order of this 
-            // Load the map (try use additive instead)
-            // Load the racers into the map
             // NOTE: THE DREAM IS THAT RACERS ARE SPAWNED INTO A CINEMATIC SEQUENCE
             // Prepare the race transition sequence
             // Play the sequence
@@ -59,38 +46,17 @@ namespace RidersRuntime.RaceManager
             // Spawn the racers in the map
 
             // TODO: Use pooling for the racer instead of instantiating them every time
+            // Turn off main camera for now
+            Camera.main.gameObject.SetActive(false);
 
-
-            foreach (int i in playerIndices)
+            foreach (RacerComponent racer in racers)
             {
-                SpawnRacer(racers[i]);
-                spawnIndex++;
+                if (racer.isPlayer)
+                {
+                    // Enable the camera
+                    racer.GetComponent<RidersRuntime.Input.PlayerInput>().GetPlayerInputComponent().GetComponent<UnityInputWrapper>().SetCameraMode(true);
+                }
             }
-
-            for (int i = 0; i < racers.Count; i++)
-            {
-                if (playerIndices.Contains(i)) continue; // Skip if it's a player
-                SpawnRacer(racers[i]);
-                spawnIndex++;
-            }
-        }
-
-        public void SpawnRacer(RiderSelection racer)
-        {
-            GameObject playerAsset = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/RacerPrefab.prefab");
-            GameObject player = GameObject.Instantiate(playerAsset, initialSpawn + incrementalSpawn * spawnIndex, Quaternion.identity);
-
-            RiderSelection rs = racer;
-            GameObject racerPrefab = rs.rider.characterModelPrefab;
-
-            RacerComponent rc = player.GetComponent<RacerComponent>();
-            rc.rider = racer.rider;
-
-            // Setup the visuals in the racer component instead honestly
-            GameObject visual = GameObject.Instantiate(racerPrefab, player.transform);
-
-
-            // We need to eventually disable the player input & physics here
         }
 
 
@@ -135,6 +101,10 @@ namespace RidersRuntime.RaceManager
 
             // Unload the map (or just disable it?)
             // Unload all racers (or just disable them?)
+        }
+
+        public void PauseRace(int playerIndex)
+        {
         }
     }
 }

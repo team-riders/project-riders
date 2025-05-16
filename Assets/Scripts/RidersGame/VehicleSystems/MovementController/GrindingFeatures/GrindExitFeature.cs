@@ -7,7 +7,8 @@ namespace RidersRuntime.VehicleSystem
     public class GrindExitFeature : ConditionalDataPipelineStep<Blackboard>
     {
         const float KickoffSpeed = 5;
-        const float HackExitSpeedNerfCoeff = 0.8f;
+        // > 1 is boost, < 1 is nerf;
+        const float HackExitSpeedNerfCoeff = 1.2f;
 
         public override bool IsConditionMet(Blackboard data)
         {
@@ -37,11 +38,12 @@ namespace RidersRuntime.VehicleSystem
 
             // Get the tangent and normal at the current progress
             path.Evaluate(blackboard.GetValue<float>("CurrentProgress"), out float3 position, out float3 tangent, out float3 normal);
-
             speed = Mathf.Max(speed, KickoffSpeed);
 
             // Apply forward velocity based on tangent direction
             Vector3 forward = grindPath.SplineContainer.transform.TransformDirection((Vector3)tangent) * progressDirection;
+            forward.Normalize();
+
             Vector3 forwardExit = forward * speed * HackExitSpeedNerfCoeff;
 
             // Set the new velocity

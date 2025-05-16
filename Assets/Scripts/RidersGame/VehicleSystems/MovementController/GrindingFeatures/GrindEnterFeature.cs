@@ -4,7 +4,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
 
-namespace RidersGame.VehicleSystem
+namespace RidersRuntime.VehicleSystem
 {
     public class GrindEnterFeature : ConditionalDataPipelineStep<Blackboard>
     {
@@ -12,7 +12,6 @@ namespace RidersGame.VehicleSystem
         public override Blackboard OnStep(Blackboard blackboard)
         {
             blackboard.Remove("Entered");
-            Debug.Log("ki");
 
             Rigidbody rb = blackboard.GetValue<Rigidbody>("Rigidbody");
             GrindPath currentPath = blackboard.GetValue<GrindPath>("CurrentPath");

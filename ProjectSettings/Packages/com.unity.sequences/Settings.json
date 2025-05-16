@@ -9,7 +9,7 @@
             {
                 "type": "UnityEngine.Sequences.MasterSequenceRegistry, Unity.Sequences, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
                 "key": "editor.defaultMasterSequenceRegistry",
-                "value": "{\"m_Value\":{\"instanceID\":0}}"
+                "value": "{\"m_Value\":{\"fileID\":11400000,\"guid\":\"f26dadf706e0c5a4893a18372310f17d\",\"type\":2}}"
             }
         ]
     }

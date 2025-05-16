@@ -9,6 +9,8 @@ namespace RidersRuntime.Data
     {
         public int ID;
         public string Name_Meet;
+        public int NumberOfRacers;
         public List<RaceEventConfiguration> raceEvents = new List<RaceEventConfiguration>();
+
     }
 }
