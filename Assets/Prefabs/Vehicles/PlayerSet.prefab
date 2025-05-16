@@ -420,6 +420,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3529199913788480741, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: isInRecordingMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4711103303932495809, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
