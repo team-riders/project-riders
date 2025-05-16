@@ -171,6 +171,8 @@ GameObject:
   - component: {fileID: 1225790300879622887}
   - component: {fileID: 4448864653755112223}
   - component: {fileID: 9102658750407949755}
+  - component: {fileID: 3300385240175240728}
+  - component: {fileID: 3529199913788480741}
   m_Layer: 0
   m_Name: BoardVehicle
   m_TagString: Player
@@ -381,6 +383,31 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &3300385240175240728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2072811018097086297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cef1ef7864bee414d8a7cf15925bf773, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3529199913788480741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2072811018097086297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be5649d8e6222d34e824aa576bca941f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInRecordingMode: 1
 --- !u!1 &2804422840742534173
 GameObject:
   m_ObjectHideFlags: 0
