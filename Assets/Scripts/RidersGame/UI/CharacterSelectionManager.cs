@@ -43,6 +43,7 @@ namespace RidersRuntime.GameSystems
 
                 BindAllPlayersUI();
             }
+            multiDeviceController.CanJoin(true);
         }
 
         public void GenerateCharacterSelection()

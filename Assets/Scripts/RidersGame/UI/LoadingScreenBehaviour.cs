@@ -1,4 +1,5 @@
 using System.Collections;
+using RidersRuntime.GameSystems;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -14,11 +15,15 @@ namespace RidersRuntime
 
         bool isLoaded = false;
 
+        MultiDeviceControllerSystem mdcs;
+
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
             // Will generally be invoked anyways, but we can make a public method in case
             EnterLoadingScreen();
+            mdcs = FindFirstObjectByType<MultiDeviceControllerSystem>();
+            mdcs.CanJoin(false);
         }
 
         void EnterLoadingScreen()

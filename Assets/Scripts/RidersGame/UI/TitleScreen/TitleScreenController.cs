@@ -54,6 +54,7 @@ namespace RidersRuntime.UI
         {
             MultiDeviceControllerSystem mdcs = FindFirstObjectByType<MultiDeviceControllerSystem>();
             // mdcs.onPlayerJoined += BindMainNavigatorControllerUIInput;
+            mdcs.CanJoin(true);
 
             InputSystem.onAnyButtonPress.Call(currentAction =>
             {
