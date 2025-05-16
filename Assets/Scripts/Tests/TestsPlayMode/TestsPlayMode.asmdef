@@ -1,0 +1,11 @@
+{
+    "name": "TestsPlayMode",
+    "rootNamespace": "RidersCore.Tests",
+    "references": [
+        "RidersRuntime",
+        "RidersCommon"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ]
+}
