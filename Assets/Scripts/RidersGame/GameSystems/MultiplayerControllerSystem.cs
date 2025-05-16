@@ -23,6 +23,9 @@ namespace RidersRuntime.GameSystems
         [SerializeField]
         bool Player1SecondaryControls = true;
 
+
+        public Action<int> onPlayerJoined;
+
         void Awake()
         {
             if (FindObjectsByType<MultiDeviceControllerSystem>(FindObjectsSortMode.None).Length > 1)
@@ -63,8 +66,6 @@ namespace RidersRuntime.GameSystems
                 return;
             }
 
-            inputDevices.Add(targetDevice);
-
             // Check if we already at least 1 player
             if (InputUser.all.Count > 0)
             {
@@ -73,6 +74,7 @@ namespace RidersRuntime.GameSystems
                 if ((!SinglePlayerMode && Player1SecondaryControls && player1.pairedDevices.Count == 1) || SinglePlayerMode)
                 {
                     players[player1.index].neverAutoSwitchControlSchemes = false;
+                    inputDevices.Add(targetDevice);
                     InputUser.PerformPairingWithDevice(targetDevice, player1);
                     player1.ActivateControlScheme(GetControlSchemeByDeviceName(targetDevice.displayName));
                     Debug.Log($"Bound secondary controls {targetDevice.displayName} to player {player1.index}");
@@ -80,12 +82,13 @@ namespace RidersRuntime.GameSystems
                 }
             }
 
+            inputDevices.Add(targetDevice);
             PlayerInput player = pim.JoinPlayer(players.Count, pairWithDevice: targetDevice);
             if (player != null)
             {
                 players.Add(player);
                 Debug.Log($"Player {player.playerIndex} joined via MultiDeviceControllerSystem.");
-                EventSystemSpawner.CreateNewPlayerEventSystem(player.playerIndex);
+                onPlayerJoined?.Invoke(player.playerIndex);
             }
         }
 

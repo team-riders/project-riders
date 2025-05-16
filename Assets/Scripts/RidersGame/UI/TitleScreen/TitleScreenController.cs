@@ -1,6 +1,10 @@
+using RidersRuntime.GameSystems;
+using RidersRuntime.VehicleSystem;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Users;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.UI;
 
@@ -16,19 +20,16 @@ namespace RidersRuntime.UI
         private float idleTimer = 0f;
         private float idleThreshold = 45f;
         private bool hasPressedKey = false;
+        EventSystem mainNavigator;
+        int mainPlayerIndex = -1;
 
         void Start()
         {
             titleUI.SetActive(true);
             menuUI.SetActive(false);
 
-            InputSystem.onAnyButtonPress.Call(currentAction =>
-            {
-                if (hasPressedKey) return;
-
-                ShowMenu();
-                return;
-            });
+            SetupNewEntryUserInput();
+            // ONLY CREATE THE FIRST PLAYER'S UI INPUT HERE FOR NOW
         }
 
         void Update()
@@ -39,14 +40,6 @@ namespace RidersRuntime.UI
                 Debug.Log("Idle timeout reached - running placeholder function");
                 idleTimer = 0f;
             }
-
-            if (EventSystem.current != null)
-            {
-                if (EventSystem.current.currentSelectedGameObject == null)
-                {
-                    EventSystem.current.firstSelectedGameObject = menuDefaultButton;
-                }
-            }
         }
 
         void ShowMenu()
@@ -54,15 +47,44 @@ namespace RidersRuntime.UI
             hasPressedKey = true;
             titleUI.SetActive(false);
             menuUI.SetActive(true);
+            mainNavigator.SetSelectedGameObject(menuDefaultButton);
         }
 
-        public void SetDefaultButton(Button button)
+        void SetupNewEntryUserInput()
         {
-            if (menuUI.activeSelf)
+            MultiDeviceControllerSystem mdcs = FindFirstObjectByType<MultiDeviceControllerSystem>();
+            // mdcs.onPlayerJoined += BindMainNavigatorControllerUIInput;
+
+            InputSystem.onAnyButtonPress.Call(currentAction =>
             {
-                EventSystem.current.SetSelectedGameObject(button.gameObject);
-                button.Select();
+                if (hasPressedKey) return;
+
+                // This person becomes player 1
+                InputUser? user = InputUser.FindUserPairedToDevice(currentAction.device);
+                if (user == null)
+                {
+                    return;
+                }
+                BindMainNavigatorControllerUIInput(user.Value.index);
+
+                ShowMenu();
+                return;
+            });
+
+        }
+
+        private void BindMainNavigatorControllerUIInput(int index)
+        {
+            if (mainPlayerIndex != -1 || mainNavigator != null)
+            {
+                // Already set
+                Debug.Log("Main player already set");
+                return;
             }
+            mainPlayerIndex = index;
+            // Set the default button for the menu
+            EventSystem es = EventSystemSpawner.CreateNewPlayerEventSystem(index);
+            mainNavigator = es;
         }
     }
 }

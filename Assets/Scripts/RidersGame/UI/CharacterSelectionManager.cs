@@ -32,6 +32,7 @@ namespace RidersRuntime.GameSystems
         private Button startButton;
 
         Dictionary<int, IEnumerator> charIndexOperationQueue = new();
+        MultiDeviceControllerSystem multiDeviceController;
         void Start()
         {
             // Check if god exists
@@ -57,6 +58,12 @@ namespace RidersRuntime.GameSystems
 
         public void BindAllPlayersUI()
         {
+            multiDeviceController = FindFirstObjectByType<MultiDeviceControllerSystem>();
+            if (multiDeviceController != null)
+            {
+                multiDeviceController.onPlayerJoined += BindNewPlayerUIInput;
+            }
+
             foreach (var user in InputUser.all)
             {
                 Debug.Log("Setting up UI for player " + user.index);
@@ -71,6 +78,7 @@ namespace RidersRuntime.GameSystems
             EventSystem eventSystem = EventSystemSpawner.CreateNewPlayerEventSystem(index);
             if (eventSystem != null)
             {
+                // Find the base event system
                 eventSystem.firstSelectedGameObject = defaultButton.gameObject;
                 eventSystem.enabled = true;
 
@@ -85,6 +93,7 @@ namespace RidersRuntime.GameSystems
 
         public async void ReturnToMainMenu()
         {
+            multiDeviceController.onPlayerJoined -= BindNewPlayerUIInput;
             await SceneLoader.PrepareScene(GameScene.MainMenu); ;
         }
 
