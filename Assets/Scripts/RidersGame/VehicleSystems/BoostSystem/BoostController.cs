@@ -8,7 +8,6 @@ namespace RidersRuntime.VehicleSystem
     public class BoostController : MonoBehaviour
     {
         public RideMovementController controller;
-        public PowerupController powerupController { get; set; }
         VehicleStats boostStats;
 
         float boostGauge;
@@ -26,8 +25,6 @@ namespace RidersRuntime.VehicleSystem
         void Start()
         {
             controller = GetComponent<RideMovementController>();
-            powerupController = controller.powerupController;
-            Debug.Log("powerupController: " + powerupController);
             iInput = GetComponent<BaseInput>();
 
             boostStats = new()
@@ -62,6 +59,8 @@ namespace RidersRuntime.VehicleSystem
                     ElapsedTime = 0,
                     MaxTime = 1,
                 };
+
+                PowerupController powerupController = controller.powerupController;
 
                 Debug.Log("!powerupController.IsInList(boostPowerup.PowerUpID): " + !powerupController.IsInList(boostPowerup.PowerUpID));
                 if (!powerupController.IsInList(boostPowerup.PowerUpID))
