@@ -167,12 +167,12 @@ GameObject:
   m_Component:
   - component: {fileID: 4711103303932495809}
   - component: {fileID: 3440123402843066155}
-  - component: {fileID: 7622961024952553118}
   - component: {fileID: 1225790300879622887}
   - component: {fileID: 4448864653755112223}
-  - component: {fileID: 9102658750407949755}
   - component: {fileID: 3300385240175240728}
   - component: {fileID: 3529199913788480741}
+  - component: {fileID: 8862701724578961105}
+  - component: {fileID: 8513319076286721408}
   m_Layer: 0
   m_Name: BoardVehicle
   m_TagString: Player
@@ -225,51 +225,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 3
---- !u!114 &7622961024952553118
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2072811018097086297}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd367b59556626a4cb179835cd0aa3dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  VehicleType: 0
-  baseStats:
-    TopSpeed: 15
-    Acceleration: 2
-    ReverseSpeed: 1
-    ReverseAcceleration: 0.25
-    AccelerationCurve: 0.5
-    Braking: 10
-    CoastingDrag: 1
-    Grip: 0.95
-    Steer: 5
-    AddedGravity: -0.1
-    BoostTopSpeed: 80
-    BoostAccel: 15
-  m_VisualWheels:
-  - {fileID: 6766500946828483076}
-  - {fileID: 1637631556285962578}
-  - {fileID: 7994507693005347565}
-  - {fileID: 3112367254603467228}
-  AirborneReorientationCoefficient: 3
-  JumpVFX: {fileID: 0}
-  NozzleVFX: {fileID: 0}
-  Nozzles: []
-  GroundLayers:
-    serializedVersion: 2
-    m_Bits: 115
-  m_CanMove: 1
-  m_InAir: 0
-  JumpForce: 300
-  FrontLeftWheel: {fileID: 6766500946828483076}
-  FrontRightWheel: {fileID: 7994507693005347565}
-  BackLeftWheel: {fileID: 1637631556285962578}
-  BackRightWheel: {fileID: 3112367254603467228}
 --- !u!136 &1225790300879622887
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -305,84 +260,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5256c658527fb8f439d3da0e44dd8834, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &9102658750407949755
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2072811018097086297}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  m_NotificationBehavior: 0
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: f1ba0d36-48eb-4cd5-b651-1c94a6531f70
-    m_ActionName: 'Player/Jump[/Keyboard/space,/DualShock4GamepadHID/buttonSouth]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 15b6ef60-f6b6-4586-b432-c1a7f63b36c7
-    m_ActionName: 'Player/Accelerate[/Keyboard/w,/DualShock4GamepadHID/rightTrigger]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 2335e05c-a2c7-498c-b7b6-62e21269ea84
-    m_ActionName: 'Player/Brake[/Keyboard/s,/DualShock4GamepadHID/leftTrigger]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 65aed77e-d582-4eec-8a71-d7efa81d205e
-    m_ActionName: 'Player/Horizontal[/Keyboard/a,/Keyboard/d,/DualShock4GamepadHID/leftStick/left,/DualShock4GamepadHID/leftStick/right]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: c95b2375-e6d9-4b88-9c4c-c5e76515df4b
-    m_ActionName: 'UI/Navigate[/DualShock4GamepadHID/leftStick/up,/DualShock4GamepadHID/rightStick/up,/DualShock4GamepadHID/leftStick/down,/DualShock4GamepadHID/rightStick/down,/DualShock4GamepadHID/leftStick/left,/DualShock4GamepadHID/rightStick/left,/DualShock4GamepadHID/leftStick/right,/DualShock4GamepadHID/rightStick/right,/DualShock4GamepadHID/dpad,/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 7607c7b6-cd76-4816-beef-bd0341cfe950
-    m_ActionName: 'UI/Submit[/Keyboard/enter,/DualShock4GamepadHID/buttonSouth]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 15cef263-9014-4fd5-94d9-4e4a6234a6ef
-    m_ActionName: 'UI/Cancel[/Keyboard/escape,/DualShock4GamepadHID/buttonEast]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 32b35790-4ed0-4e9a-aa41-69ac6d629449
-    m_ActionName: 'UI/Point[/Mouse/position]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 3c7022bf-7922-4f7c-a998-c437916075ad
-    m_ActionName: 'UI/Click[/Mouse/leftButton]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 44b200b1-1557-4083-816c-b22cbdf77ddf
-    m_ActionName: 'UI/RightClick[/Mouse/rightButton]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: dad70c86-b58c-4b17-88ad-f5e53adf419e
-    m_ActionName: 'UI/MiddleClick[/Mouse/middleButton]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 0489e84a-4833-4c40-bfae-cea84b696689
-    m_ActionName: 'UI/ScrollWheel[/Mouse/scroll]'
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!114 &3300385240175240728
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -408,6 +285,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isInRecordingMode: 1
+--- !u!114 &8862701724578961105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2072811018097086297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fb8aba73ba2f864a9f5e831a5265e13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_VehicleStats: {fileID: 11400000, guid: 8c63ad011be404347939d860b49f1ed0, type: 2}
+  canMove: 1
+  m_PhysicsWheels:
+  - {fileID: 6766500946828483076}
+  - {fileID: 1637631556285962578}
+  - {fileID: 7994507693005347565}
+  - {fileID: 3112367254603467228}
+--- !u!114 &8513319076286721408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2072811018097086297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa2e5143eac54a14da10141d47d61778, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 8862701724578961105}
+  needsGauge: 0
 --- !u!1 &2804422840742534173
 GameObject:
   m_ObjectHideFlags: 0

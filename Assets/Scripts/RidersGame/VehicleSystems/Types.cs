@@ -51,11 +51,30 @@ namespace RidersRuntime.Data
         public float AddedGravity;
 
         //additions
-        [Tooltip("Additional top speed when activating Boost")]
+        // boost
+        [Header("Boost")]
+        [Tooltip("Additional top speed during Boost")]
         public float BoostTopSpeed;
 
-        [Tooltip("Additional acceleration immediately after Boost")]
+        [Tooltip("Additional acceleration during Boost")]
         public float BoostAccel;
+
+        [Tooltip("Maximum amount of Boost gauge")]
+        public float BoostGaugeMax;
+
+        [Tooltip("How much Boost gauge is used per charge")]
+        public float BoostGaugePerCharge;
+
+        [Tooltip("DO NOT CHANGE, forces acceleration while boosting")]
+        public int ForceAccel;
+
+        // jumping stuff
+        [Header("Jump")]
+        [Range(0.1f, 1.0f), Tooltip("Stores charge amount for jumping on ramps; helps determine ramp jump height, directly correlates to trick speed")]
+        public float JumpCharge;
+
+        [Tooltip("Stores jump force")]
+        public float JumpForce;
 
 
         // allow for stat adding for powerups.
@@ -73,6 +92,7 @@ namespace RidersRuntime.Data
                 ReverseSpeed = a.ReverseSpeed + b.ReverseSpeed,
                 TopSpeed = a.TopSpeed + b.TopSpeed,
                 Steer = a.Steer + b.Steer,
+                ForceAccel = a.ForceAccel + b.ForceAccel,
             };
         }
     }

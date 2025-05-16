@@ -17,7 +17,7 @@ namespace RidersRuntime.VehicleSystem
         ActorInputData inputIntention;
         bool JumpIntention = false;
         IInput m_ActorInputComponent;
-        PowerupController powerupController;
+        public PowerupController powerupController;
 
         // Eventually serialize this to show internal function properties
         GrindingMovementState grindingMovementState = new();
@@ -65,6 +65,7 @@ namespace RidersRuntime.VehicleSystem
             m_ActorInputComponent = GetComponent<IInput>();
 
             powerupController = new(m_VehicleStats._vehicleStats);
+            Debug.Log("powerupcontroller: " + powerupController);
             SetCenterOfMass();
 
             DefineStates();
@@ -80,6 +81,7 @@ namespace RidersRuntime.VehicleSystem
 
         void FixedUpdate()
         {
+            powerupController.TickPowerups();
             if (!canMove) return;
             PreCalcChecks();
             m_stateMachine.Update();
