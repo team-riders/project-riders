@@ -13,13 +13,46 @@ namespace RidersRuntime.GameSystems
 
         RaceMeetController sessionRaceMeetController;
 
-        void Start()
-        {
+        static RaceHostController instance;
 
-            DontDestroyOnLoad(this);
+        void Awake()
+        {
+            if (instance == null)
+            {
+                instance = this;
+                DontDestroyOnLoad(this);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
 
-        public void RequestRaceSetup(RaceMeetConfiguration meetConfiguration)
+        public static RaceHostController GetInstance()
+        {
+            if (instance == null)
+            {
+                Debug.LogError("RaceHostController instance is null.");
+                return null;
+            }
+            return instance;
+        }
+
+        public void ClearSession()
+        {
+            if (sessionRaceMeetController != null)
+            {
+                Destroy(sessionRaceMeetController.gameObject);
+                sessionRaceMeetController = null;
+            }
+
+            if (sessionMeet != null)
+            {
+                sessionMeet = null;
+            }
+        }
+
+        public async void RequestRaceSetup(RaceMeetConfiguration meetConfiguration)
         {
             if (sessionMeet != null)
             {
@@ -39,15 +72,17 @@ namespace RidersRuntime.GameSystems
             // ------ SCENE TRANSITION -------
             // await the scene transition to complete
 
-            // when complete, then we need to pass the meet configuration to the character selection manager
-
-            CharacterSelectionManager selector = FindFirstObjectByType<CharacterSelectionManager>();
-            selector.transform.SetParent(transform);
-            selector.GrabHostInformation(meetConfiguration, OnRaceMeetSetupComplete);
-
+            // StartCoroutine(LoadNewSceneAsync((int)GameScene.CharacterSelect));
+            await SceneLoader.PrepareScene(GameScene.CharacterSelect, onLoad: PrepareCharacterSelection);
         }
 
-        public void OnRaceMeetSetupComplete(List<RiderSelection> selectedRiders)
+        private void PrepareCharacterSelection()
+        {
+            CharacterSelectionManager selector = FindFirstObjectByType<CharacterSelectionManager>();
+            selector.GrabHostInformation(sessionMeet, OnRaceMeetSetupComplete);
+        }
+
+        public async void OnRaceMeetSetupComplete(List<RiderSelection> selectedRiders)
         {
             // This method will be called when the character selection is complete
             // Check with the number of players to see if we need to add any AI riders
@@ -75,7 +110,8 @@ namespace RidersRuntime.GameSystems
             sessionRaceMeetController = obj.AddComponent<RaceMeetController>();
 
             sessionRaceMeetController.AssignFields(sessionMeet, allRiders, OnRaceMeetComplete);
-            sessionRaceMeetController.StartNewMeetSession();
+
+            await sessionRaceMeetController.StartNewMeetSession();
         }
 
         public void OnRaceMeetComplete(object obj)

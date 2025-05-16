@@ -505,7 +505,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fb8aba73ba2f864a9f5e831a5265e13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_VehicleStats: {fileID: 11400000, guid: ce4dee1b77ac3e94b96e9e5dd33149a5, type: 2}
+  m_VehicleStats: {fileID: 11400000, guid: 8c63ad011be404347939d860b49f1ed0, type: 2}
   canMove: 1
   m_PhysicsWheels:
   - {fileID: 1609476882227281414}

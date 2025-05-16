@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace RidersRuntine.GameSystems
+namespace RidersRuntime.GameSystems
 {
     public class CheckpointSingle : MonoBehaviour
     {

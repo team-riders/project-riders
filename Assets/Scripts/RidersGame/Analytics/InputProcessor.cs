@@ -21,6 +21,11 @@ namespace RidersRuntime.Analytics
         void Start()
         {
             playerInput = GetComponent<UnityEngine.InputSystem.PlayerInput>().actions;
+            if (playerInput == null)
+            {
+                playerInput = transform.parent.GetComponent<UnityEngine.InputSystem.PlayerInput>().actions;
+                return;
+            }
             inputMap = playerInput.FindActionMap(DebugFlags.Instance.DebugInputMapName);
         }
 

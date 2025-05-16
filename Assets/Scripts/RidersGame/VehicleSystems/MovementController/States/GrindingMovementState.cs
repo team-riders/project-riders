@@ -9,7 +9,7 @@ namespace RidersRuntime.VehicleSystem
     public class GrindingMovementState : MovementStateAlt
     {
         public float minimumDownwardSpeed = 0.5f;
-        public const float GrindCooldownDuration = 3f;
+        public const float GrindCooldownDuration = 2f;
         public bool CanEnterGrind() => _grindCooldownTimer <= 0f && timerReady;
         public bool IsGrinding => !isComplete && !!currentPath;
 

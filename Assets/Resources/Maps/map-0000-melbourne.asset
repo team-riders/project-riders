@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 0
   Name: Melbourne
-  SceneName: 
+  ScenePath: Assets/Scenes/prod/maps/map_Melbourne.unity
