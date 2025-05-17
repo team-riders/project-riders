@@ -21,7 +21,7 @@ MonoBehaviour:
     Braking: 10
     CoastingDrag: 1
     Grip: 0.95
-    Steer: 10
+    Steer: 5
     AddedGravity: -0.1
     BoostTopSpeed: 10
     BoostAccel: 5
