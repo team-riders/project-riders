@@ -13,15 +13,20 @@ MonoBehaviour:
   m_Name: SkateboardVehicleStats
   m_EditorClassIdentifier: 
   _vehicleStats:
-    TopSpeed: 20
-    Acceleration: 10
+    TopSpeed: 27
+    Acceleration: 5
     ReverseSpeed: 1
     ReverseAcceleration: 0.25
     AccelerationCurve: 0.5
     Braking: 10
     CoastingDrag: 1
     Grip: 0.95
-    Steer: 5
+    Steer: 10
     AddedGravity: -0.1
-    BoostTopSpeed: 25
+    BoostTopSpeed: 10
     BoostAccel: 5
+    BoostGaugeMax: 0
+    BoostGaugePerCharge: 0
+    ForceAccel: 0
+    JumpCharge: 0.1
+    JumpForce: 0
