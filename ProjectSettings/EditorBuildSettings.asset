@@ -5,21 +5,27 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/TestPlayground.unity
-    guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
-    path: Assets/Scenes/prod/TitleScreen.unity
-    guid: 7507f7329926a7e45b9c313540f0482b
   - enabled: 1
     path: Assets/Scenes/prod/MainMenu.unity
     guid: 5bdedc60b7b0e004eaf86dcd1c3486ca
   - enabled: 1
-    path: Assets/Scenes/prod/Loading.unity
+    path: Assets/Scenes/prod/TitleScreen.unity
+    guid: 7507f7329926a7e45b9c313540f0482b
+  - enabled: 1
+    path: Assets/Scenes/prod/Loading_Automatic.unity
     guid: 57fcfd95c0dd74840a583ec2214a64af
   - enabled: 1
     path: Assets/Scenes/prod/CharSelect.unity
     guid: 2c1a1f8b4e078c240afea900a024db2c
+  - enabled: 1
+    path: Assets/Scenes/environments/map_Melbourne_Blockout.unity
+    guid: b04fed583ba50104788c93c553fedf01
+  - enabled: 1
+    path: Assets/Scenes/environments/map_rooftop.unity
+    guid: 3a918723bed6af2438bbbe500760bdbb
+  - enabled: 1
+    path: Assets/Scenes/prod/maps/map_Melbourne.unity
+    guid: 0b41e915978c6874bb760c83482b8466
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

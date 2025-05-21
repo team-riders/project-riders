@@ -1,0 +1,20 @@
+{
+    "name": "RidersEditor",
+    "rootNamespace": "RidersEditor",
+    "references": [
+        "GUID:343deaaf83e0cee4ca978e7df0b80d21",
+        "GUID:c46b52fbdafc59f459f30d1b8eb6bd99",
+        "GUID:10151229ad4427f48a30e0ed20a14cd9"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
