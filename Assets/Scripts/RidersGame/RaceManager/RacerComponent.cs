@@ -11,7 +11,14 @@ namespace RidersRuntime.RaceManager
         public RiderConfig rider;
         public bool isPlayer;
 
-        VehicleType vehicleType;
+        private VehicleType vehicleType;
+
+        // Simulated runtime state (example placeholders for now)
+        private float currentSpeed;
+        private float currentBoost;
+        private bool usingBoost;
+        private int currentLap;
+        private int racePosition;
 
         void Start()
         {
@@ -29,7 +36,6 @@ namespace RidersRuntime.RaceManager
             isPlayer = newRider.isPlayer;
             vehicleType = newRider.vehicleType;
 
-            // Check if there is a rider assigned
             if (rider == null)
             {
                 Debug.LogError("Rider is not assigned to the RacerComponent on " + gameObject.name);
@@ -38,34 +44,44 @@ namespace RidersRuntime.RaceManager
 
             if (isPlayer)
             {
-                // Initialize player-specific settings
                 InitializePlayerSettings();
             }
             else
             {
-                // Initialize AI-specific settings
                 InitializeAISettings();
             }
-            // SetupVisuals();
-        }
-
-        void SetupVisuals()
-        {
-            // Character visuals
-            GameObject visualPrefab = rider.characterModelPrefab;
-            GameObject visualObj = Instantiate(visualPrefab, transform);
-            visualObj.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-
-            // Ride visuals
         }
 
         void InitializePlayerSettings()
         {
+            // Set initial values
+            currentLap = 1;
+            currentSpeed = 0f;
+            currentBoost = 100f;
+            usingBoost = false;
+            racePosition = 0;
         }
 
         void InitializeAISettings()
         {
+            // Set AI-specific starting conditions (same for now)
+            InitializePlayerSettings();
+        }
 
+        // These would be updated by your movement, boost, and lap tracking systems
+        public float GetSpeed() => currentSpeed;
+        public float GetBoostAmount() => currentBoost;
+        public bool IsUsingBoost() => usingBoost;
+        public int GetCurrentLap() => currentLap;
+        public int GetRacePosition() => racePosition;
+
+        // Temporary simulation update (optional testing)
+        void Update()
+        {
+            // Simulate values
+            currentSpeed = Mathf.PingPong(Time.time * 30f, 200f);
+            currentBoost = Mathf.PingPong(Time.time * 15f, 100f);
+            usingBoost = Mathf.Sin(Time.time) > 0.5f;
         }
     }
 }

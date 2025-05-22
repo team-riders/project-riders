@@ -111,6 +111,13 @@ namespace RidersRuntime.GameSystems
 
             sessionRaceMeetController.AssignFields(sessionMeet, allRiders, OnRaceMeetComplete);
 
+            // 👇 Show HUD just before race starts
+            GameObject hud = GameObject.Find("InGameHUD");
+            if (hud != null)
+            {
+                hud.SetActive(true);
+            }
+
             await sessionRaceMeetController.StartNewMeetSession();
         }
 
