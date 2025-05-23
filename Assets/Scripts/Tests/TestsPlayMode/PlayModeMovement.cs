@@ -22,7 +22,7 @@ public class PlayModeMovement
     [UnityTest]
     public IEnumerator PlayModeMovementWithEnumeratorPasses()
     {
-        SceneManager.LoadScene("Assets/Scenes/environment/map_rooftop.unity", LoadSceneMode.Single);
+        SceneManager.LoadScene("Assets/Scenes/environments/map_rooftop.unity", LoadSceneMode.Single);
         yield return waitForSceneLoad();
         yield return GoRight();
         yield return new WaitForSeconds(3);
