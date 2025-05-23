@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Config/debug_flags.json.meta
+guid: 10151229ad4427f48a30e0ed20a14cd9
+TextScriptImporter:
+========
 guid: f7200fc466f3ff943a2bfd1e542f785c
 AssemblyDefinitionImporter:
+>>>>>>>> origin/dev:Assets/Scripts/RidersGame/RidersRuntime.asmdef.meta
   externalObjects: {}
   userData: 
   assetBundleName: 

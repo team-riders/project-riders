@@ -11,24 +11,42 @@ namespace RidersRuntime.Analytics
     public class InputProcessor : MonoBehaviour
     {
         public BaseInput inputSource;
-        public List<InputFrameRecord> InputHistory { get; private set; } = new();
+        public List<InputSnapshot> InputHistory { get; private set; } = new();
         private InputActionAsset playerInput;
         private InputActionMap inputMap;
+
+        private ActorInputData? lastInput = null;
+        private int lastInputTimeMs = -1;
 
         void Start()
         {
             playerInput = GetComponent<UnityEngine.InputSystem.PlayerInput>().actions;
+            if (playerInput == null)
+            {
+                playerInput = transform.parent.GetComponent<UnityEngine.InputSystem.PlayerInput>().actions;
+                return;
+            }
             inputMap = playerInput.FindActionMap(DebugFlags.Instance.DebugInputMapName);
         }
 
         void Update()
         {
             ActorInputData currentInput = inputSource.GrabCurrentFrameInputs();
-            int currentFrame = Time.frameCount;
+            int currentTimeMs = Mathf.FloorToInt(Time.time * 1000);
 
-            var record = new InputFrameRecord(currentFrame, currentInput);
+            if (lastInput == null || !currentInput.Equals(lastInput.Value))
+            {
+                // Close the previous input span
+                if (lastInput != null && lastInputTimeMs != currentTimeMs)
+                {
+                    InputHistory.Add(new InputSnapshot(currentTimeMs - 1, lastInput.Value));
+                }
 
-            InputHistory.Add(record);
+                // Start a new input span
+                InputHistory.Add(new InputSnapshot(currentTimeMs, currentInput));
+                lastInput = currentInput;
+                lastInputTimeMs = currentTimeMs;
+            }
 
             // DEBUG - EXPORT TO CSV AND JSON
             if (DebugFlags.Instance.allowSavingInputHistoryToFile == true)
@@ -45,7 +63,7 @@ namespace RidersRuntime.Analytics
         {
             get
             {
-                string logsDir = Path.Combine(Application.dataPath, "Logs");
+                string logsDir = Path.Combine(Application.dataPath, Paths.Logs);
                 if (!Directory.Exists(logsDir)) Directory.CreateDirectory(logsDir);
                 return logsDir;
             }
@@ -56,23 +74,38 @@ namespace RidersRuntime.Analytics
             InputHistory.Clear();
         }
 
-        public InputFrameRecord GetFrame(int frame)
+        ActorInputData GetInputAtTime(int timeMs)
         {
-            return InputHistory.Find(record => record.Frame == frame);
+            for (int i = InputHistory.Count - 1; i >= 0; i--)
+            {
+                if (InputHistory[i].TimeMs <= timeMs)
+                    return InputHistory[i].Input;
+            }
+            return default;
         }
 
         // DEBUG
         public void SaveHistoryAsCsv()
         {
-            string path = Path.Combine(LogsPath, "InputHistory.csv");
+            string path = Path.Combine(LogsPath, FileNames.InputCsv);
             StringBuilder csv = new StringBuilder();
 
-            csv.AppendLine("Frame,Accelerate,Brake,TurnInput,Jump,JumpHoldDuration,StuntA,StuntB,StuntC,Drift,BoostRam");
+            csv.AppendLine($"Time (ms)," +
+                           $"{ButtonNamesShort.Accelerate}," +
+                           $"{ButtonNamesShort.Brake}," +
+                           $"{ButtonNamesShort.TurnInput}," +
+                           $"{ButtonNamesShort.Jump}," +
+                           $"{InputNameSpecial.JumpHoldDuration}," +
+                           $"{StuntButtonNamesShort.StuntA}," +
+                           $"{StuntButtonNamesShort.StuntB}," +
+                           $"{StuntButtonNamesShort.StuntC}," +
+                           $"{ButtonNamesShort.Drift}," +
+                           $"{ButtonNamesShort.BoostRam}");
 
             foreach (var record in InputHistory)
             {
                 var input = record.Input;
-                csv.AppendLine($"{record.Frame}," +
+                csv.AppendLine($"{record.TimeMs}," +
                                $"{input.Accelerate}," +
                                $"{input.Brake}," +
                                $"{input.TurnInput}," +
@@ -92,7 +125,7 @@ namespace RidersRuntime.Analytics
         // DEBUG
         public void SaveHistoryAsJson()
         {
-            string path = Path.Combine(LogsPath, "InputHistory.json");
+            string path = Path.Combine(LogsPath, FileNames.InputJson);
 
             InputHistoryData historyData = new InputHistoryData
             {

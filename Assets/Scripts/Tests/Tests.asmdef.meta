@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scripts/Editor/RidersEditor.asmdef.meta
+guid: d0b18f2bc867fd2429371388d4f1c18a
+========
 guid: c2a03ca174e54ee4887bbed6cee38c0d
+>>>>>>>> origin/dev:Assets/Scripts/Tests/Tests.asmdef.meta
 AssemblyDefinitionImporter:
   externalObjects: {}
   userData: 

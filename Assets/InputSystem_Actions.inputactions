@@ -242,17 +242,6 @@
                 },
                 {
                     "name": "",
-                    "id": "c8136152-5ca3-4468-a099-c19c9729009b",
-                    "path": "<Keyboard>/z",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "StuntA",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "e0adab21-0580-421c-9585-82187c2b6885",
                     "path": "<Keyboard>/u",
                     "interactions": "",
@@ -275,17 +264,6 @@
                 },
                 {
                     "name": "",
-                    "id": "07cbf75a-ac58-4a77-a56f-17bd847b5bac",
-                    "path": "<Keyboard>/x",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "StuntB",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "4e5f7103-b7ac-4aa1-8c88-5aaff835bcbc",
                     "path": "<Keyboard>/i",
                     "interactions": "",
@@ -302,17 +280,6 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "StuntC",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "53632d0f-ac1a-40c0-ac58-965f80176009",
-                    "path": "<Keyboard>/c",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
                     "action": "StuntC",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -411,7 +378,7 @@
                     "path": "<Keyboard>/period",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";Keyboard&Mouse",
                     "action": "Boost/Ram",
                     "isComposite": false,
                     "isPartOfComposite": false

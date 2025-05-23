@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 
 namespace RidersRuntime.VehicleSystem
-{
-    class BoardVehicle : BaseVehicle
+{   
+    // public for checkpoint referencing
+    public class BoardVehicle : BaseVehicle
     {
         //// replace base stats
         //public new VehicleStats baseStats = new VehicleStats
