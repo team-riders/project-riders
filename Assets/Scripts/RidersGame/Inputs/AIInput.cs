@@ -12,7 +12,7 @@ public class AIInput : BaseInput
     [SerializeField] private float nodeReachThreshold = 3f;
     [SerializeField] private float nodeCloseThreshold = 2f;
     [SerializeField] private float nodeAccelerateThreshold = 3.5f;
-    private BaseVehicle baseVehicle;
+    private RideMovementController baseVehicle;
     private Vector3 targetPosition;
    
     private int currentNodeIndex = 0;
@@ -21,7 +21,7 @@ public class AIInput : BaseInput
     private Node currentJumpNode;
     void Awake()
     {
-        baseVehicle = GetComponent<BaseVehicle>();
+        baseVehicle = GetComponent<RideMovementController>();
     }
     
     ActorInputData inputData = new();

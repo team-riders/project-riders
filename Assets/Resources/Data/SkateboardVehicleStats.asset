@@ -25,3 +25,8 @@ MonoBehaviour:
     AddedGravity: -0.1
     BoostTopSpeed: 25
     BoostAccel: 5
+    BoostGaugeMax: 0
+    BoostGaugePerCharge: 0
+    ForceAccel: 0
+    JumpCharge: 0.1
+    JumpForce: 50

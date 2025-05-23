@@ -6,7 +6,7 @@ using UnityEngine;
 // Sole duty of this is to convert inputs into frame data to send to the stunt system
 namespace RidersRuntime.StuntSystem
 {
-    [RequireComponent(typeof(PlayerInput))]
+    [RequireComponent(typeof(BaseInput))]
     [RequireComponent(typeof(StuntSystem))]
     public class StuntPeripheralInputHandler : MonoBehaviour
     {
@@ -20,7 +20,7 @@ namespace RidersRuntime.StuntSystem
 
         void Start()
         {
-            playerPeripheralInput = GetComponent<PlayerInput>();
+            playerPeripheralInput = GetComponent<BaseInput>();
             stuntSystem = GetComponent<StuntSystem>();
         }
 
