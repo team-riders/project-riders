@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< Updated upstream:Assets/Art/UI.meta
 guid: 94022700193bc754d95836ff151c01f9
+=======
+guid: c7e4029813cd6407f8e05f46eaef6338
+>>>>>>> Stashed changes:Assets/Scripts/StuntSystem.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

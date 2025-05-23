@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< Updated upstream:Assets/External.meta
 guid: 129988b5c541efc4d8493fba71eca309
+=======
+guid: 94ad80ff85f674e9a8fd9aaa6a409fc8
+>>>>>>> Stashed changes:Assets/Scripts/VehicleSystems/RideTricks/Grind/Scripts.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

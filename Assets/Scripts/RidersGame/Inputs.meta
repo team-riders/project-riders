@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< Updated upstream:Assets/Scripts/RidersGame/Inputs.meta
 guid: b4d339ffecba80b4caa02fed6df6fe0c
+=======
+guid: e215481c89bbb4e97a0dc1f35be2b3d5
+>>>>>>> Stashed changes:Assets/Scripts/VehicleSystems/Inputs.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
