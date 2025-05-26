@@ -11,12 +11,18 @@ namespace RidersRuntime.RaceManager
         public int NextCheckpointSingleIndex { get; set; }
         public float LapStartTime { get; set; }
         public float CurrentLapTime { get; set; }
+        public float RaceTime { get; set; }
+        public int CurrentLap { get; set; }
+
 
         public RiderProgression()
         {
             NextCheckpointSingleIndex = 0;
             LapStartTime = 0f;
             CurrentLapTime = 0f;
+            CurrentLap = 0;
+            RaceTime = 0f;
+    
         }
 
         public void StartNewLap()
@@ -30,6 +36,7 @@ namespace RidersRuntime.RaceManager
         public event EventHandler OnPlayerCorrectCheckpoint;
         public event EventHandler OnPlayerIncorrectCheckpoint;
         public event EventHandler OnLapCompleted;
+        public event EventHandler OnRaceCompleted;
         private List<CheckpointSingle> checkpointSingleList;
 
         public List<RacerComponent> racersList;
@@ -70,8 +77,10 @@ namespace RidersRuntime.RaceManager
         {
             foreach (var progress in ridersProgression.Values)
             {
+                progress.RaceTime = Time.time;
                 progress.LapStartTime = Time.time;
                 progress.NextCheckpointSingleIndex = 0;
+                progress.CurrentLap = 1;
             }
         }
 
@@ -108,6 +117,7 @@ namespace RidersRuntime.RaceManager
         public void PlayerThroughCheckpoint(int racerId, CheckpointSingle checkpointSingle)
         {
             RiderProgression progress = ridersProgression[racerId];
+
             if (checkpointSingleList.IndexOf(checkpointSingle) == progress.NextCheckpointSingleIndex)
             {
                 // Get lap time
@@ -118,9 +128,21 @@ namespace RidersRuntime.RaceManager
                 // Start new lap if all checkpoints hit
                 if (progress.NextCheckpointSingleIndex == 0)
                 {
+                    progress.CurrentLap++;
                     OnLapCompleted?.Invoke(this, EventArgs.Empty);
-                    Debug.Log($"Lap completed by {racerId} in {progress.CurrentLapTime}");
+                    Debug.Log($"Lap {progress.CurrentLap - 1} completed by Player {racerId} in {progress.CurrentLapTime}");
                     progress.StartNewLap();
+                    if (progress.CurrentLap <= 4) // Assuming 3 laps total
+                    {
+                        progress.StartNewLap();
+                    }
+                    else
+                    {
+                        // Need to change so this event is triggered first so onlapcompleted doesnt trigger on race end
+                        progress.RaceTime = Time.time - progress.RaceTime;
+                        OnRaceCompleted?.Invoke(this, EventArgs.Empty);
+                        Debug.Log($"Race completed by {racerId} in {progress.RaceTime}");
+                    }
                 }
             }
             else
@@ -128,11 +150,17 @@ namespace RidersRuntime.RaceManager
                 // Wrong way UI 
                 OnPlayerIncorrectCheckpoint?.Invoke(this, EventArgs.Empty);
             }
+            
         }
 
         public float GetCurrentLapTime()
         {
             return ridersProgression[0].CurrentLapTime;
+        }
+
+        public float GetRaceTime()
+        {
+            return ridersProgression[0].RaceTime;
         }
     }
 }
