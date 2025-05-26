@@ -1,10 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace RidersRuntime.Input
 {
-    [System.Serializable]
-    public struct ActorInputData
+    [Serializable]
+    public struct ActorInputData : IEquatable<ActorInputData>
     {
         public float Accelerate;
         public float Brake;
@@ -68,6 +69,29 @@ namespace RidersRuntime.Input
                 }
             }
             return false;
+        }
+
+        public bool Equals(ActorInputData other)
+        {
+            return Accelerate == other.Accelerate &&
+                   Brake == other.Brake &&
+                   TurnInput == other.TurnInput &&
+                   Jump == other.Jump &&
+                   JumpHoldDuration == other.JumpHoldDuration &&
+                   StuntA == other.StuntA &&
+                   StuntB == other.StuntB &&
+                   StuntC == other.StuntC &&
+                   Drift == other.Drift &&
+                   BoostRam == other.BoostRam;
+        }
+
+        public override bool Equals(object obj) => obj is ActorInputData other && Equals(other);
+
+        public override int GetHashCode()
+        {
+            int first = HashCode.Combine(Accelerate, Brake, TurnInput, Jump, JumpHoldDuration, StuntA, StuntB, StuntC);
+            int second = HashCode.Combine(Drift, BoostRam);
+            return HashCode.Combine(first, second);
         }
     }
     public enum StuntButtons
