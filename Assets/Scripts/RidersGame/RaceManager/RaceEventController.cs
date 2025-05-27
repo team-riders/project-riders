@@ -1,4 +1,5 @@
 using RidersRuntime.Data;
+using RidersRuntime.GameSystems;
 using RidersRuntime.Input;
 using RidersRuntime.VehicleSystem;
 using System.Collections.Generic;
@@ -50,6 +51,9 @@ namespace RidersRuntime.RaceManager
             }
 
             checkpoints = new GameObject("TrackCheckpoints").AddComponent<TrackCheckpoints>();
+            // Need to do a late bind here
+            GameObject.Find("CheckpointEvent").GetComponent<CheckpointUIScript>().BindTrackCheckpoints(checkpoints);
+            GameObject.FindFirstObjectByType<stopwatchScript>().BindTrackCheckpoints(checkpoints);
             checkpoints.SetupRacers(racers);
             checkpoints.SetupRace(raceEvent);
 

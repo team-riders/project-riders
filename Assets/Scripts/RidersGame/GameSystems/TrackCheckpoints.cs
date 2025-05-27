@@ -143,9 +143,9 @@ namespace RidersRuntime.RaceManager
                 {
                     progress.CurrentLap++;
                     OnLapCompleted?.Invoke(this, EventArgs.Empty);
-                    Debug.Log($"Lap {progress.CurrentLap - 1} completed by Player {racerId} in {progress.CurrentLapTime}");
+                    Debug.Log($"Lap {progress.CurrentLap} completed by Player {racerId} in {progress.CurrentLapTime}");
                     progress.StartNewLap();
-                    if (progress.CurrentLap <= NumberOfLaps) // Assuming 3 laps total
+                    if (progress.CurrentLap < NumberOfLaps) // Assuming 3 laps total
                     {
                         progress.StartNewLap();
                     }

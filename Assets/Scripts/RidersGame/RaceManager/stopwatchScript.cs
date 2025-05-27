@@ -24,6 +24,13 @@ namespace RidersRuntime.RaceManager
         {
 
             TrackCheckpoints trackCheckpoints = FindFirstObjectByType<TrackCheckpoints>();
+            BindTrackCheckpoints(trackCheckpoints);
+
+            LapTimeCanvas.SetActive(false);
+        }
+
+        public void BindTrackCheckpoints(TrackCheckpoints trackCheckpoints)
+        {
             if (trackCheckpoints != null)
             {
                 trackCheckpoints.OnLapCompleted += OnLapCompleted;
