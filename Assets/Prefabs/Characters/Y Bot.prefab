@@ -63,5 +63,28 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 48a35b9497ab6e54faa86e1dbee286f9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -7370685069255813485}
   m_SourcePrefab: {fileID: 100100000, guid: 48a35b9497ab6e54faa86e1dbee286f9, type: 3}
+--- !u!1 &6412232414021252490 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 48a35b9497ab6e54faa86e1dbee286f9, type: 3}
+  m_PrefabInstance: {fileID: 6070213180036368603}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-7370685069255813485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6412232414021252490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 863c6edde8a7ac84ea427a23bb57a97a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  racerID: 0
+  rider: {fileID: 11400000, guid: 4ba03caec9368b047a78de44cc429664, type: 2}
+  isPlayer: 1

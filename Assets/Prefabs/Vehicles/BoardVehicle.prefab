@@ -173,7 +173,8 @@ GameObject:
   - component: {fileID: 3529199913788480741}
   - component: {fileID: 8862701724578961105}
   - component: {fileID: 8513319076286721408}
-  - component: {fileID: 3325423573094674582}
+  - component: {fileID: -6077929493555973176}
+  - component: {fileID: -7376571386034262412}
   m_Layer: 0
   m_Name: BoardVehicle
   m_TagString: Player
@@ -319,7 +320,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 8862701724578961105}
   needsGauge: 0
---- !u!114 &3325423573094674582
+--- !u!114 &-6077929493555973176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2072811018097086297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 863c6edde8a7ac84ea427a23bb57a97a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  racerID: 0
+  rider: {fileID: 11400000, guid: 4ba03caec9368b047a78de44cc429664, type: 2}
+  isPlayer: 1
+--- !u!114 &-7376571386034262412
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

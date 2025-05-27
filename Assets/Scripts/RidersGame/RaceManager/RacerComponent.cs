@@ -1,19 +1,25 @@
 using RidersRuntime.Data;
+using RidersRuntime.VehicleSystem;
 using UnityEngine;
 
 namespace RidersRuntime.RaceManager
 {
-    // We should use a prefab for each vehicle type because there are specific configs for each vehicle
-    // We will work here before moving into the vehicle system
+    [RequireComponent(typeof(RideMovementController))]
+    [RequireComponent(typeof(BoostController))]
     public class RacerComponent : MonoBehaviour
     {
+        [Header("Racer Info")]
         public int racerID;
         public RiderConfig rider;
         public bool isPlayer;
 
         private VehicleType vehicleType;
 
-        // Simulated runtime state (example placeholders for now)
+        // Component references
+        private RideMovementController movementController;
+        private BoostController boostController;
+
+        // Runtime state
         private float currentSpeed;
         private float currentBoost;
         private bool usingBoost;
@@ -22,7 +28,10 @@ namespace RidersRuntime.RaceManager
 
         void Start()
         {
-            SetupRider(new RiderSelection()
+            movementController = GetComponent<RideMovementController>();
+            boostController = GetComponent<BoostController>();
+
+            SetupRider(new RiderSelection
             {
                 rider = rider,
                 vehicleType = vehicleType,
@@ -38,23 +47,15 @@ namespace RidersRuntime.RaceManager
 
             if (rider == null)
             {
-                Debug.LogError("Rider is not assigned to the RacerComponent on " + gameObject.name);
+                Debug.LogError("[RacerComponent] RiderConfig is not assigned on: " + gameObject.name);
                 return;
             }
 
-            if (isPlayer)
-            {
-                InitializePlayerSettings();
-            }
-            else
-            {
-                InitializeAISettings();
-            }
+            InitializeDefaultState();
         }
 
-        void InitializePlayerSettings()
+        private void InitializeDefaultState()
         {
-            // Set initial values
             currentLap = 1;
             currentSpeed = 0f;
             currentBoost = 100f;
@@ -62,26 +63,19 @@ namespace RidersRuntime.RaceManager
             racePosition = 0;
         }
 
-        void InitializeAISettings()
+        void Update()
         {
-            // Set AI-specific starting conditions (same for now)
-            InitializePlayerSettings();
+            // Use real data if available
+            currentSpeed = movementController != null ? movementController.GetCurrentSpeed() : 0f;
+            currentBoost = boostController != null ? boostController.GetBoostGauge() : 0f;
+            usingBoost = boostController != null && boostController.IsUsingBoost();
         }
 
-        // These would be updated by your movement, boost, and lap tracking systems
+        // Public accessors
         public float GetSpeed() => currentSpeed;
         public float GetBoostAmount() => currentBoost;
         public bool IsUsingBoost() => usingBoost;
         public int GetCurrentLap() => currentLap;
         public int GetRacePosition() => racePosition;
-
-        // Temporary simulation update (optional testing)
-        void Update()
-        {
-            // Simulate values
-            currentSpeed = Mathf.PingPong(Time.time * 30f, 200f);
-            currentBoost = Mathf.PingPong(Time.time * 15f, 100f);
-            usingBoost = Mathf.Sin(Time.time) > 0.5f;
-        }
     }
 }

@@ -53,10 +53,9 @@ namespace RidersRuntime.VehicleSystem
 
         bool TransitionCanGrind()
         {
-
             return m_GrindPathTarget != null
-            && m_rigidbody.linearVelocity.y < grindingMovementState.minimumDownwardSpeed
-            && grindingMovementState.CanEnterGrind();
+                && m_rigidbody.linearVelocity.y < grindingMovementState.minimumDownwardSpeed
+                && grindingMovementState.CanEnterGrind();
         }
 
         void Start()
@@ -85,11 +84,8 @@ namespace RidersRuntime.VehicleSystem
             if (!canMove) return;
             PreCalcChecks();
             m_stateMachine.Update();
-            // Logic update happens here with the state machine
-            // In reality nothing actually happens here for now, we are just doing the transitions.
 
             MovementStateAlt state = m_stateMachine.CurrentState;
-            // Pass any information we need to the states here.
             state.ComputePhysicsIntentions(SendBlackboard());
             Blackboard data = state.ReturnStateBlackboard();
             PostExecuteBlackboardChange(data);
@@ -98,7 +94,6 @@ namespace RidersRuntime.VehicleSystem
         void PreCalcChecks()
         {
             GetGroundedPercent();
-            // Update any information we need to provide to the states
             ExecuteExternalPrechecks?.Invoke();
         }
 
@@ -125,6 +120,12 @@ namespace RidersRuntime.VehicleSystem
         public MovementStateAlt GetCurrentMovementState()
         {
             return m_stateMachine.CurrentState;
+        }
+
+        // Added: Method to expose current speed in km/h for RacerComponent
+        public float GetCurrentSpeed()
+        {
+            return m_rigidbody != null ? m_rigidbody.linearVelocity.magnitude * 3.6f : 0f;
         }
     }
 }

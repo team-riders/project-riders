@@ -16,34 +16,56 @@ public class PlayerUIController : MonoBehaviour
     [Header("Boost Settings")]
     public float maxBoost = 100f;
 
-    private RaceManager raceManager; // Use RaceManager 
+    private RaceUIController raceUIController;
     public int playerIndex = 0;
 
     void Start()
     {
-        raceManager = FindFirstObjectByType<RaceManager>();
+        // Locate the RaceUIController in the scene
+        raceUIController = FindFirstObjectByType<RaceUIController>();
+        if (raceUIController == null)
+        {
+            Debug.LogWarning("[PlayerUIController] RaceUIController not found in scene.");
+        }
     }
 
     void Update()
     {
-        if (raceManager == null) return;
+        if (raceUIController == null) return;
 
-        PlayerUIInfo info = raceManager.GetPlayerUIInfo(playerIndex); // Call method from RaceManager
+        PlayerUIInfo info = raceUIController.GetPlayerUIInfo(playerIndex);
 
-        positionText.text = $"{info.position + 1}{GetOrdinal(info.position + 1)}";
-        lapText.text = $"Lap {info.lap}";
-        timerText.text = FormatTime(info.time);
-        speedText.text = $"{Mathf.RoundToInt(info.speed)} km/h";
+        Debug.Log($"[PlayerUIController] Speed: {info.speed} | Boost: {info.boost} | Lap: {info.lap}");
 
-        boostSlider.maxValue = maxBoost;
-        boostSlider.value = info.boost;
+        // Update position display
+        if (positionText != null)
+            positionText.text = $"{info.position + 1}{GetOrdinal(info.position + 1)}";
 
-        if (boostGlowEffect != null)
+        // Update lap display
+        if (lapText != null)
+            lapText.text = $"Lap {info.lap}";
+
+        // Update race timer
+        if (timerText != null)
+            timerText.text = FormatTime(info.time);
+
+        // Update speed display
+        if (speedText != null)
+            speedText.text = $"{Mathf.RoundToInt(info.speed)} km/h";
+
+        // Update boost UI
+        if (boostSlider != null)
         {
-            boostGlowEffect.enabled = info.isUsingBoost;
+            boostSlider.maxValue = maxBoost;
+            boostSlider.value = info.boost;
         }
+
+        // Toggle boost glow effect if applicable
+        if (boostGlowEffect != null)
+            boostGlowEffect.enabled = info.isUsingBoost;
     }
 
+    // Converts a number into an ordinal string (e.g., 1st, 2nd, 3rd)
     private string GetOrdinal(int number)
     {
         if (number % 100 >= 11 && number % 100 <= 13)
@@ -54,10 +76,11 @@ public class PlayerUIController : MonoBehaviour
             1 => "st",
             2 => "nd",
             3 => "rd",
-            _ => "th",
+            _ => "th"
         };
     }
 
+    // Converts float time into MM:SS.ss format
     private string FormatTime(float time)
     {
         int minutes = Mathf.FloorToInt(time / 60f);

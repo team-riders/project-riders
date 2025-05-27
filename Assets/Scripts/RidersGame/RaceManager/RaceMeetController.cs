@@ -8,27 +8,22 @@ using UnityEngine.InputSystem;
 
 namespace RidersRuntime.RaceManager
 {
-    // This DOES NOT NEED TO BE A MONOBEHAVIOUR
     public class RaceMeetController : MonoBehaviour
     {
         public List<RiderSelection> racers = new();
         public RaceMeetConfiguration raceMeet;
 
-        // Default to 0 for now (players will be generated in order of player index)
         public List<int> playerIndexToRacerIndex = new();
 
-        int currentRaceIndex = 0;
+        private int currentRaceIndex = 0;
+        private RaceEventController currentRaceEventController;
+        private Action<object> onRaceComplete;
 
-        // Reference to the current RaceEventController
-        RaceEventController currentRaceEventController;
-
-        Action<object> onRaceComplete;
-
-        List<RacerComponent> pooledRacers = new();
+        private List<RacerComponent> pooledRacers = new();
 
         public void Start()
         {
-            // SetupNextRace();
+            // SetupNextRace(); — called externally
         }
 
         public void AssignFields(RaceMeetConfiguration meetConfiguration, List<RiderSelection> selectedRiders, Action<object> callback)
@@ -36,7 +31,6 @@ namespace RidersRuntime.RaceManager
             raceMeet = meetConfiguration;
             racers = selectedRiders;
 
-            // Setup the player index to racer index mapping
             for (int i = 0; i < racers.Count; i++)
             {
                 if (racers[i].isPlayer)
@@ -50,7 +44,6 @@ namespace RidersRuntime.RaceManager
 
         public async Task StartNewMeetSession()
         {
-            // ------ SCENE TRANSITION -------
             MapConfiguration mapConfiguration = raceMeet.raceEvents[currentRaceIndex].map;
             string map = mapConfiguration.ScenePath;
             int index = SceneLoader.GetBuildIndexByPath(map);
@@ -60,15 +53,14 @@ namespace RidersRuntime.RaceManager
         public void GotoNextRace()
         {
             currentRaceIndex++;
+
             if (currentRaceIndex >= raceMeet.raceEvents.Count)
-            {
                 return;
-            }
 
             SetupRace();
         }
 
-        void SetupRace()
+        private void SetupRace()
         {
             currentRaceEventController ??= new RaceEventController();
 
@@ -80,63 +72,59 @@ namespace RidersRuntime.RaceManager
                 playerIndexToRacerIndex
             );
 
-            // Ensure HUD is shown after setup
-            RaceManager raceManager = FindFirstObjectByType<RaceManager>();
-            if (raceManager != null)
+            RaceUIController raceUIController = FindFirstObjectByType<RaceUIController>();
+            if (raceUIController != null)
             {
-                raceManager.ShowHUD();
+                raceUIController.ShowHUD();
             }
             else
             {
-                Debug.LogWarning("RaceManager not found. Unable to show HUD.");
+                Debug.LogWarning("[RaceMeetController] RaceUIController not found. Unable to show HUD.");
             }
         }
 
         public List<RacerComponent> LoadOrSpawnRacers(List<RiderSelection> racers, List<int> playerIndices)
         {
-            if (pooledRacers.Count == racers.Count) return pooledRacers;
+            if (pooledRacers.Count == racers.Count)
+                return pooledRacers;
 
             for (int i = 0; i < racers.Count; i++)
             {
                 GameObject prefab = Resources.Load<GameObject>("Prefabs/PlayerSet");
                 GameObject obj = Instantiate(prefab);
+
                 RacerComponent rc = obj.GetComponentInChildren<RacerComponent>();
                 rc.SetupRider(racers[i]);
-
                 pooledRacers.Add(rc);
 
-                // Handle player bindings here
                 List<RiderSelection> strayPlayers = new();
 
-                if (racers[i].isPlayer)
+                if (racers[i].isPlayer && playerIndices.Contains(i))
                 {
-                    if (playerIndices.Contains(i))
+                    MultiDeviceControllerSystem mdcs = FindFirstObjectByType<MultiDeviceControllerSystem>();
+                    PlayerInput playerInput = PlayerInput.GetPlayerByIndex(i);
+
+                    if (playerInput == null)
                     {
-                        MultiDeviceControllerSystem mdcs = FindFirstObjectByType<MultiDeviceControllerSystem>();
-                        PlayerInput playerInput = PlayerInput.GetPlayerByIndex(i);
-
-                        if (playerInput == null)
-                        {
-                            strayPlayers.Add(racers[i]);
-                            continue;
-                        }
-                        if (playerInput.GetComponentInChildren<RacerComponent>())
-                        {
-                            Debug.LogError($"Player {i} already has a racer assigned to it. This is not allowed.");
-                            strayPlayers.Add(racers[i]);
-                            continue;
-                        }
-
-                        PlayerInput playerInputComponent = obj.GetComponentInChildren<PlayerInput>();
-                        if (playerInputComponent != null)
-                        {
-                            Destroy(playerInputComponent);
-                        }
-
-                        obj.GetComponentInChildren<RidersRuntime.Input.PlayerInput>().BindPlayerInput(playerInput);
-
-                        playerInput.camera = obj.GetComponentInChildren<Camera>();
+                        strayPlayers.Add(racers[i]);
+                        continue;
                     }
+
+                    if (playerInput.GetComponentInChildren<RacerComponent>())
+                    {
+                        Debug.LogError($"Player {i} already has a racer assigned to it. This is not allowed.");
+                        strayPlayers.Add(racers[i]);
+                        continue;
+                    }
+
+                    PlayerInput playerInputComponent = obj.GetComponentInChildren<PlayerInput>();
+                    if (playerInputComponent != null)
+                    {
+                        Destroy(playerInputComponent);
+                    }
+
+                    obj.GetComponentInChildren<RidersRuntime.Input.PlayerInput>().BindPlayerInput(playerInput);
+                    playerInput.camera = obj.GetComponentInChildren<Camera>();
                 }
             }
 

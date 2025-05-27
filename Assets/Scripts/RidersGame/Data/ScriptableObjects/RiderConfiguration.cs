@@ -7,5 +7,7 @@ namespace RidersRuntime.Data
     {
         public Racer racerInformation;
         public GameObject characterModelPrefab;
+
+        public RideConfiguration rideConfig;
     }
 }
