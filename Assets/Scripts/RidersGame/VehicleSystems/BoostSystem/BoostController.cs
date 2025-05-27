@@ -101,5 +101,25 @@ namespace RidersRuntime.VehicleSystem
                 ApplyBoost();
             }
         }
+
+        public VehicleStats GetVehicleStats()
+        {
+            return boostStats;
+        }
+
+        public float GetBoostGauge()
+        {
+            return boostGauge;
+        }
+
+        public float GetBoostGaugeMax()
+        {
+            return boostGaugeMax;
+        }
+
+        public bool IsUsingBoost()
+        {
+            return inputData.BoostRam && boostGauge >= boostGaugePerCharge;
+        }
     }
 }
