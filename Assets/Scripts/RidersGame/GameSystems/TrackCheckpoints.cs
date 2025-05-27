@@ -22,7 +22,7 @@ namespace RidersRuntime.RaceManager
             CurrentLapTime = 0f;
             CurrentLap = 0;
             RaceTime = 0f;
-    
+
         }
 
         public void StartNewLap()
@@ -39,13 +39,17 @@ namespace RidersRuntime.RaceManager
         public event EventHandler OnRaceCompleted;
         private List<CheckpointSingle> checkpointSingleList;
 
-        public List<RacerComponent> racersList;
-
+        [SerializeField]
+        private List<RacerComponent> racersList;
         private Dictionary<int, RiderProgression> ridersProgression = new();
+        [SerializeField]
+        private int NumberOfLaps = 3;
+
+        public bool autoStart = false;
 
         private void Start()
         {
-            Transform checkpointsTransform = transform.Find("Checkpoints");
+            Transform checkpointsTransform = GameObject.Find("Checkpoints").transform;
 
             checkpointSingleList = new List<CheckpointSingle>();
 
@@ -56,7 +60,13 @@ namespace RidersRuntime.RaceManager
                 checkpointSingleList.Add(checkpointSingle);
             }
 
-            SetupRacers(racersList);
+            Debug.Log($"Found {checkpointSingleList.Count} checkpoints in the scene.");
+
+            if (autoStart)
+            {
+                SetupRacers(racersList);
+                StartRace();
+            }
         }
 
         // Grabs all the racers information here
@@ -69,8 +79,11 @@ namespace RidersRuntime.RaceManager
                     ridersProgression.Add(racer.racerID, new RiderProgression());
                 }
             }
+        }
 
-            StartRace();
+        public void SetupRace(RaceEventConfiguration eventConfiguration)
+        {
+            NumberOfLaps = eventConfiguration.NumberOfLaps;
         }
 
         public void StartRace()
@@ -132,7 +145,7 @@ namespace RidersRuntime.RaceManager
                     OnLapCompleted?.Invoke(this, EventArgs.Empty);
                     Debug.Log($"Lap {progress.CurrentLap - 1} completed by Player {racerId} in {progress.CurrentLapTime}");
                     progress.StartNewLap();
-                    if (progress.CurrentLap <= 4) // Assuming 3 laps total
+                    if (progress.CurrentLap <= NumberOfLaps) // Assuming 3 laps total
                     {
                         progress.StartNewLap();
                     }
@@ -150,7 +163,7 @@ namespace RidersRuntime.RaceManager
                 // Wrong way UI 
                 OnPlayerIncorrectCheckpoint?.Invoke(this, EventArgs.Empty);
             }
-            
+
         }
 
         public float GetCurrentLapTime()

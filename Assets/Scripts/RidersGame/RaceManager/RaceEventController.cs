@@ -1,5 +1,6 @@
 using RidersRuntime.Data;
 using RidersRuntime.Input;
+using RidersRuntime.VehicleSystem;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ namespace RidersRuntime.RaceManager
         // timer Class here
 
         // Checkpoints class here
+        private TrackCheckpoints checkpoints;
 
         // Pause controller here
 
@@ -36,6 +38,20 @@ namespace RidersRuntime.RaceManager
             // NOTE: THE DREAM IS THAT RACERS ARE SPAWNED INTO A CINEMATIC SEQUENCE
             // Prepare the race transition sequence
             // Play the sequence
+
+            // Turn off all of the racer inputs here
+            foreach (RacerComponent racer in racers)
+            {
+                if (racer.isPlayer)
+                {
+                    // Disable the player input component
+                    racer.GetComponent<RideMovementController>().canMove = false;
+                }
+            }
+
+            checkpoints = new GameObject("TrackCheckpoints").AddComponent<TrackCheckpoints>();
+            checkpoints.SetupRacers(racers);
+            checkpoints.SetupRace(raceEvent);
 
             LoadRacers();
         }
@@ -76,6 +92,17 @@ namespace RidersRuntime.RaceManager
             // Run these two in sequence
             // 1. Enable split the camera system
             // 2. Enable the UI LAST
+
+            foreach (RacerComponent racer in racers)
+            {
+                if (racer.isPlayer)
+                {
+                    // Enable the player input component
+                    racer.GetComponent<RideMovementController>().canMove = true;
+                }
+            }
+
+            checkpoints.StartRace();
         }
 
         // Triggered by the checkpoint system or timer waiting for the last person to finish
