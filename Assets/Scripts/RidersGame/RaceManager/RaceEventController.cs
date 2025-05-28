@@ -45,6 +45,7 @@ namespace RidersRuntime.RaceManager
             {
                 if (racer.isPlayer)
                 {
+                    break;
                     // Disable the player input component
                     racer.GetComponent<RideMovementController>().canMove = false;
                 }
@@ -77,6 +78,9 @@ namespace RidersRuntime.RaceManager
                     racer.GetComponent<RidersRuntime.Input.PlayerInput>().GetPlayerInputComponent().GetComponent<UnityInputWrapper>().SetCameraMode(true);
                 }
             }
+
+            // For the time being, because we haven't actually implemented a proper countdown system, we need to start the race manually here
+            StartRace();
         }
 
 

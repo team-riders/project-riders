@@ -20,13 +20,6 @@ namespace RidersRuntime.Analytics
 
         void Start()
         {
-            playerInput = GetComponent<UnityEngine.InputSystem.PlayerInput>().actions;
-            if (playerInput == null)
-            {
-                playerInput = transform.parent.GetComponent<UnityEngine.InputSystem.PlayerInput>().actions;
-                return;
-            }
-            inputMap = playerInput.FindActionMap(DebugFlags.Instance.DebugInputMapName);
         }
 
         void Update()
@@ -87,7 +80,7 @@ namespace RidersRuntime.Analytics
         // DEBUG
         public void SaveHistoryAsCsv()
         {
-            string path = Path.Combine(LogsPath, FileNames.InputCsv);
+            string path = Path.Combine(LogsPath, FileNames.InputCsv + "_" + System.DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".csv");
             StringBuilder csv = new StringBuilder();
 
             csv.AppendLine($"Time (ms)," +
@@ -125,7 +118,7 @@ namespace RidersRuntime.Analytics
         // DEBUG
         public void SaveHistoryAsJson()
         {
-            string path = Path.Combine(LogsPath, FileNames.InputJson);
+            string path = Path.Combine(LogsPath, FileNames.InputJson + "_" + System.DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json");
 
             InputHistoryData historyData = new InputHistoryData
             {

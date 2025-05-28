@@ -174,6 +174,7 @@ GameObject:
   - component: {fileID: 8862701724578961105}
   - component: {fileID: 8513319076286721408}
   - component: {fileID: 3325423573094674582}
+  - component: {fileID: 4458240451826799145}
   m_Layer: 7
   m_Name: BoardVehicle
   m_TagString: Player
@@ -197,6 +198,7 @@ Transform:
   - {fileID: 7446683292620537076}
   - {fileID: 3976610529130758501}
   - {fileID: 3439470372941108080}
+  - {fileID: 6290069580074654314}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &3440123402843066155
@@ -331,6 +333,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd8bc76018c317f48aea1e1d23098eca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4458240451826799145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2072811018097086297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 863c6edde8a7ac84ea427a23bb57a97a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  racerID: 0
+  rider: {fileID: 11400000, guid: 82b802f40fb05a64587b342508fe5174, type: 2}
+  isPlayer: 1
 --- !u!1 &2804422840742534173
 GameObject:
   m_ObjectHideFlags: 0
@@ -395,6 +412,54 @@ Transform:
   - {fileID: 2805714962747554215}
   m_Father: {fileID: 5257046583973144164}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3622127795424289182
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6290069580074654314}
+  - component: {fileID: 7282992162032166501}
+  m_Layer: 7
+  m_Name: GrindDetector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6290069580074654314
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3622127795424289182}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4711103303932495809}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7282992162032166501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3622127795424289182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bb10ef7839976b4e915fc256dc7f9bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showGizmo: 1
+  debugRadius: 1.57
+  logDetection: 0
+  autoGrindRadius: 1.5
 --- !u!1 &4261929938037058214
 GameObject:
   m_ObjectHideFlags: 0

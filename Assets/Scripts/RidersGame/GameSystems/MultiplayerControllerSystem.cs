@@ -147,6 +147,7 @@ namespace RidersRuntime.GameSystems
 
         public void CanJoin(bool canJoin)
         {
+            return;
             if (canJoin)
             {
                 joinAction.Enable();

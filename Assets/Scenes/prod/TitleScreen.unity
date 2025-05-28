@@ -4245,7 +4245,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8216543458754098348, guid: e16d3f1b4fe6e0b44a0454150550fe66, type: 3}
       propertyPath: SinglePlayerMode
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8216543458754098348, guid: e16d3f1b4fe6e0b44a0454150550fe66, type: 3}
       propertyPath: Player1SecondaryControls
