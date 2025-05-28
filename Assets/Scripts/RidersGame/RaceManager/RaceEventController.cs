@@ -43,9 +43,8 @@ namespace RidersRuntime.RaceManager
             // Turn off all of the racer inputs here
             foreach (RacerComponent racer in racers)
             {
-                if (racer.isPlayer)
+                if (racer)
                 {
-                    break;
                     // Disable the player input component
                     racer.GetComponent<RideMovementController>().canMove = false;
                 }
@@ -72,7 +71,7 @@ namespace RidersRuntime.RaceManager
 
             foreach (RacerComponent racer in racers)
             {
-                if (racer.isPlayer)
+                if (racer)
                 {
                     // Enable the camera
                     racer.GetComponent<RidersRuntime.Input.PlayerInput>().GetPlayerInputComponent().GetComponent<UnityInputWrapper>().SetCameraMode(true);
@@ -80,7 +79,7 @@ namespace RidersRuntime.RaceManager
             }
 
             // For the time being, because we haven't actually implemented a proper countdown system, we need to start the race manually here
-            StartRace();
+            // StartRace();
         }
 
 

@@ -420,6 +420,10 @@ PrefabInstance:
       propertyPath: m_ForceAppPointDistance
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8862701724578961105, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: canMove
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

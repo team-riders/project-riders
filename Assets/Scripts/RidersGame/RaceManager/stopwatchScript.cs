@@ -69,6 +69,7 @@ namespace RidersRuntime.RaceManager
                     countdownText.text = "";
                     CountdownCanvas.SetActive(false);
                     countdownComplete = true;
+                    GameObject.FindFirstObjectByType<RaceMeetController>().currentRaceEventController.StartRace();
                     startTimer();
 
                     // Call for new lap method
