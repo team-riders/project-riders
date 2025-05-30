@@ -118,6 +118,9 @@ namespace RidersRuntime.RaceManager
         {
             // Disable the racer input
             // Change to "passive" AI and disable some stuff.
+            racer.GetComponent<RideMovementController>().canMove = false;
+
+            // If all racers have finsihed, then we can run the FinishRace commmand
         }
 
         public void FinishRace()

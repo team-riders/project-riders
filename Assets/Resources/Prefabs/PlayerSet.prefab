@@ -160,10 +160,10 @@ MonoBehaviour:
   CameraSide: 1
   CameraDistance: 4
   AvoidObstacles:
-    Enabled: 0
+    Enabled: 1
     CollisionFilter:
       serializedVersion: 2
-      m_Bits: 1
+      m_Bits: 65
     IgnoreTag: 
     CameraRadius: 0.2
     DampingIntoCollision: 0
@@ -182,7 +182,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AimCollisionFilter:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 65
   IgnoreTag: 
   AimDistance: 200
   NoiseCancellation: 1

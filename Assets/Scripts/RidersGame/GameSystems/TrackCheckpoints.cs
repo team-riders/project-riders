@@ -155,6 +155,8 @@ namespace RidersRuntime.RaceManager
                         progress.RaceTime = Time.time - progress.RaceTime;
                         OnRaceCompleted?.Invoke(this, EventArgs.Empty);
                         Debug.Log($"Race completed by {racerId} in {progress.RaceTime}");
+                        // FIX THIS ASAP
+                        GameObject.FindFirstObjectByType<RaceMeetController>().currentRaceEventController.FinishSingleRacer(racersList[racerId]);
                     }
                 }
             }
