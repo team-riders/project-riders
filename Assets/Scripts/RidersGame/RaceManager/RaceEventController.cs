@@ -1,10 +1,7 @@
 using RidersRuntime.Data;
-using System;
+using RidersRuntime.Input;
 using System.Collections.Generic;
-using UnityEditor;
-using UnityEditor.VersionControl;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace RidersRuntime.RaceManager
 {
@@ -12,12 +9,13 @@ namespace RidersRuntime.RaceManager
     {
         RaceEventConfiguration raceEvent;
         List<RacerComponent> racers;
-
         List<int> playerIndices;
 
         // timer Class here
 
         // Checkpoints class here
+
+        // Pause controller here
 
         public void SetupRace(
             RaceEventConfiguration raceEvent,
@@ -35,13 +33,11 @@ namespace RidersRuntime.RaceManager
         public void PrepareRace()
         {
             // Figure out the order of this 
-            // Load the map (try use additive instead)
-            // Load the racers into the map
             // NOTE: THE DREAM IS THAT RACERS ARE SPAWNED INTO A CINEMATIC SEQUENCE
             // Prepare the race transition sequence
             // Play the sequence
 
-            // LoadRacers();
+            LoadRacers();
         }
 
         public void LoadRacers()
@@ -50,6 +46,17 @@ namespace RidersRuntime.RaceManager
             // Spawn the racers in the map
 
             // TODO: Use pooling for the racer instead of instantiating them every time
+            // Turn off main camera for now
+            Camera.main.gameObject.SetActive(false);
+
+            foreach (RacerComponent racer in racers)
+            {
+                if (racer.isPlayer)
+                {
+                    // Enable the camera
+                    racer.GetComponent<RidersRuntime.Input.PlayerInput>().GetPlayerInputComponent().GetComponent<UnityInputWrapper>().SetCameraMode(true);
+                }
+            }
         }
 
 
@@ -94,6 +101,10 @@ namespace RidersRuntime.RaceManager
 
             // Unload the map (or just disable it?)
             // Unload all racers (or just disable them?)
+        }
+
+        public void PauseRace(int playerIndex)
+        {
         }
     }
 }

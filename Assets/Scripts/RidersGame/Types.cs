@@ -18,7 +18,8 @@ namespace RidersRuntime.Data
     {
         Skateboard,
         Blades,
-        Bike
+        Bike,
+        None
     }
 
     public struct Paths
@@ -51,8 +52,9 @@ namespace RidersRuntime.Data
         Loading = 2,
         Game = 3,
         TutorialArea = 4,
-        FirstRaceInMelbourne = 5
+        FirstRaceInMelbourne = 5,
         // Add more scenes as needed
+        CharacterSelect = 3,
     }
 
 }

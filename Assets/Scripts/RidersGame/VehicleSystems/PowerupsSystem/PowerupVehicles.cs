@@ -18,9 +18,28 @@ namespace RidersRuntime.VehicleSystem
             computedStats = BaseStats;
         }
 
+        // adds powerup to list
+        public void AddPowerup(StatPowerup powerup)
+        {
+            if (!IsInList(powerup.PowerUpID))
+            {
+                m_ActivePowerupList.Add(powerup);
+            }
+        }
+
+        // checks if powerup ID is in list
+        public bool IsInList(string powerupID)
+        {
+            foreach (StatPowerup powerup in m_ActivePowerupList)
+            {
+                if (powerup.PowerUpID == powerupID) return true;
+            }
+            return false;
+        }
+
         public void TickPowerups()
         {
-            m_ActivePowerupList.RemoveAll(powerup => powerup.ElapsedTime > powerup.MaxTime);
+            m_ActivePowerupList.RemoveAll(powerup => powerup.ElapsedTime >= powerup.MaxTime);
 
             VehicleStats stats = new();
 
@@ -38,6 +57,11 @@ namespace RidersRuntime.VehicleSystem
         public void PostProcessStats()
         {
             computedStats.Grip = Mathf.Clamp(computedStats.Grip, 0.0f, 1.0f);
+        }
+
+        public VehicleStats ReturnComputedStats()
+        {
+            return computedStats;
         }
     }
 }

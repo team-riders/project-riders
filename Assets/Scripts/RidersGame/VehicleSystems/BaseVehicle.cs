@@ -29,9 +29,14 @@ namespace RidersRuntime.VehicleSystem
             CoastingDrag = 4f,
             Grip = .95f,
             AddedGravity = 1f,
-            BoostTopSpeed = 80f,
+            BoostTopSpeed = 30f,
             BoostAccel = 15f,
+            BoostGaugeMax = 300f,
+            BoostGaugePerCharge = 100f,
         };
+
+        // boost gauge current
+        public float BoostGauge;
 
         // list is created, wheels are not until child classes
         [Header("Vehicle Visual")]
@@ -86,7 +91,7 @@ namespace RidersRuntime.VehicleSystem
         [Range(0.1f, 1.0f), Tooltip("Stores charge amount for jumping on ramps; helps determine ramp jump height, directly correlates to trick speed")]
         float JumpCharge;
         [Tooltip("Stores jump force")]
-        public float JumpForce = 150.0f;
+        public float JumpForce = 300.0f;
 
         #region State Machine Variables
 
@@ -128,6 +133,8 @@ namespace RidersRuntime.VehicleSystem
             powerupController = new PowerupController(baseStats);
 
             StateMachine.Initialise(GroundState);
+
+            BoostGauge = baseStats.BoostGaugePerCharge;
 
             // add to child classes instead
 
@@ -333,7 +340,7 @@ namespace RidersRuntime.VehicleSystem
 
         //jump management
         // should be satisfactory until we add ramps
-        float Jump(float jumpHold, bool jump, float maxSpeed)
+        public float Jump(float jumpHold, bool jump, float maxSpeed)
         {
             if (jumpHold > 0 && GroundPercent > 0.0f)
             {
@@ -352,6 +359,40 @@ namespace RidersRuntime.VehicleSystem
                 WantsToJumpHold = 0.0f;
             }
             return maxSpeed;
+        }
+
+        //Boost
+        public void Boost(bool wantsToBoost)
+        {
+            Debug.Log("Boost Gauge: " + BoostGauge);
+            if (wantsToBoost && BoostGauge >= baseStats.BoostGaugePerCharge)
+            {
+                VehicleStats boostStats = new()
+                {
+                    TopSpeed = baseStats.BoostTopSpeed,
+                    Acceleration = baseStats.BoostAccel,
+                    AccelerationCurve = 0.4f
+                };
+
+                StatPowerup boostPowerup = new()
+                {
+                    modifiers = boostStats,
+                    PowerUpID = "boost",
+                    ElapsedTime = 0,
+                    MaxTime = 5,
+                };
+
+                Debug.Log("IsInList: " + powerupController.IsInList(boostPowerup.PowerUpID));
+                if (!powerupController.IsInList(boostPowerup.PowerUpID))
+                {
+                    powerupController.AddPowerup(boostPowerup);
+
+                    // adds an immediate force forward, intended to allow for reaching top speed quicker
+                    Rigidbody.AddForce(Rigidbody.transform.forward * 500, ForceMode.Impulse);
+
+                    //BoostGauge -= baseStats.BoostGaugePerCharge;
+                }
+            }
         }
 
         //make virtual?

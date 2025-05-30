@@ -214,8 +214,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8799950185676183499}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.104875885, y: 0, z: 0, w: 0.9944853}
-  m_LocalPosition: {x: 0.8, y: 2.6379805, z: -5.4616957}
+  m_LocalRotation: {x: 0.00000006313865, y: 0.9944854, z: -0.104875706, w: 0.0000005987132}
+  m_LocalPosition: {x: 1297.6199, y: 585.1179, z: -3.6182966}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -420,6 +420,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3529199913788480741, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: isInRecordingMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4711103303932495809, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -468,58 +472,11 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4711103303932495809, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6336856351156499696}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2072811018097086297, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8530788983562679351}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
 --- !u!4 &779194264998552515 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4711103303932495809, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
-  m_PrefabInstance: {fileID: 5454266452629677058}
-  m_PrefabAsset: {fileID: 0}
---- !u!146 &1609476882227281414 stripped
-WheelCollider:
-  m_CorrespondingSourceObject: {fileID: 6766500946828483076, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
-  m_PrefabInstance: {fileID: 5454266452629677058}
-  m_PrefabAsset: {fileID: 0}
---- !u!146 &2685060253340696303 stripped
-WheelCollider:
-  m_CorrespondingSourceObject: {fileID: 7994507693005347565, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
-  m_PrefabInstance: {fileID: 5454266452629677058}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &6302058510488382299 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2072811018097086297, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
-  m_PrefabInstance: {fileID: 5454266452629677058}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &8530788983562679351
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6302058510488382299}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fb8aba73ba2f864a9f5e831a5265e13, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_VehicleStats: {fileID: 11400000, guid: ce4dee1b77ac3e94b96e9e5dd33149a5, type: 2}
-  canMove: 1
-  m_PhysicsWheels:
-  - {fileID: 1609476882227281414}
-  - {fileID: 6704588025918618960}
-  - {fileID: 2685060253340696303}
-  - {fileID: 6953606168784727518}
---- !u!146 &6704588025918618960 stripped
-WheelCollider:
-  m_CorrespondingSourceObject: {fileID: 1637631556285962578, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
-  m_PrefabInstance: {fileID: 5454266452629677058}
-  m_PrefabAsset: {fileID: 0}
---- !u!146 &6953606168784727518 stripped
-WheelCollider:
-  m_CorrespondingSourceObject: {fileID: 3112367254603467228, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
   m_PrefabInstance: {fileID: 5454266452629677058}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &8979808521142445415 stripped
