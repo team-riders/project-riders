@@ -72,11 +72,22 @@ namespace RidersRuntime.RaceManager
         // Grabs all the racers information here
         public void SetupRacers(List<RacerComponent> racers)
         {
+            if (racersList == null)
+            {
+                racersList = new List<RacerComponent>();
+            }
+
             foreach (var racer in racers)
             {
                 if (!ridersProgression.ContainsKey(racer.racerID))
                 {
                     ridersProgression.Add(racer.racerID, new RiderProgression());
+                }
+
+                // Ensure that they are actually in the list of racers
+                if (!racersList.Contains(racer))
+                {
+                    racersList.Add(racer);
                 }
             }
         }
