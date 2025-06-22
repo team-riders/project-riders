@@ -1136,8 +1136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forwardForce: 20
   upwardForce: 10
-  directionOverride: {x: 0, y: 0, z: 0}
-  useCustomDirection: 0
+  activationTime: 0.5
 --- !u!64 &1819214786
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1183,7 +1182,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: dcbcfa3cc2f18874f823d8efa3ab0860, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
