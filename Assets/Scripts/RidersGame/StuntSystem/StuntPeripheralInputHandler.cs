@@ -10,10 +10,16 @@ namespace RidersRuntime.StuntSystem
     [RequireComponent(typeof(PlayerInput))]
     [RequireComponent(typeof(StuntSystem))]
     [RequireComponent(typeof(RideMovementController))]
+    //josh
+    [RequireComponent(typeof(BoostController))]
+    //josh
     public class StuntPeripheralInputHandler : MonoBehaviour
     {
         RideMovementController rideMovementController;
         StuntSystem stuntSystem;
+        //josh
+        BoostController boostController;
+        //josh
         IInput playerPeripheralInput;
         public bool isInRecordingMode = false;
         private Queue<TimedInput> inputBuffer = new();
@@ -26,6 +32,7 @@ namespace RidersRuntime.StuntSystem
             playerPeripheralInput = GetComponent<PlayerInput>();
             stuntSystem = GetComponent<StuntSystem>();
             rideMovementController = GetComponent<RideMovementController>();
+            boostController = GetComponent<BoostController>();
         }
 
         public void Initialize()
@@ -41,6 +48,8 @@ namespace RidersRuntime.StuntSystem
             switch (state)
             {
                 case GroundMovementState:
+                    //josh
+                    boostController.IncreaseGauge(stuntSystem.ReturnRewardOnLanding());
                     break;
                 case AirborneMovementState:
                     RecordInputs();
