@@ -90,6 +90,7 @@ namespace RidersRuntime.VehicleSystem
         private void Update()
         {
             inputData = iInput.GrabCurrentFrameInputs();
+            Debug.Log("boostGauge: " + boostGauge);
         }
 
         void FixedUpdate()
