@@ -121,5 +121,10 @@ namespace RidersRuntime.VehicleSystem
                 JumpIntention = false;
             }
         }
+
+        public MovementStateAlt GetCurrentMovementState()
+        {
+            return m_stateMachine.CurrentState;
+        }
     }
 }

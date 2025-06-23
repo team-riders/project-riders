@@ -1,4 +1,5 @@
 using RidersRuntime.Input;
+using RidersRuntime.VehicleSystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +9,10 @@ namespace RidersRuntime.StuntSystem
 {
     [RequireComponent(typeof(PlayerInput))]
     [RequireComponent(typeof(StuntSystem))]
+    [RequireComponent(typeof(RideMovementController))]
     public class StuntPeripheralInputHandler : MonoBehaviour
     {
+        RideMovementController rideMovementController;
         StuntSystem stuntSystem;
         IInput playerPeripheralInput;
         public bool isInRecordingMode = false;
@@ -22,6 +25,7 @@ namespace RidersRuntime.StuntSystem
         {
             playerPeripheralInput = GetComponent<PlayerInput>();
             stuntSystem = GetComponent<StuntSystem>();
+            rideMovementController = GetComponent<RideMovementController>();
         }
 
         public void Initialize()
@@ -33,6 +37,22 @@ namespace RidersRuntime.StuntSystem
         {
             if (!isInRecordingMode) return;
 
+            var state = rideMovementController.GetCurrentMovementState();
+            switch (state)
+            {
+                case GroundMovementState:
+                    break;
+                case AirborneMovementState:
+                    RecordInputs();
+                    break;
+                case GrindingMovementState:
+                    RecordInputs();
+                    break;
+            }
+        }
+
+        void RecordInputs()
+        {
             // Prune old inputs
             while (inputBuffer.Count > 0 && Time.time - inputBuffer.Peek().time > Values.timeWindowMax)
                 inputBuffer.Dequeue();
@@ -50,7 +70,6 @@ namespace RidersRuntime.StuntSystem
                 HandleStuntKeyPress(newStuntKey);
             }
             previousFrameKeys = keys;
-
         }
 
         void HandleStuntKeyPress(string key)
@@ -59,7 +78,6 @@ namespace RidersRuntime.StuntSystem
             stuntSystem.OnStuntRequestTimed(new List<TimedInput>(inputBuffer), currentStunt);
             currentStunt = StuntType.None;
         }
-
 
         List<string> GetCurrentKeys(ActorInputData input)
         {
