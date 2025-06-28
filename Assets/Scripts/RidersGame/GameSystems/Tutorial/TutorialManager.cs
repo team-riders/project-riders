@@ -27,8 +27,6 @@ namespace RidersRuntime
                 {
                     popUps[popUpIndex].gameObject.SetActive(false);
                 }
-
-
             }
         }
     }
