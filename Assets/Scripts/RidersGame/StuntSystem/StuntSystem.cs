@@ -8,7 +8,7 @@ namespace RidersRuntime.StuntSystem
         // VehicleType currentVehicleType;
 
         StuntDatabase stuntDatabase;
-        List<Stunt> stuntsRecorded;
+        List<Stunt> stuntsRecorded = new List<Stunt>();
 
         void Start()
         {
