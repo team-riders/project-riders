@@ -46,6 +46,7 @@ namespace RidersRuntime.VehicleSystem
 
             if (WantsToJump)
             {
+                Debug.Log("jump force: " + (JumpForce * localJumpCharge));
                 rigidbody.AddForce(Vector3.up * (JumpForce * localJumpCharge), ForceMode.Impulse);
                 blackboard.SetValue("MaxSpeed", maxSpeed);
                 if (blackboard.ContainsKey("GrindPath"))
