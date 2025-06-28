@@ -179,6 +179,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4437190125695404418, guid: 7512643b31f4ea44dbf2e51c116fec88, type: 3}
+      propertyPath: needsGauge
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6704588025918618960, guid: 7512643b31f4ea44dbf2e51c116fec88, type: 3}
       propertyPath: m_ForwardFriction.m_ExtremumValue
       value: 1
