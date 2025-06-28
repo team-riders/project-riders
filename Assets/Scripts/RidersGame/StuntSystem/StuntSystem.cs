@@ -58,6 +58,7 @@ namespace RidersRuntime.StuntSystem
                 totalReward += stunt.reward;
             }
             stuntsRecorded.RemoveAll(st => st.reward > 0);
+            Debug.Log($"Total reward on landing: {totalReward}");
             return totalReward;
         }
     }

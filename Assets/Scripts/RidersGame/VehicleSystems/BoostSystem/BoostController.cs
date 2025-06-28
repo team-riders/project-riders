@@ -78,13 +78,13 @@ namespace RidersRuntime.VehicleSystem
         public void IncreaseGauge(float increase)
         {
             boostGauge += increase;
-            Mathf.Clamp(boostGauge, 0, boostGaugeMax);
+            boostGauge = Mathf.Clamp(boostGauge, 0, boostGaugeMax);
         }
 
         public void DecreaseGauge(float decrease)
         {
             boostGauge -= decrease;
-            Mathf.Clamp(boostGauge, 0, boostGaugeMax);
+            boostGauge = Mathf.Clamp(boostGauge, 0, boostGaugeMax);
         }
 
         private void Update()
