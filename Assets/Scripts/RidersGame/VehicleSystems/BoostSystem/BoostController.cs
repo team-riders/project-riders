@@ -78,18 +78,19 @@ namespace RidersRuntime.VehicleSystem
         public void IncreaseGauge(float increase)
         {
             boostGauge += increase;
-            Mathf.Clamp(boostGauge, 0, boostGaugeMax);
+            boostGauge = Mathf.Clamp(boostGauge, 0, boostGaugeMax);
         }
 
         public void DecreaseGauge(float decrease)
         {
             boostGauge -= decrease;
-            Mathf.Clamp(boostGauge, 0, boostGaugeMax);
+            boostGauge = Mathf.Clamp(boostGauge, 0, boostGaugeMax);
         }
 
         private void Update()
         {
             inputData = iInput.GrabCurrentFrameInputs();
+            Debug.Log("boostGauge: " + boostGauge);
         }
 
         void FixedUpdate()
@@ -100,6 +101,26 @@ namespace RidersRuntime.VehicleSystem
                 Debug.Log("applying boost");
                 ApplyBoost();
             }
+        }
+
+        public VehicleStats GetVehicleStats()
+        {
+            return boostStats;
+        }
+
+        public float GetBoostGauge()
+        {
+            return boostGauge;
+        }
+
+        public float GetBoostGaugeMax()
+        {
+            return boostGaugeMax;
+        }
+
+        public bool IsUsingBoost()
+        {
+            return inputData.BoostRam && boostGauge >= boostGaugePerCharge;
         }
     }
 }
