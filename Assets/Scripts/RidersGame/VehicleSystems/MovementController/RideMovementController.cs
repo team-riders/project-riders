@@ -18,6 +18,7 @@ namespace RidersRuntime.VehicleSystem
         bool JumpIntention = false;
         IInput m_ActorInputComponent;
         public PowerupController powerupController;
+        float JumpCharge = 0f;
 
         // Eventually serialize this to show internal function properties
         GrindingMovementState grindingMovementState = new();
@@ -120,11 +121,25 @@ namespace RidersRuntime.VehicleSystem
             {
                 JumpIntention = false;
             }
+
+            if (blackboard.ContainsKey("JumpCharge"))
+            {
+                JumpCharge = blackboard.GetValue<float>("JumpCharge");
+            }
+            else
+            {
+                JumpCharge = 0f;
+            }
         }
 
         public MovementStateAlt GetCurrentMovementState()
         {
             return m_stateMachine.CurrentState;
+        }
+
+        public float GetCurrentJumpCharge()
+        {
+            return JumpCharge;
         }
     }
 }

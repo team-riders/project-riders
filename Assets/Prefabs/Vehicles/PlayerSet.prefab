@@ -515,6 +515,22 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 841265458135405471, guid: 15296023bb4b6964381b55d16c7b2e20, type: 3}
   m_PrefabInstance: {fileID: 3501674262453860561}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8680427295837982261 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5255525470878283492, guid: 15296023bb4b6964381b55d16c7b2e20, type: 3}
+  m_PrefabInstance: {fileID: 3501674262453860561}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!224 &8784444720336060934 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5291993298991282903, guid: 15296023bb4b6964381b55d16c7b2e20, type: 3}
+  m_PrefabInstance: {fileID: 3501674262453860561}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &9044092076529578796 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5556144392265845757, guid: 15296023bb4b6964381b55d16c7b2e20, type: 3}
@@ -538,6 +554,14 @@ PrefabInstance:
       propertyPath: boostBarImage
       value: 
       objectReference: {fileID: 9044092076529578796}
+    - target: {fileID: 1981385937141294466, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: jumpChargeBarImage
+      value: 
+      objectReference: {fileID: 8680427295837982261}
+    - target: {fileID: 1981385937141294466, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      propertyPath: jumpChargeBarTransform
+      value: 
+      objectReference: {fileID: 8784444720336060934}
     - target: {fileID: 2072811018097086297, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
       propertyPath: m_Name
       value: BoardVehicle

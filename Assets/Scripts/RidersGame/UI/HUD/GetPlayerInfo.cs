@@ -7,6 +7,7 @@ namespace RidersRuntime.VehicleSystem
     public class GetPlayerInfo : MonoBehaviour
     {
         private BoostController boostController;
+        private RideMovementController rideMovementController;
         private VehicleStats vehicleStats;
 
         void Start()
@@ -14,12 +15,19 @@ namespace RidersRuntime.VehicleSystem
             boostController = GetComponent<BoostController>();
             if (boostController == null)
             {
-                Debug.LogError("RideMovementController component not found on this GameObject.");
+                Debug.LogError("BoostController component not found on this GameObject.");
                 return;
             }
             else
             {
                 vehicleStats = boostController.GetVehicleStats();
+            }
+
+            rideMovementController = GetComponent<RideMovementController>();
+            if (rideMovementController == null)
+            {
+                Debug.LogError("RideMovementController component not found on this GameObject.");
+                return;
             }
         }
 
@@ -33,7 +41,7 @@ namespace RidersRuntime.VehicleSystem
                 Boost = boostController.GetBoostGauge(),
                 BoostGaugeMax = boostController.GetBoostGaugeMax(),
                 IsUsingBoost = boostController.IsUsingBoost(),
-                Speed = 100f  // TODO: Implement actual logic
+                JumpCharge = rideMovementController.GetCurrentJumpCharge()
             };
         }
 
@@ -45,7 +53,7 @@ namespace RidersRuntime.VehicleSystem
             public float Boost { get; set; }
             public float BoostGaugeMax { get; set; }
             public bool IsUsingBoost { get; set; }
-            public float Speed { get; set; }
+            public float JumpCharge { get; set; }
         }
     }
 }
