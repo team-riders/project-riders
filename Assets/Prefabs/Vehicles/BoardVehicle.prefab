@@ -174,6 +174,7 @@ GameObject:
   - component: {fileID: 8862701724578961105}
   - component: {fileID: 8513319076286721408}
   - component: {fileID: 3325423573094674582}
+  - component: {fileID: 1981385937141294466}
   m_Layer: 0
   m_Name: BoardVehicle
   m_TagString: Player
@@ -331,6 +332,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd8bc76018c317f48aea1e1d23098eca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1981385937141294466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2072811018097086297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 013728149974f4d7a84fca50cad0e2ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boostBarImage: {fileID: 0}
 --- !u!1 &2804422840742534173
 GameObject:
   m_ObjectHideFlags: 0
