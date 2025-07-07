@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 4468806}
   - component: {fileID: 4468805}
   - component: {fileID: 4468804}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -435,7 +435,7 @@ GameObject:
   - component: {fileID: 29887488}
   - component: {fileID: 29887487}
   - component: {fileID: 29887486}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Plane (19)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -851,7 +851,7 @@ Transform:
   m_GameObject: {fileID: 33419897}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -121.4, y: -3.02, z: 0}
+  m_LocalPosition: {x: -451.87, y: -5.36, z: -286}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -992,7 +992,7 @@ Transform:
   m_GameObject: {fileID: 41404226}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 65.41, y: 2.2, z: -13.8}
+  m_LocalPosition: {x: 61.8, y: 2.2, z: -13.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1926,7 +1926,7 @@ GameObject:
   - component: {fileID: 77421773}
   - component: {fileID: 77421772}
   - component: {fileID: 77421771}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4652,7 +4652,7 @@ GameObject:
   - component: {fileID: 204533847}
   - component: {fileID: 204533846}
   - component: {fileID: 204533845}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5694,7 +5694,7 @@ GameObject:
   - component: {fileID: 244138080}
   - component: {fileID: 244138079}
   - component: {fileID: 244138078}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Plane (29)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6009,6 +6009,37 @@ Transform:
   - {fileID: 2061249312}
   - {fileID: 302848158}
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &249622169
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 249622170}
+  m_Layer: 0
+  m_Name: Node0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &249622170
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 249622169}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -45.3, y: -4.29, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 861717741}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &250836627
 GameObject:
@@ -8164,7 +8195,7 @@ GameObject:
   - component: {fileID: 343359304}
   - component: {fileID: 343359303}
   - component: {fileID: 343359302}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10247,7 +10278,7 @@ GameObject:
   - component: {fileID: 416709837}
   - component: {fileID: 416709836}
   - component: {fileID: 416709835}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10357,7 +10388,7 @@ GameObject:
   - component: {fileID: 416802014}
   - component: {fileID: 416802013}
   - component: {fileID: 416802012}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Plane (27)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10878,31 +10909,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e90e0cfcb33064441bed547ece8bd1c9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.271202
+      value: -23.89
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e90e0cfcb33064441bed547ece8bd1c9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.619074
+      value: -4.4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e90e0cfcb33064441bed547ece8bd1c9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -8.491898
+      value: -12.2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e90e0cfcb33064441bed547ece8bd1c9, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0
+      value: 0.71225893
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e90e0cfcb33064441bed547ece8bd1c9, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.7019142
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e90e0cfcb33064441bed547ece8bd1c9, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.71226156
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e90e0cfcb33064441bed547ece8bd1c9, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0.7019169
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e90e0cfcb33064441bed547ece8bd1c9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -10910,11 +10941,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e90e0cfcb33064441bed547ece8bd1c9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e90e0cfcb33064441bed547ece8bd1c9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 89.162
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: e90e0cfcb33064441bed547ece8bd1c9, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e90e0cfcb33064441bed547ece8bd1c9, type: 3}
       propertyPath: m_Name
@@ -10926,13 +10961,13 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e90e0cfcb33064441bed547ece8bd1c9, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 696862443}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e90e0cfcb33064441bed547ece8bd1c9, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 696862444}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e90e0cfcb33064441bed547ece8bd1c9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 696862445}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e90e0cfcb33064441bed547ece8bd1c9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 696862450}
   m_SourcePrefab: {fileID: 100100000, guid: e90e0cfcb33064441bed547ece8bd1c9, type: 3}
 --- !u!1 &430793109
 GameObject:
@@ -12013,7 +12048,7 @@ GameObject:
   - component: {fileID: 474674128}
   - component: {fileID: 474674127}
   - component: {fileID: 474674126}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12430,7 +12465,7 @@ GameObject:
   - component: {fileID: 509555351}
   - component: {fileID: 509555350}
   - component: {fileID: 509555349}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13701,7 +13736,7 @@ GameObject:
   - component: {fileID: 575050510}
   - component: {fileID: 575050509}
   - component: {fileID: 575050508}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Plane (10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13996,7 +14031,7 @@ GameObject:
   - component: {fileID: 579438542}
   - component: {fileID: 579438541}
   - component: {fileID: 579438540}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14893,7 +14928,7 @@ GameObject:
   - component: {fileID: 632147380}
   - component: {fileID: 632147379}
   - component: {fileID: 632147378}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16486,7 +16521,7 @@ GameObject:
   - component: {fileID: 690719222}
   - component: {fileID: 690719221}
   - component: {fileID: 690719220}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16587,27 +16622,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e90e0cfcb33064441bed547ece8bd1c9, type: 3}
   m_PrefabInstance: {fileID: 427859351}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &696862443
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 696862437}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.07644314, y: 0.38348293, z: 0.5142212}
-  m_Center: {x: 0.02499883, y: -0.10458844, z: 0.18292202}
 --- !u!54 &696862444
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -16617,8 +16631,8 @@ Rigidbody:
   m_GameObject: {fileID: 696862437}
   serializedVersion: 4
   m_Mass: 50
-  m_Drag: 0.5
-  m_AngularDrag: 3
+  m_Drag: 2
+  m_AngularDrag: 5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -16632,9 +16646,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &696862445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16647,7 +16661,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52e486e9721462543a56bd3ac53c7fb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  path: {fileID: 1758545434}
+  path: {fileID: 861717742}
   nodeReachThreshold: 4
   nodeCloseThreshold: 2
   nodeAccelerateThreshold: 4
@@ -16661,6 +16675,28 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e90e0cfcb33064441bed547ece8bd1c9, type: 3}
   m_PrefabInstance: {fileID: 427859351}
   m_PrefabAsset: {fileID: 0}
+--- !u!64 &696862450
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 696862437}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 247
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 950776241093545012, guid: e90e0cfcb33064441bed547ece8bd1c9, type: 3}
 --- !u!1 &700263358
 GameObject:
   m_ObjectHideFlags: 0
@@ -18721,6 +18757,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 826422002}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &837889765
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 837889766}
+  m_Layer: 0
+  m_Name: Node4
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &837889766
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837889765}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -362.11, y: 11.24, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 861717741}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &844088187
 GameObject:
   m_ObjectHideFlags: 0
@@ -19008,7 +19075,7 @@ GameObject:
   - component: {fileID: 847884154}
   - component: {fileID: 847884153}
   - component: {fileID: 847884152}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Plane (26)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19803,7 +19870,7 @@ GameObject:
   - component: {fileID: 858293244}
   - component: {fileID: 858293243}
   - component: {fileID: 858293242}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19899,6 +19966,55 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 858293240}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &861717740
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 861717741}
+  - component: {fileID: 861717742}
+  m_Layer: 0
+  m_Name: TramNodePath (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &861717741
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 861717740}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.2609253, y: -1.1579475, z: -9.9794235}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 249622170}
+  - {fileID: 837889766}
+  m_Father: {fileID: 1984657209}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &861717742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 861717740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f51dbf917d499444a5442ea3d2e2d83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: 249622170}
+  - {fileID: 837889766}
 --- !u!1 &867369156
 GameObject:
   m_ObjectHideFlags: 0
@@ -20734,7 +20850,7 @@ GameObject:
   - component: {fileID: 900534395}
   - component: {fileID: 900534394}
   - component: {fileID: 900534393}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21729,7 +21845,7 @@ GameObject:
   - component: {fileID: 940658373}
   - component: {fileID: 940658372}
   - component: {fileID: 940658371}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21945,7 +22061,7 @@ GameObject:
   - component: {fileID: 943770869}
   - component: {fileID: 943770868}
   - component: {fileID: 943770867}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22969,7 +23085,7 @@ GameObject:
   - component: {fileID: 960752563}
   - component: {fileID: 960752562}
   - component: {fileID: 960752561}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Plane (24)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25300,7 +25416,7 @@ GameObject:
   - component: {fileID: 1054692400}
   - component: {fileID: 1054692399}
   - component: {fileID: 1054692398}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26163,7 +26279,7 @@ GameObject:
   - component: {fileID: 1093094156}
   - component: {fileID: 1093094155}
   - component: {fileID: 1093094154}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Plane (18)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27010,7 +27126,7 @@ Transform:
   m_GameObject: {fileID: 1128153242}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 201.31, y: 13.1, z: 65.4}
+  m_LocalPosition: {x: 201.31, y: 13.1, z: 63.48}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -27063,7 +27179,7 @@ GameObject:
   - component: {fileID: 1131499163}
   - component: {fileID: 1131499162}
   - component: {fileID: 1131499161}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27389,7 +27505,7 @@ GameObject:
   - component: {fileID: 1141517899}
   - component: {fileID: 1141517898}
   - component: {fileID: 1141517897}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Plane (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28748,7 +28864,7 @@ GameObject:
   - component: {fileID: 1168503462}
   - component: {fileID: 1168503461}
   - component: {fileID: 1168503460}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29567,7 +29683,7 @@ GameObject:
   - component: {fileID: 1198711045}
   - component: {fileID: 1198711044}
   - component: {fileID: 1198711043}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29842,7 +29958,7 @@ GameObject:
   - component: {fileID: 1204381669}
   - component: {fileID: 1204381668}
   - component: {fileID: 1204381667}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Plane (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30410,7 +30526,7 @@ GameObject:
   - component: {fileID: 1214564031}
   - component: {fileID: 1214564030}
   - component: {fileID: 1214564029}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Plane (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31458,7 +31574,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1244756452}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Route Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31913,7 +32029,7 @@ GameObject:
   - component: {fileID: 1258312570}
   - component: {fileID: 1258312569}
   - component: {fileID: 1258312568}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Plane (28)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32426,7 +32542,7 @@ GameObject:
   - component: {fileID: 1283315156}
   - component: {fileID: 1283315155}
   - component: {fileID: 1283315154}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Plane (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33347,7 +33463,7 @@ GameObject:
   - component: {fileID: 1305585174}
   - component: {fileID: 1305585173}
   - component: {fileID: 1305585172}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34486,7 +34602,7 @@ GameObject:
   - component: {fileID: 1336091842}
   - component: {fileID: 1336091841}
   - component: {fileID: 1336091840}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35173,7 +35289,7 @@ GameObject:
   - component: {fileID: 1365404726}
   - component: {fileID: 1365404725}
   - component: {fileID: 1365404724}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35389,7 +35505,7 @@ GameObject:
   - component: {fileID: 1373585627}
   - component: {fileID: 1373585626}
   - component: {fileID: 1373585625}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35499,7 +35615,7 @@ GameObject:
   - component: {fileID: 1376020036}
   - component: {fileID: 1376020035}
   - component: {fileID: 1376020034}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Plane (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35794,7 +35910,7 @@ GameObject:
   - component: {fileID: 1376827207}
   - component: {fileID: 1376827206}
   - component: {fileID: 1376827205}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36499,7 +36615,7 @@ GameObject:
   - component: {fileID: 1402049855}
   - component: {fileID: 1402049854}
   - component: {fileID: 1402049853}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36607,7 +36723,7 @@ GameObject:
   - component: {fileID: 1406633127}
   - component: {fileID: 1406633126}
   - component: {fileID: 1406633125}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37602,7 +37718,7 @@ GameObject:
   - component: {fileID: 1440251426}
   - component: {fileID: 1440251425}
   - component: {fileID: 1440251424}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Plane (20)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38563,7 +38679,7 @@ GameObject:
   - component: {fileID: 1463903453}
   - component: {fileID: 1463903452}
   - component: {fileID: 1463903451}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38781,7 +38897,7 @@ GameObject:
   - component: {fileID: 1464753854}
   - component: {fileID: 1464753853}
   - component: {fileID: 1464753852}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Plane (23)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39292,7 +39408,7 @@ GameObject:
   - component: {fileID: 1470180341}
   - component: {fileID: 1470180340}
   - component: {fileID: 1470180339}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40188,7 +40304,7 @@ GameObject:
   - component: {fileID: 1495391784}
   - component: {fileID: 1495391783}
   - component: {fileID: 1495391782}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Plane (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41437,7 +41553,7 @@ GameObject:
   - component: {fileID: 1555426214}
   - component: {fileID: 1555426213}
   - component: {fileID: 1555426212}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43960,6 +44076,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1643716311}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1657332778
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1657332779}
+  m_Layer: 0
+  m_Name: Node3 (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1657332779
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1657332778}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 294.1, y: 1.33, z: 3.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1758545435}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1661520448
 GameObject:
   m_ObjectHideFlags: 0
@@ -44080,7 +44227,7 @@ GameObject:
   - component: {fileID: 1664571293}
   - component: {fileID: 1664571292}
   - component: {fileID: 1664571291}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44201,7 +44348,7 @@ Transform:
   m_GameObject: {fileID: 1669242321}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -71.37, y: -4.46, z: 0}
+  m_LocalPosition: {x: -460.7, y: -4.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -46232,7 +46379,7 @@ GameObject:
   - component: {fileID: 1735147159}
   - component: {fileID: 1735147158}
   - component: {fileID: 1735147157}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46449,7 +46596,7 @@ Transform:
   m_GameObject: {fileID: 1750673279}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -173.2, y: 1.33, z: 0.54}
+  m_LocalPosition: {x: 294.1, y: 1.33, z: -242.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -46799,6 +46946,7 @@ MonoBehaviour:
   - {fileID: 1669242322}
   - {fileID: 33419898}
   - {fileID: 1750673280}
+  - {fileID: 1657332779}
   - {fileID: 1987998234}
 --- !u!4 &1758545435
 Transform:
@@ -46817,6 +46965,7 @@ Transform:
   - {fileID: 1669242322}
   - {fileID: 33419898}
   - {fileID: 1750673280}
+  - {fileID: 1657332779}
   - {fileID: 1987998234}
   m_Father: {fileID: 1984657209}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -46832,7 +46981,7 @@ GameObject:
   - component: {fileID: 1760186888}
   - component: {fileID: 1760186887}
   - component: {fileID: 1760186886}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46940,7 +47089,7 @@ GameObject:
   - component: {fileID: 1763106235}
   - component: {fileID: 1763106234}
   - component: {fileID: 1763106233}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47426,7 +47575,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1773017771}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Map 1 Blockers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48040,7 +48189,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1809215294}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Map 1 Route
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49103,7 +49252,7 @@ GameObject:
   - component: {fileID: 1877759700}
   - component: {fileID: 1877759699}
   - component: {fileID: 1877759698}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51635,7 +51784,7 @@ GameObject:
   - component: {fileID: 1945763786}
   - component: {fileID: 1945763785}
   - component: {fileID: 1945763784}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -52642,6 +52791,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1758545435}
+  - {fileID: 861717741}
   - {fileID: 696862446}
   m_Father: {fileID: 1509921941}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -52670,7 +52820,7 @@ Transform:
   m_GameObject: {fileID: 1987998233}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -323.93, y: 11.24, z: 0}
+  m_LocalPosition: {x: 92.1, y: -2.93, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -54688,7 +54838,7 @@ GameObject:
   - component: {fileID: 2064648275}
   - component: {fileID: 2064648274}
   - component: {fileID: 2064648273}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Plane (16)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55580,7 +55730,7 @@ GameObject:
   - component: {fileID: 2088750343}
   - component: {fileID: 2088750342}
   - component: {fileID: 2088750341}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road Guides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
