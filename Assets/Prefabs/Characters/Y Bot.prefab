@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Y Bot
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 48a35b9497ab6e54faa86e1dbee286f9, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 48a35b9497ab6e54faa86e1dbee286f9, type: 3}
       propertyPath: m_Controller
       value: 

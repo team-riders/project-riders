@@ -10,7 +10,7 @@ namespace RidersRuntime.VehicleSystem
         const float JumpForce = 600f;
         const int JumpBoostHoldFrameThreshold = 180;
         const float JumpSpeedBoost = 0.5f;
-        const float JumpBoostHoldMaxDuration = 120f;
+        const float JumpBoostHoldMaxDuration = 60f;
         const float JumpChargeMinScale = 0.5f;
         const float JumpChargeMaxScale = 1.0f;
 

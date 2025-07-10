@@ -150,8 +150,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CountdownCanvas: {fileID: 7151502413196171075}
+  LapTimeCanvas: {fileID: 0}
   timerText: {fileID: 0}
   countdownText: {fileID: 8310848972903966685}
+  lapTimeText: {fileID: 0}
+  raceTimeText: {fileID: 0}
 --- !u!1 &7151502413196171075
 GameObject:
   m_ObjectHideFlags: 0
@@ -237,7 +240,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &2364680915054469602
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -268,5 +271,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CountdownCanvas: {fileID: 7151502413196171075}
+  LapTimeCanvas: {fileID: 0}
   timerText: {fileID: 0}
   countdownText: {fileID: 0}
+  lapTimeText: {fileID: 0}
+  raceTimeText: {fileID: 0}

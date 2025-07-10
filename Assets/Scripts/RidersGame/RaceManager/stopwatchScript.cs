@@ -12,20 +12,29 @@ namespace RidersRuntime.RaceManager
         [SerializeField] TextMeshProUGUI timerText;
         [SerializeField] TextMeshProUGUI countdownText;
         [SerializeField] TextMeshProUGUI lapTimeText;
+        [SerializeField] TextMeshProUGUI raceTimeText;
 
         float elapsedTime;
         bool isRunning = false;
         float countdownTime = 5;
         bool countdownComplete = false;
 
-        // Subscribe to OnLapCompleted event on start
+        // Subscribe to OnLapCompleted + OnRaceCompleted event on start
         private void Start()
         {
 
             TrackCheckpoints trackCheckpoints = FindFirstObjectByType<TrackCheckpoints>();
+            BindTrackCheckpoints(trackCheckpoints);
+
+            LapTimeCanvas.SetActive(false);
+        }
+
+        public void BindTrackCheckpoints(TrackCheckpoints trackCheckpoints)
+        {
             if (trackCheckpoints != null)
             {
                 trackCheckpoints.OnLapCompleted += OnLapCompleted;
+                trackCheckpoints.OnRaceCompleted += OnRaceCompleted;
             }
 
             LapTimeCanvas.SetActive(false);
@@ -39,6 +48,12 @@ namespace RidersRuntime.RaceManager
             // Handle countdown
             if (!countdownComplete)
             {
+                if (CountdownCanvas == null || countdownText == null)
+                {
+                    Debug.LogError("Countdown references not set!");
+                    return;
+                }
+
                 countdownTime -= Time.deltaTime;
 
                 if (countdownTime > 1)
@@ -54,6 +69,7 @@ namespace RidersRuntime.RaceManager
                     countdownText.text = "";
                     CountdownCanvas.SetActive(false);
                     countdownComplete = true;
+                    GameObject.FindFirstObjectByType<RaceMeetController>().currentRaceEventController.StartRace();
                     startTimer();
 
                     // Call for new lap method
@@ -86,7 +102,6 @@ namespace RidersRuntime.RaceManager
 
         private void DisplayLapTime(float time)
         {
-            return;
             int minutes = Mathf.FloorToInt(time / 60);
             int seconds = Mathf.FloorToInt(time % 60);
             int milliseconds = Mathf.FloorToInt((time * 1000) % 1000);
@@ -95,6 +110,26 @@ namespace RidersRuntime.RaceManager
             LapTimeCanvas.SetActive(true);
             // Hide lap time after 3 seconds
             Invoke("HideLapTimeDisplay", 3f);
+        }
+
+        private void OnRaceCompleted(object sender, EventArgs e)
+        {
+            TrackCheckpoints trackCheckpoints = sender as TrackCheckpoints;
+            if (trackCheckpoints != null)
+            {
+                float raceTime = trackCheckpoints.GetRaceTime();
+                DisplayRaceTime(raceTime);
+            }
+        }
+        private void DisplayRaceTime(float time)
+        {
+            int minutes = Mathf.FloorToInt(time / 60);
+            int seconds = Mathf.FloorToInt(time % 60);
+            int milliseconds = Mathf.FloorToInt((time * 1000) % 1000);
+            raceTimeText.text = string.Format("Race Time: {0:00}:{1:00}.{2:000}", minutes, seconds, milliseconds);
+
+            LapTimeCanvas.SetActive(true);
+            raceTimeText.gameObject.SetActive(true);
         }
 
         private void HideLapTimeDisplay()
