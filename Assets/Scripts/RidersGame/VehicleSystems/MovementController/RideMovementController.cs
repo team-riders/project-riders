@@ -19,6 +19,7 @@ namespace RidersRuntime.VehicleSystem
         IInput m_ActorInputComponent;
         public PowerupController powerupController;
         float JumpCharge = 0f;
+        float JumpChargeMinScale = 0f;
 
         // Eventually serialize this to show internal function properties
         GrindingMovementState grindingMovementState = new();
@@ -130,6 +131,15 @@ namespace RidersRuntime.VehicleSystem
             {
                 JumpCharge = 0f;
             }
+
+            if (blackboard.ContainsKey("JumpChargeMinSale"))
+            {
+                JumpChargeMinScale = blackboard.GetValue<float>("JumpChargeMinSale");
+            }
+            else
+            {
+                JumpChargeMinScale = 0f;
+            }
         }
 
         public MovementStateAlt GetCurrentMovementState()
@@ -140,6 +150,11 @@ namespace RidersRuntime.VehicleSystem
         public float GetCurrentJumpCharge()
         {
             return JumpCharge;
+        }
+
+        public float GetJumpChargeMinScale()
+        {
+            return JumpChargeMinScale;
         }
     }
 }

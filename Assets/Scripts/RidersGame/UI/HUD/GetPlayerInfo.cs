@@ -41,7 +41,8 @@ namespace RidersRuntime.VehicleSystem
                 Boost = boostController.GetBoostGauge(),
                 BoostGaugeMax = boostController.GetBoostGaugeMax(),
                 IsUsingBoost = boostController.IsUsingBoost(),
-                JumpCharge = rideMovementController.GetCurrentJumpCharge()
+                JumpCharge = rideMovementController.GetCurrentJumpCharge(),
+                JumpChargeMinScale = rideMovementController.GetJumpChargeMinScale()
             };
         }
 
@@ -54,6 +55,7 @@ namespace RidersRuntime.VehicleSystem
             public float BoostGaugeMax { get; set; }
             public bool IsUsingBoost { get; set; }
             public float JumpCharge { get; set; }
+            public float JumpChargeMinScale { get; set; }
         }
     }
 }

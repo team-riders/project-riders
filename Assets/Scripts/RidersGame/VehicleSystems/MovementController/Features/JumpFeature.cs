@@ -58,6 +58,7 @@ namespace RidersRuntime.VehicleSystem
 
             blackboard.SetValue("JumpCharge", localJumpCharge);
             blackboard.SetValue("JumpIntention", false);
+            blackboard.SetValue("JumpChargeMinSale", JumpChargeMinScale);
             return blackboard;
         }
     }

@@ -72,7 +72,7 @@ namespace RidersRuntime.VehicleSystem
 
         void SetJumpChargeFillAmount(GetPlayerInfo.PlayerInfo playerInfo)
         {
-            float fillAmount = Mathf.Clamp01(playerInfo.JumpCharge);
+            float fillAmount = Mathf.InverseLerp(playerInfo.JumpChargeMinScale, 1f, playerInfo.JumpCharge);
             jumpChargeBarImage.fillAmount = fillAmount;
 
             // Hide the jump charge bar if the charge is zero
