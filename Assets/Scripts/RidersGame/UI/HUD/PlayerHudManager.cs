@@ -6,8 +6,8 @@ namespace RidersRuntime.VehicleSystem
     [RequireComponent(typeof(GetPlayerInfo))]
     public class PlayerHUDManager : MonoBehaviour
     {
-        [SerializeField] private Image boostBarImage;
-        [SerializeField] private Transform jumpChargeBarTransform;
+        private Image boostBarImage;
+        private Transform jumpChargeBarTransform;
         private Image jumpChargeBarImage;
         private GetPlayerInfo playerInfoSource;
 
@@ -20,24 +20,40 @@ namespace RidersRuntime.VehicleSystem
                 return;
             }
 
-            if (boostBarImage == null)
+            // Find InGameHud on the parent
+            Transform inGameHud = transform.parent.Find("InGameHUD");
+            if (inGameHud == null)
             {
-                Debug.LogError("Boost Bar Image not assigned in the inspector.");
+                Debug.LogError("InGameHud not found on the parent.");
                 return;
             }
 
-            if (jumpChargeBarTransform == null)
+            // Boost Bar
+            Transform boostGauge = inGameHud.Find("BoostGauge");
+            if (boostGauge == null)
             {
-                Debug.LogError("Jump Charge Bar Transform not assigned in the inspector.");
+                Debug.LogError("BoostGauge not found in InGameHUD.");
                 return;
             }
-            else
+            Transform boostBar = boostGauge.Find("Bar");
+            if (boostBar == null || (boostBarImage = boostBar.GetComponent<Image>()) == null)
             {
-                jumpChargeBarImage = jumpChargeBarTransform.Find("Bar").GetComponent<Image>();
-                if (jumpChargeBarImage == null)
-                {
-                    Debug.LogError("Jump Charge Bar Transform does not have a Bar Image component.");
-                }
+                Debug.LogError("Bar Image not found in BoostGauge.");
+                return;
+            }
+
+            // Jump Charge Bar
+            jumpChargeBarTransform = inGameHud.Find("JumpCharge");
+            if (jumpChargeBarTransform == null)
+            {
+                Debug.LogError("JumpCharge not found in InGameHUD.");
+                return;
+            }
+            Transform jumpBar = jumpChargeBarTransform.Find("Bar");
+            if (jumpBar == null || (jumpChargeBarImage = jumpBar.GetComponent<Image>()) == null)
+            {
+                Debug.LogError("Bar Image not found in JumpCharge.");
+                return;
             }
         }
 
