@@ -31,7 +31,7 @@ namespace RidersRuntime.Analytics
 
     public struct FileNames
     {
-        public const string InputCsv = "InputHistory.csv";
-        public const string InputJson = "InputHistory.json";
+        public const string InputCsv = "InputHistory";
+        public const string InputJson = "InputHistory";
     }
 }

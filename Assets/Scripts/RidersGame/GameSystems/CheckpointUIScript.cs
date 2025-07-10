@@ -9,10 +9,18 @@ namespace RidersRuntime.GameSystems
 
         private void Start()
         {
-            trackCheckpoints.OnPlayerCorrectCheckpoint += OnCorrect;
-            trackCheckpoints.OnPlayerIncorrectCheckpoint += OnIncorrect;
+            BindTrackCheckpoints(trackCheckpoints);
+        }
 
-            Hide();
+        public void BindTrackCheckpoints(TrackCheckpoints comp)
+        {
+            if (comp != null)
+            {
+                trackCheckpoints = comp;
+                trackCheckpoints.OnPlayerCorrectCheckpoint += OnCorrect;
+                trackCheckpoints.OnPlayerIncorrectCheckpoint += OnIncorrect;
+                Hide();
+            }
         }
 
         private void OnCorrect(object sender, System.EventArgs e)

@@ -29,4 +29,4 @@ MonoBehaviour:
     BoostGaugePerCharge: 100
     ForceAccel: 0
     JumpCharge: 0.1
-    JumpForce: 0
+    JumpForce: 300
