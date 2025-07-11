@@ -10,12 +10,7 @@ namespace RidersRuntime
 
         // tutorial assumes that only one player exists at all times. there is no reason for there to be multiple.
 
-        private TutorialManager tutorialManager;
-
-        private void Awake()
-        {
-            tutorialManager = GameObject.Find("Tutorial Manager").GetComponent<TutorialManager>();
-        }
+        public TutorialManager tutorialManager;
 
         void Start()
         {
