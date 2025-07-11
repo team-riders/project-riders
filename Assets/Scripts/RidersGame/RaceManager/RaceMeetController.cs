@@ -21,7 +21,7 @@ namespace RidersRuntime.RaceManager
         int currentRaceIndex = 0;
 
         // Reference to the current RaceEventController
-        RaceEventController currentRaceEventController;
+        public RaceEventController currentRaceEventController;
 
         Action<object> onRaceComplete;
 
