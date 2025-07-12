@@ -1,4 +1,5 @@
 using RidersRuntime.Input;
+using RidersRuntime.VehicleSystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +9,17 @@ namespace RidersRuntime.StuntSystem
 {
     [RequireComponent(typeof(PlayerInput))]
     [RequireComponent(typeof(StuntSystem))]
+    [RequireComponent(typeof(RideMovementController))]
+    //josh
+    [RequireComponent(typeof(BoostController))]
+    //josh
     public class StuntPeripheralInputHandler : MonoBehaviour
     {
+        RideMovementController rideMovementController;
         StuntSystem stuntSystem;
+        //josh
+        BoostController boostController;
+        //josh
         IInput playerPeripheralInput;
         public bool isInRecordingMode = false;
         private Queue<TimedInput> inputBuffer = new();
@@ -22,6 +31,8 @@ namespace RidersRuntime.StuntSystem
         {
             playerPeripheralInput = GetComponent<PlayerInput>();
             stuntSystem = GetComponent<StuntSystem>();
+            rideMovementController = GetComponent<RideMovementController>();
+            boostController = GetComponent<BoostController>();
         }
 
         public void Initialize()
@@ -33,6 +44,24 @@ namespace RidersRuntime.StuntSystem
         {
             if (!isInRecordingMode) return;
 
+            var state = rideMovementController.GetCurrentMovementState();
+            switch (state)
+            {
+                case GroundMovementState:
+                    //josh
+                    boostController.IncreaseGauge(stuntSystem.ReturnRewardOnLanding());
+                    break;
+                case AirborneMovementState:
+                    RecordInputs();
+                    break;
+                case GrindingMovementState:
+                    RecordInputs();
+                    break;
+            }
+        }
+
+        void RecordInputs()
+        {
             // Prune old inputs
             while (inputBuffer.Count > 0 && Time.time - inputBuffer.Peek().time > Values.timeWindowMax)
                 inputBuffer.Dequeue();
@@ -50,7 +79,6 @@ namespace RidersRuntime.StuntSystem
                 HandleStuntKeyPress(newStuntKey);
             }
             previousFrameKeys = keys;
-
         }
 
         void HandleStuntKeyPress(string key)
@@ -59,7 +87,6 @@ namespace RidersRuntime.StuntSystem
             stuntSystem.OnStuntRequestTimed(new List<TimedInput>(inputBuffer), currentStunt);
             currentStunt = StuntType.None;
         }
-
 
         List<string> GetCurrentKeys(ActorInputData input)
         {

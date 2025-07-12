@@ -23380,6 +23380,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   racersList:
   - {fileID: 1210912207}
+  NumberOfLaps: 3
+  autoStart: 1
 --- !u!4 &810171427
 Transform:
   m_ObjectHideFlags: 0

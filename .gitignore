@@ -99,3 +99,6 @@ fmod_editor.log
 # Ignore Logs folder
 /[Aa]ssets/[Ll]ogs.meta
 /[Aa]ssets/[Ll]ogs/
+
+# Ignore profiler snapshots folder
+/Snapshots/

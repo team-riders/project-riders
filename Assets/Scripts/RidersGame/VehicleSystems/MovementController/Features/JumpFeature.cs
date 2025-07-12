@@ -7,10 +7,10 @@ namespace RidersRuntime.VehicleSystem
 
     public class JumpFeature : DataPipelineStep<Blackboard>
     {
-        const float JumpForce = 300f;
+        const float JumpForce = 600f;
         const int JumpBoostHoldFrameThreshold = 180;
         const float JumpSpeedBoost = 0.5f;
-        const float JumpBoostHoldMaxDuration = 120f;
+        const float JumpBoostHoldMaxDuration = 60f;
         const float JumpChargeMinScale = 0.5f;
         const float JumpChargeMaxScale = 1.0f;
 
@@ -56,7 +56,9 @@ namespace RidersRuntime.VehicleSystem
                 localJumpCharge = 0f;
             }
 
+            blackboard.SetValue("JumpCharge", localJumpCharge);
             blackboard.SetValue("JumpIntention", false);
+            blackboard.SetValue("JumpChargeMinSale", JumpChargeMinScale);
             return blackboard;
         }
     }

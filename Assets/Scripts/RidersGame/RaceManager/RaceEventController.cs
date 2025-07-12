@@ -1,5 +1,7 @@
 using RidersRuntime.Data;
+using RidersRuntime.GameSystems;
 using RidersRuntime.Input;
+using RidersRuntime.VehicleSystem;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,6 +16,7 @@ namespace RidersRuntime.RaceManager
         // timer Class here
 
         // Checkpoints class here
+        private TrackCheckpoints checkpoints;
 
         // Pause controller here
 
@@ -37,6 +40,23 @@ namespace RidersRuntime.RaceManager
             // Prepare the race transition sequence
             // Play the sequence
 
+            // Turn off all of the racer inputs here
+            foreach (RacerComponent racer in racers)
+            {
+                if (racer)
+                {
+                    // Disable the player input component
+                    racer.GetComponent<RideMovementController>().canMove = false;
+                }
+            }
+
+            checkpoints = new GameObject("TrackCheckpoints").AddComponent<TrackCheckpoints>();
+            // Need to do a late bind here
+            GameObject.Find("CheckpointEvent").GetComponent<CheckpointUIScript>().BindTrackCheckpoints(checkpoints);
+            GameObject.FindFirstObjectByType<stopwatchScript>().BindTrackCheckpoints(checkpoints);
+            checkpoints.SetupRacers(racers);
+            checkpoints.SetupRace(raceEvent);
+
             LoadRacers();
         }
 
@@ -51,12 +71,15 @@ namespace RidersRuntime.RaceManager
 
             foreach (RacerComponent racer in racers)
             {
-                if (racer.isPlayer)
+                if (racer)
                 {
                     // Enable the camera
                     racer.GetComponent<RidersRuntime.Input.PlayerInput>().GetPlayerInputComponent().GetComponent<UnityInputWrapper>().SetCameraMode(true);
                 }
             }
+
+            // For the time being, because we haven't actually implemented a proper countdown system, we need to start the race manually here
+            // StartRace();
         }
 
 
@@ -76,6 +99,17 @@ namespace RidersRuntime.RaceManager
             // Run these two in sequence
             // 1. Enable split the camera system
             // 2. Enable the UI LAST
+
+            foreach (RacerComponent racer in racers)
+            {
+                if (racer.isPlayer)
+                {
+                    // Enable the player input component
+                    racer.GetComponent<RideMovementController>().canMove = true;
+                }
+            }
+
+            checkpoints.StartRace();
         }
 
         // Triggered by the checkpoint system or timer waiting for the last person to finish
@@ -84,6 +118,9 @@ namespace RidersRuntime.RaceManager
         {
             // Disable the racer input
             // Change to "passive" AI and disable some stuff.
+            racer.GetComponent<RideMovementController>().canMove = false;
+
+            // If all racers have finsihed, then we can run the FinishRace commmand
         }
 
         public void FinishRace()
