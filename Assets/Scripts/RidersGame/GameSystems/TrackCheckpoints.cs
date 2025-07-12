@@ -38,6 +38,7 @@ namespace RidersRuntime.RaceManager
         public event EventHandler OnLapCompleted;
         public event EventHandler OnRaceCompleted;
         private List<CheckpointSingle> checkpointSingleList;
+        private stopwatchScript _stopwatch;
 
         [SerializeField]
         private List<RacerComponent> racersList;
@@ -46,6 +47,8 @@ namespace RidersRuntime.RaceManager
         private int NumberOfLaps = 3;
 
         public bool autoStart = false;
+        private Dictionary<int, Rigidbody> riderRigidbodies = new Dictionary<int, Rigidbody>();
+        private stopwatchScript _cachedStopwatch;
 
         private void Start()
         {
@@ -69,6 +72,17 @@ namespace RidersRuntime.RaceManager
             }
         }
 
+        private void Update()
+        {
+            var stopwatch = FindFirstObjectByType<stopwatchScript>();
+            if (stopwatch != null && stopwatch.IsCountdownComplete)
+            {
+                FreezeAllRacers(false);
+                // Optional: disable this Update check after unfreezing
+                enabled = false;
+            }
+        }
+
         // Grabs all the racers information here
         public void SetupRacers(List<RacerComponent> racers)
         {
@@ -82,6 +96,11 @@ namespace RidersRuntime.RaceManager
                 if (!ridersProgression.ContainsKey(racer.racerID))
                 {
                     ridersProgression.Add(racer.racerID, new RiderProgression());
+
+                    if (racer.TryGetComponent<Rigidbody>(out var rb))
+                    {
+                        riderRigidbodies[racer.racerID] = rb;
+                    }
                 }
 
                 // Ensure that they are actually in the list of racers
@@ -90,6 +109,8 @@ namespace RidersRuntime.RaceManager
                     racersList.Add(racer);
                 }
             }
+
+            FreezeAllRacers(true);
         }
 
         public void SetupRace(RaceEventConfiguration eventConfiguration)
@@ -99,6 +120,12 @@ namespace RidersRuntime.RaceManager
 
         public void StartRace()
         {
+
+            var stopwatch = FindFirstObjectByType<stopwatchScript>();
+            if (stopwatch == null || stopwatch.IsCountdownComplete)
+            {
+                FreezeAllRacers(false);
+            }
             foreach (var progress in ridersProgression.Values)
             {
                 progress.RaceTime = Time.time;
@@ -187,6 +214,44 @@ namespace RidersRuntime.RaceManager
         public float GetRaceTime()
         {
             return ridersProgression[0].RaceTime;
+        }
+
+        private void OnEnable()
+        {
+            _cachedStopwatch = FindFirstObjectByType<stopwatchScript>();
+            if (_cachedStopwatch != null)
+            {
+                _cachedStopwatch.OnCountdownComplete += HandleCountdownComplete;
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (_cachedStopwatch != null)
+            {
+                _cachedStopwatch.OnCountdownComplete -= HandleCountdownComplete;
+            }
+        }
+
+        private void HandleCountdownComplete()
+        {
+            FreezeAllRacers(false);
+        }
+
+        private void FreezeAllRacers(bool freeze)
+        {
+            foreach (var kvp in riderRigidbodies)
+            {
+                if (kvp.Value != null)
+                {
+                    kvp.Value.isKinematic = freeze;
+                    if (freeze)
+                    {
+                        kvp.Value.linearVelocity = Vector3.zero;
+                        kvp.Value.angularVelocity = Vector3.zero;
+                    }
+                }
+            }
         }
     }
 }
