@@ -15,7 +15,7 @@ MonoBehaviour:
   _vehicleStats:
     TopSpeed: 20
     Acceleration: 10
-    ReverseSpeed: 5
+    ReverseSpeed: 1
     ReverseAcceleration: 0.25
     AccelerationCurve: 0.5
     Braking: 10
@@ -29,4 +29,4 @@ MonoBehaviour:
     BoostGaugePerCharge: 100
     ForceAccel: 0
     JumpCharge: 0.1
-    JumpForce: 30
+    JumpForce: 300

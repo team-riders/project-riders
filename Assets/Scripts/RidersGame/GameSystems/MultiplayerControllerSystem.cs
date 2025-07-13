@@ -70,10 +70,32 @@ namespace RidersRuntime.GameSystems
             if (InputUser.all.Count > 0)
             {
                 InputUser player1 = InputUser.all[0];
-                // Check if the player has a Keyboard&Mouse or Gamepad
-                if ((!SinglePlayerMode && Player1SecondaryControls && player1.pairedDevices.Count == 1) || SinglePlayerMode)
+                if (!SinglePlayerMode && Player1SecondaryControls)
                 {
-                    players[player1.index].neverAutoSwitchControlSchemes = false;
+                    // All keyboard and mouse devices are paired to player 1
+
+                    if (GetControlSchemeByDeviceName(targetDevice.displayName) == "Keyboard&Mouse")
+                    {
+                        inputDevices.Add(targetDevice);
+                        InputUser.PerformPairingWithDevice(targetDevice, player1);
+                        player1.ActivateControlScheme(GetControlSchemeByDeviceName(targetDevice.displayName));
+                        Debug.Log($"Bound secondary controls {targetDevice.displayName} to player {player1.index}");
+                        return;
+
+                    }
+                    else if (GetControlSchemeByDeviceName(targetDevice.displayName) == "Gamepad")
+                    {
+                        if (player1.controlScheme.Value.name == "Gamepad")
+                        {
+                            Debug.Log($"Player 1 already has a gamepad, ignoring {targetDevice.displayName}");
+                        }
+                    }
+                    Debug.Log($"Same type of device found, ignoring for player {player1.index}");
+                }
+
+                if (SinglePlayerMode)
+                {
+                    // bind everything to player 1 lmao
                     inputDevices.Add(targetDevice);
                     InputUser.PerformPairingWithDevice(targetDevice, player1);
                     player1.ActivateControlScheme(GetControlSchemeByDeviceName(targetDevice.displayName));
@@ -147,6 +169,7 @@ namespace RidersRuntime.GameSystems
 
         public void CanJoin(bool canJoin)
         {
+            return;
             if (canJoin)
             {
                 joinAction.Enable();

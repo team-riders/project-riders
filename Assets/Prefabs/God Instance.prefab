@@ -117,4 +117,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5a1c6449834543468a66ad5204f39c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventSystemPrefab: {fileID: 0}
