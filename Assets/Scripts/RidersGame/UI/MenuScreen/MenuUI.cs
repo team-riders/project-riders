@@ -51,7 +51,7 @@ namespace RidersRuntime.UI
 
         public async void LoadTutorial()
         {
-            int index = SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/environments/map_rooftop.unity");
+            int index = SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/environments/map_rooftop_tutorialtest.unity");
             await SceneLoader.PrepareScene(index);
         }
     }
