@@ -6,6 +6,7 @@ using RidersRuntime.RaceManager;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 namespace RidersRuntime
 {
@@ -72,8 +73,18 @@ namespace RidersRuntime
             {
                 m_actionMap.FindAction(ButtonNamesShort.BoostRam).Enable();
             }
+            if (popUpIndex >= 7)
+            {
+                LoadMainMenu();
+            }
 
         }
-        
+
+        public async void LoadMainMenu()
+        {
+            int index = SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/prod/TitleScreen.unity");
+            await SceneLoader.PrepareScene(index);
+        }
+
     }
 }
