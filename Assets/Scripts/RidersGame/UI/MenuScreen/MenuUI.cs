@@ -48,7 +48,13 @@ namespace RidersRuntime.UI
             }
             hostController.RequestRaceSetup(selectedMeet);
         }
-
+		
+		public void QuitGame()
+		{
+			Application.Quit();
+			Debug.Log("Congrats, you closed the game. Yay!");
+		}
+		
         public async void LoadTutorial()
         {
             int index = SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/environments/map_rooftop_tutorialtest.unity");
