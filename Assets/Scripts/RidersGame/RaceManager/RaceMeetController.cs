@@ -89,7 +89,24 @@ namespace RidersRuntime.RaceManager
 
             for (int i = 0; i < racers.Count; i++)
             {
-                GameObject prefab = Resources.Load<GameObject>("Prefabs/PlayerSet");
+                var character = racers[i].rider.characterModelPrefab.ToString().ToLowerInvariant();
+                GameObject prefab;
+
+                // This is a temporary solution to handle different character models, sufficient for build for now
+                if (character.Contains("frog"))
+                {
+                    prefab = Resources.Load<GameObject>("Prefabs/PlayerSetFrog");
+                }
+                else if (character.Contains("goth"))
+                {
+                    prefab = Resources.Load<GameObject>("Prefabs/PlayerSetGoth");
+                }
+                else
+                {
+                    prefab = Resources.Load<GameObject>("Prefabs/PlayerSet");
+                }
+
+                
                 GameObject obj = Instantiate(prefab);
                 RacerComponent rc = obj.GetComponentInChildren<RacerComponent>();
                 rc.SetupRider(racers[i]);
