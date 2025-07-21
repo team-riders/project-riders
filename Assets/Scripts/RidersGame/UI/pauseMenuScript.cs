@@ -1,4 +1,6 @@
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class pauseMenuScript : MonoBehaviour
 {
@@ -14,7 +16,9 @@ public class pauseMenuScript : MonoBehaviour
         if (_instance != null && _instance != this)
         {
             Destroy(this.gameObject);
-        } else {
+        }
+        else
+        {
             _instance = this;
         }
     }
@@ -32,5 +36,11 @@ public class pauseMenuScript : MonoBehaviour
         isPaused = !isPaused;
         pauseGame.SetActive(isPaused);
         Time.timeScale = isPaused ? 0 : 1;
+    }
+
+    public void MainMenu()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene("MainMenu");
     }
 }

@@ -120,7 +120,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3816692441347358587}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8603716614914982057}
+        m_TargetAssemblyTypeName: pauseMenuScript, RidersRuntime
+        m_MethodName: TogglePause
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
 --- !u!1 &1713579419193635866
 GameObject:
   m_ObjectHideFlags: 0
@@ -515,7 +527,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1468209381279284618}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8603716614914982057}
+        m_TargetAssemblyTypeName: pauseMenuScript, RidersRuntime
+        m_MethodName: MainMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
 --- !u!1 &5061642866823628734
 GameObject:
   m_ObjectHideFlags: 0
@@ -533,7 +557,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1346075015139913253
 RectTransform:
   m_ObjectHideFlags: 0
@@ -606,7 +630,7 @@ GameObject:
   - component: {fileID: 5010872546037121172}
   - component: {fileID: 7942189749241134487}
   - component: {fileID: 4776734967521443736}
-  - component: {fileID: 2396608681234747359}
+  - component: {fileID: 8603716614914982057}
   m_Layer: 5
   m_Name: PauseMenu
   m_TagString: Untagged
@@ -697,7 +721,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &2396608681234747359
+--- !u!114 &8603716614914982057
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -706,7 +730,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5555874350687172733}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd7fd48c95142c640a0c96208fd53679, type: 3}
+  m_Script: {fileID: 11500000, guid: 220c96f85e608c14f900b81ca74d06d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   pauseGame: {fileID: 5061642866823628734}
