@@ -19,9 +19,11 @@ public class AIInput : BaseInput
     public float distanceToTarget;
     public Transform targetNode;
     private Node currentJumpNode;
+    private GameObject CountdownCanvas;
     void Awake()
     {
         baseVehicle = GetComponent<RideMovementController>();
+        CountdownCanvas = GameObject.Find("CountdownCanvas");
     }
     
     ActorInputData inputData = new();
@@ -56,6 +58,7 @@ public class AIInput : BaseInput
         float accelerate = distanceToTarget > nodeAccelerateThreshold ? 1f : 0f;
         float brake = distanceToTarget < nodeCloseThreshold ? 1f : 0f;
         
+        if(CountdownCanvas.activeSelf) {return new ActorInputData{};}
         return new ActorInputData
         {
             Accelerate = accelerate,
