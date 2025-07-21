@@ -14,6 +14,7 @@ namespace RidersRuntime.PauseSystem
         private static pauseMenuScript _instance;
 
         public static pauseMenuScript Instance { get { return _instance; } }
+        private RaceHostController raceHostController;
 
 
         private void Awake()
@@ -52,6 +53,7 @@ namespace RidersRuntime.PauseSystem
             await SceneLoader.PrepareScene(GameScene.MainMenu);
             pauseGame.SetActive(false);
             Time.timeScale = 1;
+            raceHostController.ClearSession();
         }
 
         public async void ResetMap()

@@ -45,11 +45,7 @@ namespace RidersRuntime.GameSystems
                 Destroy(sessionRaceMeetController.gameObject);
                 sessionRaceMeetController = null;
             }
-
-            if (sessionMeet != null)
-            {
                 sessionMeet = null;
-            }
         }
 
         public async void RequestRaceSetup(RaceMeetConfiguration meetConfiguration)
