@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Prefabs/Checkpoints.meta
 guid: fbf0fd179efa7934ea0c1fdeb7379e24
+========
+guid: ff4a0fecf06274f49b839a2ce0665305
+>>>>>>>> dev:Assets/Scripts/Common.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

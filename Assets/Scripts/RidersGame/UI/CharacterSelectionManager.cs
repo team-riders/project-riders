@@ -13,8 +13,6 @@ namespace RidersRuntime.GameSystems
 {
     public class CharacterSelectionManager : MonoBehaviour
     {
-        Dictionary<int, RiderSelection> playerRiderSelection = new();
-
         RaceMeetConfiguration sessionMeet;
 
         public List<GameObject> characterPositions = new();
@@ -33,6 +31,27 @@ namespace RidersRuntime.GameSystems
 
         Dictionary<int, IEnumerator> charIndexOperationQueue = new();
         MultiDeviceControllerSystem multiDeviceController;
+        Dictionary<int, RiderSelection> playerRiderSelection = new();
+        
+        private static Dictionary<int, RiderSelection> _storedSelections;
+        private static CharacterSelectionManager _instance;
+        public static CharacterSelectionManager Instance => _instance;
+
+        private void Awake()
+        {
+            if (_instance != null && _instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            _instance = this;
+        }
+
+        public Dictionary<int, RiderSelection> GetCurrentSelections()
+        {
+            return new Dictionary<int, RiderSelection>(playerRiderSelection);
+        }
+
         void Start()
         {
             // Check if god exists
@@ -44,6 +63,55 @@ namespace RidersRuntime.GameSystems
                 BindAllPlayersUI();
             }
             // multiDeviceController.CanJoin(true);
+            
+            if (_storedSelections != null)
+            {
+                playerRiderSelection = new Dictionary<int, RiderSelection>(_storedSelections);
+                foreach (var entry in playerRiderSelection)
+                {
+                    StartCoroutine(ShowCharacterSelected(entry.Key));
+                }
+            }
+        }
+
+        public static void StoreSelectionsForReset(Dictionary<int, RiderSelection> selections)
+        {
+            _storedSelections = new Dictionary<int, RiderSelection>(selections);
+        }
+
+        public static Dictionary<int, RiderSelection> GetStoredSelections()
+        {
+            return _storedSelections != null 
+                ? new Dictionary<int, RiderSelection>(_storedSelections) 
+                : null;
+        }
+        public static Dictionary<int, RiderSelection> StoredSelections
+        {
+            get => _storedSelections != null ? new Dictionary<int, RiderSelection>(_storedSelections) : null;
+            set => _storedSelections = value != null ? new Dictionary<int, RiderSelection>(value) : null;
+        }
+
+        public void RestoreSelections(Dictionary<int, RiderSelection> savedSelections)
+        {
+            if (savedSelections == null) return;
+
+            playerRiderSelection = new Dictionary<int, RiderSelection>(savedSelections);
+            StoredSelections = savedSelections;
+
+            foreach (var entry in playerRiderSelection)
+            {
+                StartCoroutine(ShowCharacterSelected(entry.Key));
+            }
+        }
+
+        public void StoreSelectionsForReset()
+        {
+            _storedSelections = new Dictionary<int, RiderSelection>(playerRiderSelection);
+        }
+
+        public void ClearStoredSelections()
+        {
+            _storedSelections = null;
         }
 
         public void GenerateCharacterSelection()

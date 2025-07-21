@@ -6,7 +6,6 @@ namespace RidersRuntime.RaceManager
 {
     public class stopwatchScript : MonoBehaviour
     {
-        public static bool IsCountdownComplete { get; private set; } = false;
         public GameObject CountdownCanvas;
         public GameObject LapTimeCanvas;
         [SerializeField] TextMeshProUGUI timerText;
@@ -18,6 +17,9 @@ namespace RidersRuntime.RaceManager
         bool isRunning = false;
         float countdownTime = 5;
         bool countdownComplete = false;
+        public bool IsCountdownComplete => countdownComplete;
+        public event Action OnCountdownComplete;
+        
 
         // Subscribe to OnLapCompleted + OnRaceCompleted event on start
         private void Start()
@@ -45,6 +47,19 @@ namespace RidersRuntime.RaceManager
             // if (pauseMenuScript.Instance != null && pauseMenuScript.Instance.isPaused)
             //     return;
 
+                // Add null checks at the start
+            if (timerText == null || countdownText == null || lapTimeText == null || raceTimeText == null)
+            {
+                Debug.LogError("One or more text elements are not assigned!");
+                return;
+            }
+
+            if (CountdownCanvas == null || LapTimeCanvas == null)
+            {
+                Debug.LogError("Canvas references not assigned!");
+                return;
+            }
+
             // Handle countdown
             if (!countdownComplete)
             {
@@ -69,6 +84,7 @@ namespace RidersRuntime.RaceManager
                     countdownText.text = "";
                     CountdownCanvas.SetActive(false);
                     countdownComplete = true;
+                    OnCountdownComplete?.Invoke();
                     GameObject.FindFirstObjectByType<RaceMeetController>().currentRaceEventController.StartRace();
                     startTimer();
 
@@ -145,6 +161,11 @@ namespace RidersRuntime.RaceManager
 
         public void displayTimer()
         {
+            if (timerText == null) 
+            {
+                Debug.LogError("timerText is not assigned!");
+                return;
+            }
             int minutes = Mathf.FloorToInt(elapsedTime / 60);
             int seconds = Mathf.FloorToInt(elapsedTime % 60);
             int milliseconds = Mathf.FloorToInt((elapsedTime * 1000) % 1000);
