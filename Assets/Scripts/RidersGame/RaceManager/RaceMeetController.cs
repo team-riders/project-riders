@@ -31,6 +31,7 @@ namespace RidersRuntime.RaceManager
         {
             // SetupNextRace();
         }
+
         public void AssignFields(RaceMeetConfiguration meetConfiguration, List<RiderSelection> selectedRiders, Action<object> callback)
         {
             raceMeet = meetConfiguration;
@@ -68,6 +69,14 @@ namespace RidersRuntime.RaceManager
             }
 
             SetupRace();
+        }
+
+        // function didn't exist before, should be used to return to title screen
+        // may or may not require use of onRaceComplete
+        // no clue how to handle Action<object> stuff though
+        public void FinishSession()
+        {
+            //onRaceComplete();
         }
 
         void SetupRace()
