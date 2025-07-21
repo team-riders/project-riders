@@ -1,46 +1,51 @@
-using System.Threading.Tasks;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+using RidersRuntime.Data;
 
-public class pauseMenuScript : MonoBehaviour
+
+namespace RidersRuntime.PauseSystem
 {
-    public GameObject pauseGame;
-    public bool isPaused = false;
-    private static pauseMenuScript _instance;
-
-    public static pauseMenuScript Instance { get { return _instance; } }
-
-
-    private void Awake()
+    using UnityEngine;
+    public class pauseMenuScript : MonoBehaviour
     {
-        if (_instance != null && _instance != this)
+        public GameObject pauseGame;
+        public bool isPaused = false;
+        private static pauseMenuScript _instance;
+
+        public static pauseMenuScript Instance { get { return _instance; } }
+
+
+        private void Awake()
         {
-            Destroy(this.gameObject);
+            if (_instance != null && _instance != this)
+            {
+                Destroy(this.gameObject);
+            }
+            else
+            {
+                _instance = this;
+            }
         }
-        else
+
+        void Update()
         {
-            _instance = this;
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                TogglePause();
+            }
         }
-    }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        public void TogglePause()
         {
-            TogglePause();
+            isPaused = !isPaused;
+            pauseGame.SetActive(isPaused);
+            Time.timeScale = isPaused ? 0 : 1;
         }
-    }
 
-    public void TogglePause()
-    {
-        isPaused = !isPaused;
-        pauseGame.SetActive(isPaused);
-        Time.timeScale = isPaused ? 0 : 1;
-    }
-
-    public void MainMenu()
-    {
-        Time.timeScale = 1;
-        SceneManager.LoadScene("MainMenu");
+        public async void MainMenu()
+        {
+            await SceneLoader.PrepareScene(GameScene.MainMenu);
+            isPaused = !isPaused;
+            pauseGame.SetActive(isPaused);
+            Time.timeScale = isPaused ? 0 : 1;
+        }
     }
 }
