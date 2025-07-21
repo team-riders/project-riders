@@ -1,4 +1,6 @@
 using RidersRuntime.Data;
+using RidersRuntime.GameSystems;
+using RidersRuntime.RaceManager;
 
 
 namespace RidersRuntime.PauseSystem
@@ -32,6 +34,10 @@ namespace RidersRuntime.PauseSystem
             {
                 TogglePause();
             }
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                ResetMap();
+            }
         }
 
         public void TogglePause()
@@ -46,6 +52,35 @@ namespace RidersRuntime.PauseSystem
             await SceneLoader.PrepareScene(GameScene.MainMenu);
             pauseGame.SetActive(false);
             Time.timeScale = 1;
+        }
+
+        public async void ResetMap()
+        {
+            var selectionManager = FindFirstObjectByType<CharacterSelectionManager>();
+            if (selectionManager != null)
+            {
+                CharacterSelectionManager.StoreSelectionsForReset(
+                    selectionManager.GetCurrentSelections());
+            }
+            var meetController = FindFirstObjectByType<RaceMeetController>();
+            if (meetController != null)
+            {
+                await meetController.ResetCurrentRace();
+            }
+            else
+            {
+                int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+                await SceneLoader.PrepareScene(currentSceneIndex);
+            }
+            var storedSelections = CharacterSelectionManager.GetStoredSelections();
+            if (storedSelections != null)
+            {
+                var newManager = FindFirstObjectByType<CharacterSelectionManager>();
+                if (newManager != null)
+                {
+                    newManager.RestoreSelections(storedSelections);
+                }
+            }
         }
     }
 }

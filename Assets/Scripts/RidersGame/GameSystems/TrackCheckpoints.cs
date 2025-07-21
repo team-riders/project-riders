@@ -1,11 +1,15 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using RidersRuntime.Data;
 using RidersRuntime.GameSystems;
 using UnityEngine;
+using RidersRuntime.PauseSystem;
 
 namespace RidersRuntime.RaceManager
 {
+
     public class RiderProgression
     {
         public int NextCheckpointSingleIndex { get; set; }
@@ -49,6 +53,7 @@ namespace RidersRuntime.RaceManager
         public bool autoStart = false;
         private Dictionary<int, Rigidbody> riderRigidbodies = new Dictionary<int, Rigidbody>();
         private stopwatchScript _cachedStopwatch;
+  
 
         private void Start()
         {
@@ -183,7 +188,7 @@ namespace RidersRuntime.RaceManager
                     OnLapCompleted?.Invoke(this, EventArgs.Empty);
                     Debug.Log($"Lap {progress.CurrentLap - 1} completed by Player {racerId} in {progress.CurrentLapTime}");
                     progress.StartNewLap();
-                    if (progress.CurrentLap <= NumberOfLaps) // Assuming 3 laps total
+                    if (progress.CurrentLap <= 3) // Assuming 3 laps total
                     {
                         progress.StartNewLap();
                     }
@@ -195,6 +200,8 @@ namespace RidersRuntime.RaceManager
                         Debug.Log($"Race completed by {racerId} in {progress.RaceTime}");
                         // FIX THIS ASAP
                         GameObject.FindFirstObjectByType<RaceMeetController>().currentRaceEventController.FinishSingleRacer(racersList[racerId]);
+
+                        StartCoroutine(DelayedReset());
                     }
                 }
             }
@@ -203,7 +210,12 @@ namespace RidersRuntime.RaceManager
                 // Wrong way UI 
                 OnPlayerIncorrectCheckpoint?.Invoke(this, EventArgs.Empty);
             }
+        }
 
+        private IEnumerator DelayedReset()
+        {
+            yield return new WaitForSeconds(3f);
+            pauseMenuScript.Instance?.ResetMap();
         }
 
         public float GetCurrentLapTime()

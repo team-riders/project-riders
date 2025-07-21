@@ -106,7 +106,7 @@ namespace RidersRuntime.RaceManager
                     prefab = Resources.Load<GameObject>("Prefabs/PlayerSet");
                 }
 
-                
+
                 GameObject obj = Instantiate(prefab);
                 RacerComponent rc = obj.GetComponentInChildren<RacerComponent>();
                 rc.SetupRider(racers[i]);
@@ -156,6 +156,28 @@ namespace RidersRuntime.RaceManager
             }
 
             return pooledRacers;
+        }
+        public void CleanupCurrentRace()
+        {
+            if (currentRaceEventController != null)
+            {
+                currentRaceEventController = null;
+            }
+
+            foreach (var racer in pooledRacers)
+            {
+                if (racer != null && racer.gameObject != null)
+                {
+                    Destroy(racer.gameObject);
+                }
+            }
+            pooledRacers.Clear();
+        }
+
+        public async Task ResetCurrentRace()
+        {
+            CleanupCurrentRace();
+            await StartNewMeetSession();
         }
     }
 }
