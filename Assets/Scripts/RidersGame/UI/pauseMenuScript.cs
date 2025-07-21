@@ -27,6 +27,7 @@ namespace RidersRuntime.PauseSystem
             {
                 _instance = this;
             }
+            raceHostController = FindFirstObjectByType<RaceHostController>();
         }
 
         void Update()
@@ -53,7 +54,7 @@ namespace RidersRuntime.PauseSystem
             await SceneLoader.PrepareScene(GameScene.MainMenu);
             pauseGame.SetActive(false);
             Time.timeScale = 1;
-            raceHostController.ClearSession();
+            raceHostController?.ClearSession();
         }
 
         public async void ResetMap()

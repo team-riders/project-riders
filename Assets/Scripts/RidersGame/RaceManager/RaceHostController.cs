@@ -46,7 +46,7 @@ namespace RidersRuntime.GameSystems
                 Destroy(sessionRaceMeetController.gameObject);
                 sessionRaceMeetController = null;
             }
-                sessionMeet = null;
+            sessionMeet = null;
         }
 
         public async void RequestRaceSetup(RaceMeetConfiguration meetConfiguration)
@@ -54,6 +54,7 @@ namespace RidersRuntime.GameSystems
             if (sessionMeet != null)
             {
                 Debug.LogError("A race is already in progress.");
+                Debug.LogError(sessionMeet);
                 return;
             }
             sessionMeet = meetConfiguration;
