@@ -4,6 +4,7 @@ using RidersRuntime.Data;
 namespace RidersRuntime.PauseSystem
 {
     using UnityEngine;
+    using UnityEngine.SceneManagement;
     public class pauseMenuScript : MonoBehaviour
     {
         public GameObject pauseGame;
@@ -43,9 +44,8 @@ namespace RidersRuntime.PauseSystem
         public async void MainMenu()
         {
             await SceneLoader.PrepareScene(GameScene.MainMenu);
-            isPaused = !isPaused;
-            pauseGame.SetActive(isPaused);
-            Time.timeScale = isPaused ? 0 : 1;
+            pauseGame.SetActive(false);
+            Time.timeScale = 1;
         }
     }
 }
