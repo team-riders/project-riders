@@ -1,7 +1,8 @@
-using System.Collections.Generic;
 using RidersRuntime.Data;
 using RidersRuntime.RaceManager;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace RidersRuntime.GameSystems
 {
@@ -114,9 +115,11 @@ namespace RidersRuntime.GameSystems
             await sessionRaceMeetController.StartNewMeetSession();
         }
 
+        // used as argument for AssignFields, becomes assigned to onRaceComplete in RaceMeetController.cs
         public void OnRaceMeetComplete(object obj)
         {
-
+            //int index = SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/prod/TitleScreen.unity");
+            //await SceneLoader.PrepareScene(index);
         }
 
         public static RiderSelection CreateUniqueBotRider(List<RiderSelection> alreadySelectedRiders)
