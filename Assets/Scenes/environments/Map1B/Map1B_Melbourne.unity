@@ -9919,6 +9919,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AIVehicle (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 79956059723849650, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3156988280528216135, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
       propertyPath: path
       value: 
@@ -9966,7 +9970,9 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 3252207651844000782, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
     - {fileID: 2334447815701744628, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
-    m_RemovedGameObjects: []
+    - {fileID: 5535595292975041852, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 4265852813474057462, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
@@ -16643,7 +16649,9 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 3252207651844000782, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
     - {fileID: 2334447815701744628, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
-    m_RemovedGameObjects: []
+    - {fileID: 5535595292975041852, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 4265852813474057462, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
@@ -23080,6 +23088,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AIVehicle
       objectReference: {fileID: 0}
+    - target: {fileID: 79956059723849650, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2307759658420552386, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -23147,7 +23159,9 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 3252207651844000782, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
     - {fileID: 2334447815701744628, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
-    m_RemovedGameObjects: []
+    - {fileID: 5535595292975041852, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 4265852813474057462, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
@@ -43970,6 +43984,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AIVehicle (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 79956059723849650, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3156988280528216135, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
       propertyPath: path
       value: 
@@ -44017,7 +44035,9 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 3252207651844000782, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
     - {fileID: 2334447815701744628, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
-    m_RemovedGameObjects: []
+    - {fileID: 5535595292975041852, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 4265852813474057462, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
@@ -46199,6 +46219,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AIVehicle (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 79956059723849650, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3156988280528216135, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
       propertyPath: path
       value: 
@@ -46246,7 +46270,9 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 3252207651844000782, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
     - {fileID: 2334447815701744628, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
-    m_RemovedGameObjects: []
+    - {fileID: 5535595292975041852, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 4265852813474057462, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
@@ -66064,6 +66090,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AIVehicle (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 79956059723849650, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3156988280528216135, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
       propertyPath: path
       value: 
@@ -66111,7 +66141,9 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 3252207651844000782, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
     - {fileID: 2334447815701744628, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
-    m_RemovedGameObjects: []
+    - {fileID: 5535595292975041852, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 4265852813474057462, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
@@ -66126,6 +66158,10 @@ PrefabInstance:
     - target: {fileID: 79956059723849650, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
       propertyPath: m_Name
       value: AIVehicle (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 79956059723849650, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3156988280528216135, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
       propertyPath: path
@@ -66174,7 +66210,9 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 3252207651844000782, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
     - {fileID: 2334447815701744628, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
-    m_RemovedGameObjects: []
+    - {fileID: 5535595292975041852, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 4265852813474057462, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf1e7614c9a8adc459bc404b45eb5383, type: 3}
