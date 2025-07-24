@@ -631,8 +631,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b69e359198f70448a1312c04b1c6e79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxAllowedSteps: 10
-  spawnDistance: 70
+  maxAllowedSteps: 30
+  spawnDistance: 10
   delayBeforeDeactivation: 0.5
   delayInbetweenDeactivations: 0.25
   trailGameobjectPrefab: {fileID: 5958868893178389055, guid: 4df8a8edd68f0fd478ce0a1f32c59e30, type: 3}
@@ -642,6 +642,19 @@ MonoBehaviour:
   minSurfaceDistance: 0
   maxSurfaceDistance: 2
   spawnInAir: 0
+--- !u!114 &654020246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 654020232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca82c2d6505c07147b83bc9a111f7bfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 654020234}
 --- !u!1001 &709623582
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -721,6 +734,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6302058510488382299, guid: 7512643b31f4ea44dbf2e51c116fec88, type: 3}
       insertIndex: -1
       addedObject: {fileID: 654020234}
+    - targetCorrespondingSourceObject: {fileID: 6302058510488382299, guid: 7512643b31f4ea44dbf2e51c116fec88, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 654020246}
   m_SourcePrefab: {fileID: 100100000, guid: 7512643b31f4ea44dbf2e51c116fec88, type: 3}
 --- !u!1 &782401376
 GameObject:
