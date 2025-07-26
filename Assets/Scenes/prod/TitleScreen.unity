@@ -1548,10 +1548,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 984468197}
+    m_SelectOnDown: {fileID: 1158183631}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 2
@@ -1566,7 +1566,7 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: 21300000, guid: 69309d3bcf60f0c418fdfc9167e497b3, type: 3}
     m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 21300000, guid: 69309d3bcf60f0c418fdfc9167e497b3, type: 3}
     m_DisabledSprite: {fileID: 21300000, guid: 5589744970fdba94c95fabb655ac5c60, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -1971,7 +1971,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   titleUI: {fileID: 614964629}
   menuUI: {fileID: 733359360}
-  menuDefaultButton: {fileID: 1223691907}
+  menuDefaultButton: {fileID: 0}
 --- !u!4 &718492677
 Transform:
   m_ObjectHideFlags: 0
@@ -2602,10 +2602,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 1843180449}
+    m_SelectOnDown: {fileID: 525311568}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 2
@@ -2620,7 +2620,7 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: 21300000, guid: 1274b43aa0d4d594ba870c7e9ad4dbf0, type: 3}
     m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 21300000, guid: 1274b43aa0d4d594ba870c7e9ad4dbf0, type: 3}
     m_DisabledSprite: {fileID: 21300000, guid: 489aa58d1c5994d4484909506fe0b9a8, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -2879,10 +2879,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 525311568}
+    m_SelectOnDown: {fileID: 1795445459}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 2
@@ -2897,7 +2897,7 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: 21300000, guid: 500fb8cc6df91b74fbb530e4ce88b988, type: 3}
     m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 21300000, guid: 500fb8cc6df91b74fbb530e4ce88b988, type: 3}
     m_DisabledSprite: {fileID: 21300000, guid: 9e54237f7969060419375c71c6c3f4fe, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -4082,7 +4082,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
+  m_FirstSelected: {fileID: 1795445455}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
 --- !u!4 &1562464500
@@ -4836,10 +4836,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 1158183631}
+    m_SelectOnDown: {fileID: 1843180449}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 2
@@ -4854,7 +4854,7 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: 21300000, guid: 54de6b8e27901e348a6d596786782134, type: 3}
     m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 21300000, guid: 54de6b8e27901e348a6d596786782134, type: 3}
     m_DisabledSprite: {fileID: 21300000, guid: adc7e12e2386bf2429fa11c8232e2949, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -4968,10 +4968,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 1795445459}
+    m_SelectOnDown: {fileID: 984468197}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 2
@@ -4986,7 +4986,7 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: 21300000, guid: 3efab15b9e9fee4429af838e76d381f6, type: 3}
     m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 21300000, guid: 3efab15b9e9fee4429af838e76d381f6, type: 3}
     m_DisabledSprite: {fileID: 21300000, guid: 6f6ee59409ef16844b67c11e1c82f969, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
