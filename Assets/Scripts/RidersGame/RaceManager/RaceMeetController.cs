@@ -31,6 +31,7 @@ namespace RidersRuntime.RaceManager
         {
             // SetupNextRace();
         }
+
         public void AssignFields(RaceMeetConfiguration meetConfiguration, List<RiderSelection> selectedRiders, Action<object> callback)
         {
             raceMeet = meetConfiguration;
@@ -70,6 +71,14 @@ namespace RidersRuntime.RaceManager
             SetupRace();
         }
 
+        // function didn't exist before, should be used to return to title screen
+        // may or may not require use of onRaceComplete
+        // no clue how to handle Action<object> stuff though
+        public void FinishSession()
+        {
+            //onRaceComplete();
+        }
+
         void SetupRace()
         {
             currentRaceEventController ??= new RaceEventController();
@@ -89,7 +98,24 @@ namespace RidersRuntime.RaceManager
 
             for (int i = 0; i < racers.Count; i++)
             {
-                GameObject prefab = Resources.Load<GameObject>("Prefabs/PlayerSet");
+                var character = racers[i].rider.characterModelPrefab.ToString().ToLowerInvariant();
+                GameObject prefab;
+
+                // This is a temporary solution to handle different character models, sufficient for build for now
+                if (character.Contains("frog"))
+                {
+                    prefab = Resources.Load<GameObject>("Prefabs/PlayerSetFrog");
+                }
+                else if (character.Contains("goth"))
+                {
+                    prefab = Resources.Load<GameObject>("Prefabs/PlayerSetGoth");
+                }
+                else
+                {
+                    prefab = Resources.Load<GameObject>("Prefabs/PlayerSet");
+                }
+
+
                 GameObject obj = Instantiate(prefab);
                 RacerComponent rc = obj.GetComponentInChildren<RacerComponent>();
                 rc.SetupRider(racers[i]);
@@ -139,6 +165,28 @@ namespace RidersRuntime.RaceManager
             }
 
             return pooledRacers;
+        }
+        public void CleanupCurrentRace()
+        {
+            if (currentRaceEventController != null)
+            {
+                currentRaceEventController = null;
+            }
+
+            foreach (var racer in pooledRacers)
+            {
+                if (racer != null && racer.gameObject != null)
+                {
+                    Destroy(racer.gameObject);
+                }
+            }
+            pooledRacers.Clear();
+        }
+
+        public async Task ResetCurrentRace()
+        {
+            CleanupCurrentRace();
+            await StartNewMeetSession();
         }
     }
 }

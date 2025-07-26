@@ -1,7 +1,8 @@
-using System.Collections.Generic;
 using RidersRuntime.Data;
 using RidersRuntime.RaceManager;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace RidersRuntime.GameSystems
 {
@@ -45,11 +46,7 @@ namespace RidersRuntime.GameSystems
                 Destroy(sessionRaceMeetController.gameObject);
                 sessionRaceMeetController = null;
             }
-
-            if (sessionMeet != null)
-            {
-                sessionMeet = null;
-            }
+            sessionMeet = null;
         }
 
         public async void RequestRaceSetup(RaceMeetConfiguration meetConfiguration)
@@ -57,6 +54,7 @@ namespace RidersRuntime.GameSystems
             if (sessionMeet != null)
             {
                 Debug.LogError("A race is already in progress.");
+                Debug.LogError(sessionMeet);
                 return;
             }
             sessionMeet = meetConfiguration;
@@ -114,9 +112,11 @@ namespace RidersRuntime.GameSystems
             await sessionRaceMeetController.StartNewMeetSession();
         }
 
+        // used as argument for AssignFields, becomes assigned to onRaceComplete in RaceMeetController.cs
         public void OnRaceMeetComplete(object obj)
         {
-
+            //int index = SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/prod/TitleScreen.unity");
+            //await SceneLoader.PrepareScene(index);
         }
 
         public static RiderSelection CreateUniqueBotRider(List<RiderSelection> alreadySelectedRiders)
