@@ -27,7 +27,7 @@ public class TrailCollision : MonoBehaviour
     public void Setup(LayerMask mask, float minDistance, float maxDistance)
     {
         //Reset the last applied rotation. 
-        transform.rotation = Quaternion.identity;
+        //transform.rotation = Quaternion.identity;
 
         //Calculate the local downward normal. 
         Vector3 downwardNormal = -transform.up.normalized;

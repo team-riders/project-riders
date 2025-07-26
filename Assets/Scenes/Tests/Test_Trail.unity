@@ -631,8 +631,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b69e359198f70448a1312c04b1c6e79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxAllowedSteps: 30
-  spawnDistance: 10
+  maxAllowedSteps: 20
+  spawnDistance: 3
   delayBeforeDeactivation: 0.5
   delayInbetweenDeactivations: 0.25
   trailGameobjectPrefab: {fileID: 5958868893178389055, guid: 4df8a8edd68f0fd478ce0a1f32c59e30, type: 3}
@@ -640,7 +640,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   minSurfaceDistance: 0
-  maxSurfaceDistance: 2
+  maxSurfaceDistance: 1
   spawnInAir: 0
 --- !u!114 &654020246
 MonoBehaviour:
