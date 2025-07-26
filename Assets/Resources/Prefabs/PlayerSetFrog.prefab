@@ -969,39 +969,8 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4711103303932495809, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
       insertIndex: 2
       addedObject: {fileID: 3047360746210492374}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2072811018097086297, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6866881704202651522}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
---- !u!1 &251822822849105783 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2072811018097086297, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
-  m_PrefabInstance: {fileID: 2286347733536112686}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &6866881704202651522
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 251822822849105783}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b69e359198f70448a1312c04b1c6e79, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxAllowedSteps: 20
-  spawnDistance: 3
-  delayBeforeDeactivation: 0.5
-  delayInbetweenDeactivations: 0.25
-  trailGameobjectPrefab: {fileID: 5958868893178389055, guid: 4df8a8edd68f0fd478ce0a1f32c59e30, type: 3}
-  collisionLayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  minSurfaceDistance: 0
-  maxSurfaceDistance: 1
-  spawnInAir: 0
 --- !u!4 &2924383254315942219 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3976610529130758501, guid: 23807211aeadb98419af99c5f1754af3, type: 3}

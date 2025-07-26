@@ -26,6 +26,7 @@ namespace RidersRuntime.Input
         public bool StuntC;
         public bool Drift;
         public bool BoostRam;
+        public bool PauseButton;
 
         public List<string> KeysThatAreNonZeroExceptAnalog()
         {
@@ -49,7 +50,8 @@ namespace RidersRuntime.Input
             { StuntButtonNamesShort.StuntB, StuntB ? 1 : 0 },
             { StuntButtonNamesShort.StuntC, StuntC ? 1 : 0 },
             { ButtonNamesShort.Drift, Drift ? 1 : 0 },
-            { ButtonNamesShort.BoostRam, BoostRam ? 1 : 0 }
+            { ButtonNamesShort.BoostRam, BoostRam ? 1 : 0 },
+            { ButtonNamesShort.PauseButton, PauseButton ? 1: 0 },
         };
         }
 
@@ -82,7 +84,8 @@ namespace RidersRuntime.Input
                    StuntB == other.StuntB &&
                    StuntC == other.StuntC &&
                    Drift == other.Drift &&
-                   BoostRam == other.BoostRam;
+                   BoostRam == other.BoostRam &&
+                   PauseButton == other.PauseButton;
         }
 
         public override bool Equals(object obj) => obj is ActorInputData other && Equals(other);
@@ -90,7 +93,7 @@ namespace RidersRuntime.Input
         public override int GetHashCode()
         {
             int first = HashCode.Combine(Accelerate, Brake, TurnInput, Jump, JumpHoldDuration, StuntA, StuntB, StuntC);
-            int second = HashCode.Combine(Drift, BoostRam);
+            int second = HashCode.Combine(Drift, BoostRam, PauseButton);
             return HashCode.Combine(first, second);
         }
     }
