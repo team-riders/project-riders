@@ -92,6 +92,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2072811018097086297, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3156988280528216135}
+    - targetCorrespondingSourceObject: {fileID: 2072811018097086297, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -4555897175768881179}
   m_SourcePrefab: {fileID: 100100000, guid: 23807211aeadb98419af99c5f1754af3, type: 3}
 --- !u!1 &79956059723849650 stripped
 GameObject:
@@ -116,3 +119,26 @@ MonoBehaviour:
   nodeAccelerateThreshold: 3.5
   distanceToTarget: 0
   targetNode: {fileID: 0}
+--- !u!114 &-4555897175768881179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 79956059723849650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b69e359198f70448a1312c04b1c6e79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxAllowedSteps: 20
+  spawnDistance: 3
+  delayBeforeDeactivation: 0.5
+  delayInbetweenDeactivations: 0.25
+  trailGameobjectPrefab: {fileID: 5958868893178389055, guid: 4df8a8edd68f0fd478ce0a1f32c59e30, type: 3}
+  collisionLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  minSurfaceDistance: 0
+  maxSurfaceDistance: 1
+  spawnInAir: 0
